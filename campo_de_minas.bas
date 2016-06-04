@@ -3,7 +3,7 @@
 #
 # Fork by Marcos Cruz (programandala.net):
 # 2016-06-04: Remove embedded control codes. Print to a text file.
-# Restore UDGs, using the notation of zmakebas.
+# Restore UDGs, using the notation of zmakebas. Use cursor keys.
 
    1 RUN 9000
    2 LET inkColor=9: LET bonus=0: LET lev=1: LET damsels=1: LET HSC=250 : LET DAMSELS=1
@@ -87,9 +87,9 @@
  493 PRINT AT 21,4; INVERSE 1;"ADELANTE!": FOR n=1 TO 20: BEEP .002,n+20: NEXT n: PRINT AT 21,4;"         ": BEEP .05,37
  495 GO TO 535
  505 LET oldx=x: LET oldy=y
- 520 LET x=x+(INKEY$="6")-(INKEY$="7")
+ 520 LET x=x+(INKEY$=k$(4))-(INKEY$=k$(3))
  521 LET x=x-(x=22)
- 522 LET y=y+(INKEY$="8")-(INKEY$="5")
+ 522 LET y=y+(INKEY$=k$(2))-(INKEY$=k$(1))
  526 LET TI=TI+1
  528 IF DAMSELS>=4 THEN IF TI>(260*PAPER+70) THEN IF INT (TI/(3*PAPER+1))=(TI/(3*PAPER+1)) THEN GO SUB 543
  530 IF oldx=x AND oldy=y THEN GO TO 520
@@ -396,6 +396,7 @@
 9000 BORDER 1: PAPER 3: INK 9
 9001 CLEAR : RESTORE : PRINT AT 10,8;"PARA EL CASSETE"
 9002 PAPER 2: FOR g=1 TO 50: BEEP .000650,50+g/50: BORDER 5: BORDER 2: BORDER 3: BORDER 4: BORDER 1: BORDER 4: BORDER 6: BORDER 1: NEXT g
+9003 let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 9004 POKE 23609,32
 9005 PRINT AT 10,8;" NO TE VAYAS!  "
 9006 PRINT AT 0,0;" ";AT 0,31;" ";AT 21,0;" ";AT 21,31;" ":rem XXX TODO -- flash
