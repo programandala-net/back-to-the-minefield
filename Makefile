@@ -7,4 +7,4 @@ clean:
 	rm campo_de_minas.tap
 
 campo_de_minas.tap: campo_de_minas.bas
-	zmakebas -n cdm -a 9000 -o $@ $<
+	zmakebas -n cdm -a @start -l -o $@ $<
