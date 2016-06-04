@@ -142,25 +142,6 @@ print at oldx,oldy; paper pa;" "
 let t$=t$+chr$ (x+65)+chr$ (y+65)
 if screen$ (x,y)<>" " then go sub @l1000
 if damsels=9 and pa<>papercolor and x<17 then go sub @l8000
-go to @l550
-
-# ==============================================================
-# subroutine
-
-@l543:
-
-print at oo,pp; paper pa;" "
-let i$=t$+t$: if damsels>=5 and papercolor<>pa and time>2000 then go sub @l8000
-let rr=rr+2: beep .0018,60
-let oo=65-code i$(rr): let pp=65-code i$(rr+1)
-if screen$ (oo,pp)<>" " then go sub @l1000
-print at oo,pp; paper pa;"\h"
-return
-
-# ==============================================================
-
-@l550:
-
 print at x,y; paper pa;c$
 
 @l570:
@@ -176,6 +157,19 @@ if x=0 then go sub @l3000
 if o=3 and damsels=8 then print at 8,9; flash 1;"puerta abierta": for c=1 to 40: beep .001,30+c/4: border 0: border 7: next c: print at 1,15;"  ": print at 8,9;"              ": border 2
 if damsels>2 and damsels<9 and time>50 then if rnd>.98 then go to @l100
 go to @l500
+
+# ==============================================================
+# subroutine
+
+@l543:
+
+print at oo,pp; paper pa;" "
+let i$=t$+t$: if damsels>=5 and papercolor<>pa and time>2000 then go sub @l8000
+let rr=rr+2: beep .0018,60
+let oo=65-code i$(rr): let pp=65-code i$(rr+1)
+if screen$ (oo,pp)<>" " then go sub @l1000
+print at oo,pp; paper pa;"\h"
+return
 
 # ==============================================================
 # subroutine
@@ -235,7 +229,7 @@ for n=1 to 100: next n
 let y$=t$
 for t=1 to len y$ step 2
 
-  # XXX FIXME --
+# XXX FIXME --
   for m=1 to 5: if inkey$="s" or inkey$="S" then go to @l2033: next m
   @l2033:
 
