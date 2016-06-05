@@ -1,34 +1,46 @@
-# ZX Spectrum "Minefield", by Ian Andrew
-# Spanish version "Campo de minas", published by Indescomp
+# Campo de minas
 #
-# Fork by Marcos Cruz (programandala.net):
-# 2016-06-04: Remove embedded control codes. Print to a text file.
-# Restore UDGs, using the notation of zmakebas. Use cursor keys.
+# "Campo de minas" was published by Indescomp. It is the Spanish
+# version of "Minefield", written by Ian Andrew.
+#
+# This is a fork under development by Marcos Cruz (programandala.net),
+# started on 2016-06-04.
+#
+# Version 0.1.0+201606051832
+#
+# This source is in zmakebas format of Sinclair BASIC.
 
 let inkcolor=9
-let bonus=0: let level=1: let highscore=250
+let damsels=1: let bonus=0: let level=1: let highscore=250
 let h$="ian"
 let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 
 @l6:
 
 if damsels>2 then go to @l5700
-let mines=50: let damsels=1: let score=0: let bonus=0: 
+let mines=50: let score=0: let bonus=0: 
 let papercolor=6: let bordercolor=0
 
 @l10:
 
 border bordercolor: paper papercolor: ink inkcolor: cls
+
+# coordinates
 let x=21: let y=15
+let oldx=x: let oldy=y
+
+# list of coordinates, stored as chars
 let t$=chr$ (x+65)+chr$ (y+65)
 let xx=21: let yy=15
+
+# counter
 let time=0
-let oldx=x: let oldy=y
+
 let c$="\a": let v$="\b"
 let cc=0: let dd=0: let ee=0
 let rr=1
 let oo=21: let pp=15
-let x$="                                 < zona segura >                                 "
+let x$="                                 < ZONA SEGURA >                                 "
 let pa=7
 let ss=0
 if level<>1 then print at 15,0;: list
@@ -191,7 +203,7 @@ if rnd>.8 then let j$="  has volado!   "
 if rnd>.7 then let j$="  destruccion!  "
 print at 0,0; paper 0; ink 7;j$
 beep 1.6,-35
-go sub @l2000
+go sub @replay
 print at x,y; paper 7; ink 0; over 1;chr$ (65+int (rnd*60))
 beep 1,-35
 if score>highscore then go sub @newrecord
@@ -220,29 +232,30 @@ print at 2,1;"                              "
 go to @l6
 
 # ==============================================================
-# subroutine
+# subroutine: replay
 
-@l2000:
+@replay:
 
 for n=1 to 20: next n
 for a=1 to 21
   print at a,0; over 1; ink 9;"                                "
 next a
-print at 21,1; flash 1; paper 7; ink 0;" repeticion  "
+print at 21,1;flash 1; paper 7; ink 0;"Repeticion"
+print at 21,17;"[R]apido [F]in"
 for n=1 to 100: next n
 let y$=t$
 for t=1 to len y$ step 2
-  if inkey$<>"s" and inkey$<>"S" then for m=1 to 5: next m
+  let i$=inkey$
+  if i$="f" or i$="F" then go to @replay.end
+  if i$<>"r" and i$<>"R" then for m=1 to 5: next m
   print at xx,yy; paper 7;" "
-  if damsels>1 and t=21 then print at 21,0; paper 0; ink 7;"""s""= mas rapido, ""e""= terminar  "
   let xx=code y$(1)-65: let yy=code y$(2)-65
   print at xx,yy; paper 7;c$
   beep .005,5+(t*40/(len t$))
   let y$=y$(3 to )
-  if inkey$="e" or inkey$="E" then go to @l2055
 next t
 
-@l2055:
+@replay.end:
 
 print at 21,0;"                                "
 return
@@ -261,8 +274,10 @@ print at 1,0;"\f"
 for n=15 to 50: beep .001+((50-30)/2000),(50+n/2.8): border 2: border 7: border 0: next n
 border bordercolor
 if bonus>0 then let score=score+bonus: print at 21,0; paper 7; bright 1;"bonos iniciales = ";bonus: let bonus=0: for n=1 to 20 step .6: beep .025,n+5: next n: print at 21,0;"                                "
-go sub @l2000
-for g=4 to 22 step 6: beep .005,g+24: next g
+go sub @replay
+for g=4 to 22 step 6
+  beep .005,g+24
+next g
 for n=1 to 80
   border 1: border 2: border 3: border 4: border 5: border 6
 next n
@@ -354,16 +369,17 @@ print at 13,18; flash 1;level
 beep .1,30
 for n=1 to 25: next n
 
-pause 0:let l$=inkey$
+pause 0:let i$=inkey$
 print at 21,0; ink papercolor; paper papercolor; inverse 1;"     vuelve a intentarlo !!     "
 print at 0,0; ink papercolor; paper papercolor; inverse 1;"     vuelve a intentarlo !!     "
-if code l$<49 or code l$>57 then beep 1,-15: go to @l5700
-let ll=val l$
+if code i$<49 or code i$>57 then beep 1,-15: go to @l5700
+let ll=val i$
 if ll>level or ll<>(int ll) or ll<1 then beep 1,-15: go to @l5700
 let score=0
 let damsels=ll
-if ll=1 then let papercolor=6: let bordercolor=0: let mines=50: let bonus=0
 for n=30 to 34: beep .006,n: next n
+# XXX TODO -- convert to data
+if ll=1 then let papercolor=6: let bordercolor=0: let mines=50: let bonus=0
 if ll=2 then let papercolor=5: let bordercolor=0: let mines=60: let bonus=250
 if ll=3 then let papercolor=4: let bordercolor=0: let mines=70: let bonus=750
 if ll=4 then let papercolor=3: let bordercolor=0: let mines=80: let bonus=1500
