@@ -5,7 +5,8 @@
 # 2016-06-04: Remove embedded control codes. Print to a text file.
 # Restore UDGs, using the notation of zmakebas. Use cursor keys.
 
-let inkcolor=9: let bonus=0: let level=1: let damsels=1: let highscore=250 : let damsels=1
+let inkcolor=9
+let bonus=0: let level=1: let highscore=250
 let h$="ian"
 let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 
@@ -64,8 +65,10 @@ for n=2 to 19
 next n
 print at 20,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 print at x,y;c$
-next n: if score=0 and damsels>2 and bonus=0 then print at 15,0;: list
-print at 21,17; flash 1; paper 2; ink 7;"poniendo minas": if damsels=9 then let mines=mines+32: let mines=mines+(10-int (score/1000))
+next n
+if score=0 and damsels>2 and bonus=0 then print at 15,0;: list
+print at 21,17; flash 1; paper 2; ink 7;"poniendo minas"
+if damsels=9 then let mines=mines+32: let mines=mines+(10-int (score/1000))
 print at 21,3; flash 1; paper 2; ink 7; inverse 1;"nivel ";damsels
 for w=1 to mines
   print at int (rnd*16)+3,int (rnd*30)+1; ink papercolor;"\o"
@@ -164,7 +167,8 @@ go to @l500
 @l543:
 
 print at oo,pp; paper pa;" "
-let i$=t$+t$: if damsels>=5 and papercolor<>pa and time>2000 then go sub @l8000
+let i$=t$+t$
+if damsels>=5 and papercolor<>pa and time>2000 then go sub @l8000
 let rr=rr+2: beep .0018,60
 let oo=65-code i$(rr): let pp=65-code i$(rr+1)
 if screen$ (oo,pp)<>" " then go sub @l1000
@@ -228,11 +232,7 @@ print at 21,1; flash 1; paper 7; ink 0;" repeticion  "
 for n=1 to 100: next n
 let y$=t$
 for t=1 to len y$ step 2
-
-# XXX FIXME --
-  for m=1 to 5: if inkey$="s" or inkey$="S" then go to @l2033: next m
-  @l2033:
-
+  if inkey$<>"s" and inkey$<>"S" then for m=1 to 5: next m
   print at xx,yy; paper 7;" "
   if damsels>1 and t=21 then print at 21,0; paper 0; ink 7;"""s""= mas rapido, ""e""= terminar  "
   let xx=code y$(1)-65: let yy=code y$(2)-65
@@ -252,7 +252,8 @@ return
 
 @l3000:
 
-let ss=(int ((2000-time)/50))*5: if ss<50 then let ss=50
+let ss=(int ((2000-time)/50))*5
+if ss<50 then let ss=50
 let ss=ss*damsels
 print at 0,0; paper damsels/1.5; ink 9;"nivel ";damsels;"  puntos por tiempo= ";ss;
 if damsels=1 and ss<100 then print at 0,31; paper 1;" "
@@ -344,7 +345,8 @@ for n=1 to 21: next n: for n=0 to 31: paper papercolor: ink papercolor: plot n*8
 beep .0015,64: beep .0015,59
 print at 10,n; paper int (rnd*6); ink 9;z$(n+1)
 next n
-ink 9: if score=0 and bonus=0 then print at 15,0;: list
+ink 9
+if score=0 and bonus=0 then print at 15,0;: list
 print at 13,13; flash 1;"1";at 13,14;" a ";at 13,18; flash 1;level
 print at 13,13; flash 1;"1"
 print at 13,14;" a "
@@ -424,8 +426,7 @@ print '" este es bill ""\n"""
 print ''" tu, ""\a"", comienzas en la parte  inferior de la pantalla."
 print '" tu objetivo: alcanzar la puerta de la parte superior."
 print at 21,17; inverse 1;"pulsa una tecla"
-for n=1 to 40: next n
-for n=1 to 50000: if inkey$="" then next n
+pause 0
 restore @demoCoordinates
 for n=1 to 47
   read i: read l:
