@@ -1,5 +1,5 @@
-= Campo de minas
-:revdate: 2016-06-05
+= Regreso al campo de minas
+:revdate: 2016-06-06
 
 Fork of _Campo de minas_, the Spanish version (published by Indescomp)
 of _Minefield_ (by Ian Andrew), for ZX Spectrum.

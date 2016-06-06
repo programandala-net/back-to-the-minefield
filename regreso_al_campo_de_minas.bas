@@ -1,15 +1,15 @@
-# Campo de minas
+# Regreso al campo de minas
 #
-# "Campo de minas" was published by Indescomp. It is the Spanish
+# "Campo de minas" was published by Indescomp. It was the Spanish
 # version of "Minefield", written by Ian Andrew.
 #
 # This is a fork under development by Marcos Cruz (programandala.net),
 # started on 2016-06-04.
 #
-# Version 0.3.0+201606061502
+# Version 0.4.0+201606061529
 # (after Semantic Versioning: http://semver.org)
 #
-# This source is in zmakebas format of Sinclair BASIC.
+# This source is in the zmakebas format of Sinclair BASIC.
 
 let inkcolor=9
 let damsels=1: let bonus=0: let level=1: let highscore=250
@@ -470,58 +470,65 @@ return
 
 border 1: paper 1: ink 7: cls
 #      <------------------------------>
-print "          CAMPO DE MINAS"
+print "   REGRESO AL CAMPO DE MINAS"
 print
-print "\* ian andrew, 198x"
-print "Version espanola:"
-print "  \* Indescomp, 198x"
-print "Version mejorada:"
-print "  \* programandala.net, 2016"
+print "Una reescritura de:"
+print
+print "  Minefield,"
+print "    escrito por Ian Andrew, 198x"
+print "  Campo de minas,"
+print "    traducido por Indescomp,"
+print "    198x"
+print
+print "Por Marcos Cruz"
+print "(programandala.net), 2016"
 #      <------------------------------>
 
-print 'inverse 1;"Pulsa una tecla"
+#      <------------------------------>
+print '\
+       "      ";inverse 1;\
+              "Pulsa una tecla"
+#      <------------------------------>
 pause 0:cls
 
-print bright 1;"\a";
+print 'bright 1;"\a";
 #     <------------------------------>
 print " Tu: Debes atravesar cada campo"
 #      <------------------------------>
 print "  de minas, moviendote con las"
 print "  teclas del cursor."
 
-print bright 1;"\n";
+print 'bright 1;"\n";
 #     <------------------------------>
-print " Bill el gusano: Esta durmiendo"
+print " Bill el gusano: Esta en el ul-"
 #      <------------------------------>
-print "  en el ultimo campo de minas y"
-print "  debes rescatarlo."
+print "  timo campo. Rescatalo."
 
-print bright 1;"\o";
+print 'bright 1;"\o";
 #     <------------------------------>
 print " Minas: En la parte superior"
 #      <------------------------------>
 print "  veras cuantas te rodean."
 
-print bright 1;"\d\e";
+print 'bright 1;"\d\e";
 #    <------------------------------>
 print " Damiselas: Cuentan como minas"
 #      <------------------------------>
-print "   pero si las rescatas seras"
-print "   recompensado."
+print "   pero dan puntos."
 
-print bright 1;"\h";
+print 'bright 1;"\h";
 #     <------------------------------>
-print " El bicho (mina con patas):"
+print " La mina con patas:"
 #      <------------------------------>
 print "  Te perseguira sin descanso."
 
-print bright 1;"\f";
+print 'bright 1;"\f";
 #     <------------------------------>
 print " Verja: Esta electrificada y"
 #      <------------------------------>
 print "  cuenta como una mina."
 
-print bright 1;"\m";
+print 'bright 1;"\m";
 #     <------------------------------>
 print " Minadores: ponen minas pero"
 #      <------------------------------>
