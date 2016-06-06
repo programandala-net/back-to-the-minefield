@@ -6,7 +6,7 @@
 # This is a fork under development by Marcos Cruz (programandala.net),
 # started on 2016-06-04.
 #
-# Version 0.1.0+201606051832
+# Version 0.1.0+201606061413
 #
 # This source is in zmakebas format of Sinclair BASIC.
 
@@ -214,6 +214,7 @@ return
 
 @l1000:
 
+# XXX TODO -- remove:
 if x=cc then\
   if y=dd or y=ee then\
     go sub @l6000: return
@@ -224,12 +225,6 @@ for w=20 to 1 step -1
   beep .003,w: print at x,y;"\c"
   beep .002,10: print at x,y;"\o"
 next w
-let j$=" has explotado! "
-if rnd>.8 then\
-  let j$="  has volado!   "
-if rnd>.7 then\
-  let j$="  destruccion!  "
-print at 0,0; paper 0; ink 7;j$
 beep 1.6,-35
 go sub @replay
 print at x,y; paper 7; ink 0; over 1;chr$ (65+int (rnd*60))
@@ -239,6 +234,7 @@ if score>highscore then\
 print at 0,28; paper 0;"  "
 print at 0,0; paper 0; ink 7;" ";"otra vez?    nivel ";damsels;" ";at 0,22; flash 1;"punt. ";score
 print at 2,1; paper 0; ink 7;" pulsa una tecla (""i"" = info) "
+# XXX TODO -- change to "again?":
 print at 10,9; ink 7; paper 2; bright 1;"   se acabo   "
 if papercolor>=4 then\
   ink 0
@@ -260,7 +256,7 @@ for n=1 to 10000000
     print at 21,0; paper bordercolor; ink 9;"\e";at 21,31;"\d"
   if inkey$="" then\
     for m=1 to 16: next m
-  let i$=inkey$
+let i$=inkey$
 if i$="" then next n
 if i$="i" or i$="i" then\
   go sub @instructions
