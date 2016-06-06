@@ -1,3 +1,4 @@
 *.bas linguist-language=BASIC
 *.dsk binary
 *.tap binary
+*.szx binary
