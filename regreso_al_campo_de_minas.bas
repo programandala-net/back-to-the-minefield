@@ -6,7 +6,7 @@
 # This is a fork under development by Marcos Cruz (programandala.net),
 # started on 2016-06-04.
 #
-# Version 0.5.0+201606062048
+# Version 0.5.0+201606062111
 # (after Semantic Versioning: http://semver.org)
 #
 # This source is in the zmakebas format of Sinclair BASIC.
@@ -14,13 +14,13 @@
 @firstrun:
 
 let inkcolor=9
-let damsels=1: let bonus=0: let level=1: let highscore=250
+let level=1: let bonus=0: let highscore=250
 let h$="ian"
 let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 
 @newGame:
 
-if damsels>2 then\
+if level>2 then\
   go to @l5700
 let mines=50: let score=0: let bonus=0: 
 let papercolor=6: let bordercolor=0
@@ -77,19 +77,18 @@ go to @l570
 @l300:
 
 print at 0,28; paper 0;"    "
-print at 0,0; paper 0; ink 7;"minas vecinas 0";at 0,17;"no.";damsels;" punt. ";score
+print at 0,0; paper 0; ink 7;"minas vecinas 0";at 0,17;"no.";level;" punt. ";score
 print at 1,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f  \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 for n=2 to 19
   print at n,0;"\f                              \f"
 next n
 print at 20,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 print at row,col;c$
-next n
 print at 21,17; flash 1; paper 2; ink 7;"Poniendo minas"
-if damsels=9 then\
+if level=9 then\
   let mines=mines+32:\
   let mines=mines+(10-int (score/1000))
-print at 21,3; flash 1; paper 2; ink 7; inverse 1;"nivel ";damsels
+print at 21,3; flash 1; paper 2; ink 7; inverse 1;"nivel ";level
 print paper 8;bright 1; at 2,1;s$;at 19,1;s$
 for w=1 to mines
   print at int (rnd*16)+3,int (rnd*30)+1; ink papercolor;"\o"
@@ -99,9 +98,9 @@ print paper 8;at 2,1;u$;at 19,1;u$
 
 print at 10,1; ink papercolor;"\o";at 11,15;"\o\o";at 10,30;"\o"
 print at 21,0;"                               "
-if damsels=1 then\
+if level=1 then\
   go to @l480
-if damsels=9 then\
+if level=9 then\
   go sub @l9900: go to @l480
 print at 21,0; inverse 1; bright 1;"Rescata a las pobres damiselas!"
 go to @l450
@@ -120,7 +119,7 @@ next j
 
 @l480:
 
-if damsels<>8 then\
+if level<>8 then\
   go to @l490
 print at 21,0; ink 7; flash 1; paper 0; bright 1;"Ponte entre 3 minas para abrir  "
 print at 1,15;"\f\f": print at 8,9; ink 1; bright 1; paper 7;"puerta cerrada"
@@ -156,7 +155,7 @@ let row=row+(i$=k$(4))-(i$=k$(3))
 let row=row-(row=22)
 let col=col+(i$=k$(2))-(i$=k$(1))
 let time=time+1
-if damsels>=4 then\
+if level>=4 then\
   if time>(260*papercolor+70) then\
     if int (time/(3*papercolor+1))=(time/(3*papercolor+1)) then\
       go sub @l543
@@ -170,7 +169,7 @@ print at oldrow,oldcol; paper pa;" "
 let t$=t$+chr$ (row+65)+chr$ (col+65)
 if screen$ (row,col)<>" " then\
   go sub @explosion
-if damsels=9 and pa<>papercolor and row<17 then\
+if level=9 and pa<>papercolor and row<17 then\
   go sub @l8000
 print at row,col; paper pa;c$
 
@@ -186,7 +185,7 @@ if o then\
 print at 0,0; paper (4-o); ink 9;"Minas vecinas ";o
 if row=0 then\
   go sub @l3000
-if o=3 and damsels=8 then\
+if o=3 and level=8 then\
   print at 8,9; flash 1;"puerta abierta":\
   for c=1 to 40: beep .001,30+c/4:\
     border 0: border 7:\
@@ -194,7 +193,7 @@ if o=3 and damsels=8 then\
   print at 1,15;"  ":\
   print at 8,9;"              ":\
   border 2
-if damsels>2 and damsels<9 and time>50 then\
+if level>2 and level<9 and time>50 then\
   if rnd>.98 then\
     go to @l100
 go to @l500
@@ -206,7 +205,7 @@ go to @l500
 
 print at oo,pp; paper pa;" "
 let i$=t$+t$
-if damsels>=5 and papercolor<>pa and time>2000 then\
+if level>=5 and papercolor<>pa and time>2000 then\
   go sub @l8000
 let rr=rr+2: beep .0018,60
 let oo=65-code i$(rr): let pp=65-code i$(rr+1)
@@ -226,7 +225,7 @@ return
 if row=cc then\
   if col=dd or col=ee then\
     go sub @damselrescued: return
-if damsels=9 then\
+if level=9 then\
   if row=8 and col=5+ss then\
     go to @l8444
 for w=20 to 1 step -1
@@ -241,7 +240,7 @@ if score>highscore then\
   go sub @newrecord
 print at 0,28; paper 0;"  "
 print\
-  at 0,0; paper 0; ink 7;"              nivel ";damsels;" ";\
+  at 0,0; paper 0; ink 7;"              nivel ";level;" ";\
   at 0,22; flash 1;"punt. ";score
 gosub @udLetters
 print at 10,9; ink 7; paper 2; bright 1;"  ¿Otra vez?  "
@@ -309,9 +308,9 @@ return
 let ss=(int ((2000-time)/50))*5
 if ss<50 then\
   let ss=50
-let ss=ss*damsels
-print at 0,0; paper damsels/1.5; ink 9;"Nivel=";damsels;"  Puntos por tiempo= ";ss;
-if damsels=1 and ss<100 then\
+let ss=ss*level
+print at 0,0; paper level/1.5; ink 9;"Nivel=";level;"  Puntos por tiempo= ";ss;
+if level=1 and ss<100 then\
   print at 0,31; paper 1;" "
 print at 1,0;"\f"
 for n=15 to 50: beep .001+((50-30)/2000),(50+n/2.8): border 2: border 7: border 0: next n
@@ -333,17 +332,17 @@ for n=1 to 80
 next n
 let score=score+ss
 print at 0,30; paper 0;"  "
-print at 0,0; paper 0; ink 7;"Minas vecinas 0  No.";damsels;" Puntos ";score
+print at 0,0; paper 0; ink 7;"Minas vecinas 0  No.";level;" Puntos ";score
 for n=1 to 120
 next n
 let mines=mines+10
 let papercolor=papercolor-1
-let damsels=damsels+1
+let level=level+1
 if papercolor<0 then\
   let bordercolor=bordercolor+2: let papercolor=6
 if papercolor=6 then\
   let mines=50
-if damsels=7 then\
+if level=7 then\
   let mines=20
 go to @l10
 
@@ -410,7 +409,7 @@ return
 
 @l5700:
 
-let level=damsels-1
+let maxlevel=level-1
 gosub @udLetters
 let z$="   ¿Desde qué nivel empiezas?      "
 gosub @udGraphics
@@ -424,10 +423,10 @@ for n=0 to 31
   print at 10,n; paper int (rnd*6); ink 9;z$(n+1)
 next n
 ink 9
-print at 13,13; flash 1;"1";at 13,14;" a ";at 13,18; flash 1;level
+print at 13,13; flash 1;"1";at 13,14;" a ";at 13,18; flash 1;maxlevel
 print at 13,13; flash 1;"1"
 print at 13,14;" a "
-print at 13,18; flash 1;level
+print at 13,18; flash 1;maxlevel
 beep .1,30
 for n=1 to 25: next n
 
@@ -440,30 +439,29 @@ print at 0,0; ink papercolor; paper papercolor; inverse 1;\
 #  <------------------------------>
 if code i$<49 or code i$>57 then\
   beep 1,-15: go to @l5700
-let ll=val i$
-if ll>level or ll<>(int ll) or ll<1 then\
+let newlevel=val i$
+if newlevel>maxlevel or newlevel<>(int newlevel) or newlevel<1 then\
   beep 1,-15: go to @l5700
 let score=0
-let damsels=ll
+let level=newlevel
 for n=30 to 34: beep .006,n: next n
 # XXX TODO -- convert to data
-if ll=1 then\
+if newlevel=1 then\
   let papercolor=6: let bordercolor=0: let mines=50: let bonus=0
-if ll=2 then\
+if newlevel=2 then\
   let papercolor=5: let bordercolor=0: let mines=60: let bonus=250
-if ll=3 then\
+if newlevel=3 then\
   let papercolor=4: let bordercolor=0: let mines=70: let bonus=750
-if ll=4 then\
+if newlevel=4 then\
   let papercolor=3: let bordercolor=0: let mines=80: let bonus=1500
-if ll=5 then\
+if newlevel=5 then\
   let papercolor=2: let bordercolor=0: let mines=90: let bonus=2200
-if ll=6 then\
+if newlevel=6 then\
   let papercolor=1: let bordercolor=0: let mines=100: let bonus=2700
-if ll=7 then\
+if newlevel=7 then\
   let papercolor=0: let bordercolor=0: let mines=20: let bonus=3500
-if ll=8 then\
+if newlevel=8 then\
   let papercolor=6: let bordercolor=2: let mines=50: let bonus=4200
-let level=1
 go to @l10
 stop
 
@@ -591,7 +589,7 @@ print at 21,0;\
 print at 20,14; paper papercolor;"   "
 for n=19 to 2 step -.5
   beep .05,n-10
-  if damsels<=8 or n>14 then\
+  if level<=8 or n>14 then\
     print at n,1;\
       over 1; ink papercolor; paper papercolor;\
       "                              "
@@ -659,7 +657,7 @@ print\
 #  <------------------------------>
 if score>highscore then\
   go sub @newrecord
-let damsels=1
+let level=1
 go to @l1200
 
 # ==============================================================
