@@ -6,7 +6,7 @@
 # This is a fork under development by Marcos Cruz (programandala.net),
 # started on 2016-06-04.
 #
-# Version 0.2.0+201606061455
+# Version 0.3.0+201606061502
 # (after Semantic Versioning: http://semver.org)
 #
 # This source is in zmakebas format of Sinclair BASIC.
@@ -33,7 +33,6 @@ let oldrow=row: let oldcol=col
 
 # list of coordinates, stored as chars
 let t$=chr$ (row+65)+chr$ (col+65)
-let xx=21: let yy=15
 
 # counter
 let time=0
@@ -269,15 +268,16 @@ print at 21,1;flash 1; paper 7; ink 0;"Repeticion"
 print at 21,17;"[R]apido [F]in"
 for n=1 to 100: next n
 let y$=t$
+let reprow=code y$(1)-65: let repcol=code y$(2)-65
 for t=1 to len y$ step 2
   let i$=inkey$
   if i$="f" or i$="F" then\
     goto @replay.end
   if i$<>"r" and i$<>"R" then\
     for m=1 to 5: next m
-  print at xx,yy; paper 7;" "
-  let xx=code y$(1)-65: let yy=code y$(2)-65
-  print at xx,yy; paper 7;c$
+  print at reprow,repcol; paper 7;" "
+  let reprow=code y$(1)-65: let repcol=code y$(2)-65
+  print at reprow,repcol; paper 7;c$
   beep .005,5+(t*40/(len t$))
   let y$=y$(3 to )
 next t
