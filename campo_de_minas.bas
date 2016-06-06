@@ -219,7 +219,7 @@ if damsels=9 then\
   if x=8 and y=5+ss then\
     go to @l8444
 for w=20 to 1 step -1
-  beep .003,0+w: print at x,y;"\c"
+  beep .003,w: print at x,y;"\c"
   beep .002,10: print at x,y;"\o"
 next w
 let j$=" has explotado! "
@@ -474,84 +474,66 @@ return
 
 @instructions:
 
-let p=0
 border 1: paper 1: ink 7: cls
-print at 0,0;"     indescomp presenta ...."
-for n=1 to 60: next n
-for n=2 to 16
-  print at n,0;"                                ": rem xxx todo -- color
-next n
-beep .2,30: beep .1,20: for n=1 to 5: next n: beep .075,26: beep .125,26: beep .1,18
-print at 0,0;"prueba tu estrategia y habilidad"
-for n=47 to 56 step 3
-print at 9,9; paper p; over 0; ink 9;"campo de minas": circle ink 7;128,99,n: let p=p+2
-next n
-ink 9
-print at 18,0;"""rescata a bill el gusano de unahorrible jubilacion"""
-print at 9,9; ink 0; paper 7; flash 1;"campo de minas"
-paper 8: for n=3 to 17: print at n-1,4; paper 8;"\o";at n-1,27;"\o": print at 19-n,3;"\o";at 19-n,5;"\o";at 19-n,26;"\o";at 19-n,28;"\o"
-beep .005,33: next n: paper 1
-go sub @pressKey
+#      <------------------------------>
+print "          CAMPO DE MINAS"
+print
+print "\* ian andrew, 198x"
+print "Version espanola:"
+print "  \* Indescomp, 198x"
+print "Version mejorada:"
+print "  \* programandala.net, 2016"
+#      <------------------------------>
 
-print at 2,0;"\* campo de minas! por ian andrew"
-print ''" tu mision: (deberas decidir     si la aceptas) llegar hasta     bill el gusano y rescatarle"''" el esta durmiendo en el ultimo  campo de minas (nivel 9)"
-print '" este es bill ""\n"""
-print ''" tu, ""\a"", comienzas en la parte  inferior de la pantalla."
-print '" tu objetivo: alcanzar la puerta de la parte superior."
-print at 21,17; inverse 1;"pulsa una tecla"
+print 'inverse 1;"Pulsa una tecla"
+pause 0:cls
+
+print bright 1;"\a";
+#     <------------------------------>
+print " Tu: Debes atravesar cada campo"
+#      <------------------------------>
+print "  de minas, moviendote con las"
+print "  teclas del cursor."
+
+print bright 1;"\n";
+#     <------------------------------>
+print " Bill el gusano: Esta durmiendo"
+#      <------------------------------>
+print "  en el ultimo campo de minas y"
+print "  debes rescatarlo."
+
+print bright 1;"\o";
+#     <------------------------------>
+print " Minas: En la parte superior"
+#      <------------------------------>
+print "  veras cuantas te rodean."
+
+print bright 1;"\d\e";
+#    <------------------------------>
+print " Damiselas: Cuentan como minas"
+#      <------------------------------>
+print "   pero si las rescatas seras"
+print "   recompensado."
+
+print bright 1;"\h";
+#     <------------------------------>
+print " El bicho (mina con patas):"
+#      <------------------------------>
+print "  Te perseguira sin descanso."
+
+print bright 1;"\f";
+#     <------------------------------>
+print " Verja: Esta electrificada y"
+#      <------------------------------>
+print "  cuenta como una mina."
+
+print bright 1;"\m";
+#     <------------------------------>
+print " Minadores: ponen minas pero"
+#      <------------------------------>
+print "  tambien las quitan."
+
 pause 0
-restore @demoCoordinates
-for n=1 to 47
-  read i: read l:
-
-  print at i,l;"\a": beep .035,n/2
-  print at i,l;" "
-next n
-cls
-print at 1,0;" muevete utilizando las teclas   5,6,7 y 8 [ ver las flechas ]"
-print ''" minas:  ""\o"" son desagradables"''" en la parte superior izquierda  de la pantalla se te indicara   cuantas se encuentran a tu al-  rededor."
-rem "hello there"
-print '" solo se vive una vez                   no pises las minas "
-print ''" damiselas - cuentan como minas  pero si te encuentras junto a   una de ellas no dudes en correr a rescatarla. seras ampliamente recompensado."
-go sub @pressKey
-print at 2,0;" el bicho ""\h"" (mina con patas)   te perseguira sin descanso -    puede volverse muy agresivo."
-for n=1 to 15: next n
-let j$="                                 \a        \h                                        "
-for n=1 to len j$-35
-  print at 6,0;j$(n to n+31): beep .0018,60
-  for m=1 to 1: next m
-next n
-print " y ahora algunos..."''" trucos - en las zonas seguras   no hay minas, por eso dirigete  a la zona superior (no solo a   la puerta) y desde alli vete a  la puerta tranquilamente.       cuando este pululando el bicho  (nivel 4 o mas) muevete conti-  nuamente. normalmente te move-  ras mas deprisa que el."
-go sub @pressKey
-print at 3,0;" la verja esta electrificada y   contara como una mina si estas  junto a ella."
-print at 8,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
-for n=1 to 2
-  for o=0 to 1
-    print at 6+o,14;"\a"
-    print at 0,0; paper (4-o); ink 9;"minas vecinas ";o
-    if o then\
-      beep .04,o*10
-    for m=1 to 22: next m: print at 6+o,14;" "
-  next o
-next n
-print at 6,14;"\a": print at 0,0; paper 4; ink 9;"minas vecinas 0"
-print at 11,0;" imposible? - si te parece impo- sible no desesperes. los mina-  dores, ""\m"", no solo ponen mi-   nas sino que tambien las quitan (amables, no?) "
-print ''; paper 1; ink 7;"                                 pulsa ""i"" para volver a ver     las instrucciones, otra tecla   para jugar                     "
-
-pause 0:let s$=inkey$:
-if s$="i" or s$="I" then\
-  go to @instructions
-cls
-return
-
-# ==============================================================
-# subroutine
-
-@pressKey:
-
-print at 21,17; inverse 1;"pulsa una tecla"
-for n=1 to 60: next n
-pause 0:paper 7: ink 0: cls
 return
 
 # ==============================================================
@@ -644,9 +626,9 @@ for n=1 to 5
 next n
 return
 
+# ==============================================================
 # start line
 
-# ==============================================================
 @start:
 
 border 0: paper 0: ink 9: clear
@@ -728,16 +710,5 @@ data "p",0,132,204,180,132,132,132,0
 data "q",0,144,152,148,146,145,144,0
 data "r",0,159,144,158,144,144,159,0
 data "s",0,31,32,30,1,33,30,0
-
-# coordinates used in the instructions
-
-@demoCoordinates:
-
-data 15,6,15,6,15,6,15,6,15,6,14,6,13,6,13,7
-data 13,8,12,8,11,8,11,7,11,6,11,5,11,4,11,3
-data 11,2,11,1,11,0,10,0,9,0,8,0,7,0,6,0
-data 5,0,4,0,3,0,3,1,3,2,3,3,3,4,3,5
-data 3,6,3,7,3,8,3,9,3,10,3,11,3,12,3,13
-data 3,14,3,15,3,16,3,17,2,17,1,17,0,17,0,17,0,17
 
 # vim: ft=sinclairbasic
