@@ -6,7 +6,7 @@
 # This is a fork under development by Marcos Cruz (programandala.net),
 # started on 2016-06-04.
 #
-# Version 0.2.0+201606061432
+# Version 0.2.0+201606061455
 # (after Semantic Versioning: http://semver.org)
 #
 # This source is in zmakebas format of Sinclair BASIC.
@@ -28,11 +28,11 @@ let papercolor=6: let bordercolor=0
 border bordercolor: paper papercolor: ink inkcolor: cls
 
 # coordinates
-let x=21: let y=15
-let oldx=x: let oldy=y
+let row=21: let col=15
+let oldrow=row: let oldcol=col
 
 # list of coordinates, stored as chars
-let t$=chr$ (x+65)+chr$ (y+65)
+let t$=chr$ (row+65)+chr$ (col+65)
 let xx=21: let yy=15
 
 # counter
@@ -81,7 +81,7 @@ for n=2 to 19
   print at n,0;"\f                              \f"
 next n
 print at 20,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
-print at x,y;c$
+print at row,col;c$
 next n
 print at 21,17; flash 1; paper 2; ink 7;"poniendo minas"
 if damsels=9 then\
@@ -142,44 +142,44 @@ go to @l535
 
 @l500:
 
-let oldx=x: let oldy=y
+let oldrow=row: let oldcol=col
 
 @l520:
 
 let i$=inkey$
-let x=x+(i$=k$(4))-(i$=k$(3))
-let x=x-(x=22)
-let y=y+(i$=k$(2))-(i$=k$(1))
+let row=row+(i$=k$(4))-(i$=k$(3))
+let row=row-(row=22)
+let col=col+(i$=k$(2))-(i$=k$(1))
 let time=time+1
 if damsels>=4 then\
   if time>(260*papercolor+70) then\
     if int (time/(3*papercolor+1))=(time/(3*papercolor+1)) then\
       go sub @l543
-if oldx=x and oldy=y then\
+if oldrow=row and oldcol=col then\
   go to @l520
 beep .003,-4
 
 @l535:
 
-print at oldx,oldy; paper pa;" "
-let t$=t$+chr$ (x+65)+chr$ (y+65)
-if screen$ (x,y)<>" " then\
+print at oldrow,oldcol; paper pa;" "
+let t$=t$+chr$ (row+65)+chr$ (col+65)
+if screen$ (row,col)<>" " then\
   go sub @explosion
-if damsels=9 and pa<>papercolor and x<17 then\
+if damsels=9 and pa<>papercolor and row<17 then\
   go sub @l8000
-print at x,y; paper pa;c$
+print at row,col; paper pa;c$
 
 @l570:
 
-let o=(screen$ (x-1,y)<>" ")
-let p=(screen$ (x+1,y)<>" ")
-let q=(screen$ (x,y-1)<>" ")
-let r=(screen$ (x,y+1)<>" ")
+let o=(screen$ (row-1,col)<>" ")
+let p=(screen$ (row+1,col)<>" ")
+let q=(screen$ (row,col-1)<>" ")
+let r=(screen$ (row,col+1)<>" ")
 let o=o+p+q+r
 if o then\
   beep .04,o*10
 print at 0,0; paper (4-o); ink 9;"minas vecinas ";o
-if x=0 then\
+if row=0 then\
   go sub @l3000
 if o=3 and damsels=8 then\
   print at 8,9; flash 1;"puerta abierta":\
@@ -218,19 +218,19 @@ return
 # XXX TODO -- remove mine count from the status bar
 
 # XXX TODO -- remove:
-if x=cc then\
-  if y=dd or y=ee then\
+if row=cc then\
+  if col=dd or col=ee then\
     go sub @l6000: return
 if damsels=9 then\
-  if x=8 and y=5+ss then\
+  if row=8 and col=5+ss then\
     go to @l8444
 for w=20 to 1 step -1
-  beep .003,w: print at x,y;"\c"
-  beep .002,10: print at x,y;"\o"
+  beep .003,w: print at row,col;"\c"
+  beep .002,10: print at row,col;"\o"
 next w
 beep 1.6,-35
 go sub @replay
-print at x,y; paper 7; ink 0; over 1;chr$ (65+int (rnd*60))
+print at row,col; paper 7; ink 0; over 1;chr$ (65+int (rnd*60))
 beep 1,-35
 if score>highscore then\
   go sub @newrecord
@@ -448,14 +448,14 @@ stop
 
 @l6000:
 
-print at x,y;v$: let c$=v$
+print at row,col;v$: let c$=v$
 paper 7: let c$=v$
-for u=25 to 50 step 5: print at x,y;"\g"
+for u=25 to 50 step 5: print at row,col;"\g"
 for n=1 to 8 step 2: beep .002,n+u
 let score=score+5
 print at 0,21; paper 0; ink 7;" score ";score
 next n
-print at x,y;"\d"
+print at row,col;"\d"
 for n=1 to 8 step 2: beep .002,n+u
 next n
 next u
@@ -542,7 +542,7 @@ for n=19 to 2 step -.5
   beep .05,n-10
   if damsels<=8 or n>14 then\
     print at n,1; over 1; ink papercolor; paper papercolor;"                              "
-  print at x,y; paper pa;c$
+  print at row,col; paper pa;c$
 next n
 print at 20,14; paper pa;"   "
 print at 21,0;"                                "
@@ -576,7 +576,7 @@ go sub @l9300
 print at 0,0; ink 7; paper 0;"    dos mil puntos extra!       "
 let score=score+2000
 for b=0 to 7
-  paper b: ink 9: print at x,y;c$
+  paper b: ink 9: print at row,col;c$
   for n=1 to 14
     beep .002,50-n+b
     border 1: border 2: border 3: border 4
@@ -607,16 +607,16 @@ go to @newGame
 # XXX TODO -- simpler
 
 for n=1 to 5
-  print at x+n,y+n;"*"
-  print at x-n,y+n;"*"
-  print at x+n,y-n;"*"
-  print at x-n,y-n;"*"
+  print at row+n,col+n;"*"
+  print at row-n,col+n;"*"
+  print at row+n,col-n;"*"
+  print at row-n,col-n;"*"
 next n
 for n=1 to 5
-  print at x,y+n;">"
-  print at x,y-n;"<"
-  print at x+n,y;"#"
-  print at x-n,y;"#"
+  print at row,col+n;">"
+  print at row,col-n;"<"
+  print at row+n,col;"#"
+  print at row-n,col;"#"
 next n
 return
 
