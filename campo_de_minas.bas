@@ -41,7 +41,8 @@ let c$="\a": let v$="\b"
 let cc=0: let dd=0: let ee=0
 let rr=1
 let oo=21: let pp=15
-let x$="                                 < ZONA SEGURA >                                 "
+let s$="       < ZONA SEGURA >        "
+let u$="                              "
 let pa=7
 let ss=0
 go to @l300
@@ -86,11 +87,12 @@ if damsels=9 then\
   let mines=mines+32:\
   let mines=mines+(10-int (score/1000))
 print at 21,3; flash 1; paper 2; ink 7; inverse 1;"nivel ";damsels
+print paper 8;bright 1; at 2,1;s$;at 19,1;s$
 for w=1 to mines
   print at int (rnd*16)+3,int (rnd*30)+1; ink papercolor;"\o"
   beep .0015,35
-  print at 19,1;x$(w to w+29);at 2,1;x$(51-w to 51-w+29)
 next w
+print paper 8;at 2,1;u$;at 19,1;u$
 
 print at 10,1; ink papercolor;"\o";at 11,15;"\o\o";at 10,30;"\o"
 print at 21,0;"                               "
@@ -258,9 +260,9 @@ for n=1 to 10000000
     print at 21,0; paper bordercolor; ink 9;"\e";at 21,31;"\d"
   if inkey$="" then\
     for m=1 to 16: next m
-  let s$=inkey$
-if s$="" then next n
-if s$="i" or s$="i" then\
+  let i$=inkey$
+if i$="" then next n
+if i$="i" or i$="i" then\
   go sub @instructions
 print at 2,1;"                              "
 go to @l6
@@ -405,9 +407,12 @@ return
 let level=damsels-1
 let z$="   desde que nivel empiezas?      "
 for n=0 to 21: paper papercolor: beep .002,n+5: print at n,0; over 1;"\::                              \::": next n
-for n=1 to 21: next n: for n=0 to 31: paper papercolor: ink papercolor: plot n*8,0: draw 0,175
-beep .0015,64: beep .0015,59
-print at 10,n; paper int (rnd*6); ink 9;z$(n+1)
+for n=1 to 21: next n
+for n=0 to 31
+  paper papercolor: ink papercolor
+  plot n*8,0: draw 0,175
+  beep .0015,64: beep .0015,59
+  print at 10,n; paper int (rnd*6); ink 9;z$(n+1)
 next n
 ink 9
 print at 13,13; flash 1;"1";at 13,14;" a ";at 13,18; flash 1;level
@@ -643,8 +648,8 @@ border 0
 cls
 print at 10,0; paper 0; ink 7;"pulsa ""i"" para ver instrucciones"'"     otra tecla para jugar      "
 beep .1 ,23
-pause 0:let s$=inkey$
-if s$="i" or s$="I" then\
+pause 0:let i$=inkey$
+if i$="i" or i$="I" then\
   go sub @instructions
 run
 
