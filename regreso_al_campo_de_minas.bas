@@ -6,10 +6,12 @@
 # This is a fork under development by Marcos Cruz (programandala.net),
 # started on 2016-06-04.
 #
-# Version 0.4.0+201606061529
+# Version 0.5.0+201606062048
 # (after Semantic Versioning: http://semver.org)
 #
 # This source is in the zmakebas format of Sinclair BASIC.
+
+@firstrun:
 
 let inkcolor=9
 let damsels=1: let bonus=0: let level=1: let highscore=250
@@ -26,6 +28,7 @@ let papercolor=6: let bordercolor=0
 @l10:
 
 border bordercolor: paper papercolor: ink inkcolor: cls
+gosub @udGraphics
 
 # coordinates
 let row=21: let col=15
@@ -82,7 +85,7 @@ next n
 print at 20,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 print at row,col;c$
 next n
-print at 21,17; flash 1; paper 2; ink 7;"poniendo minas"
+print at 21,17; flash 1; paper 2; ink 7;"Poniendo minas"
 if damsels=9 then\
   let mines=mines+32:\
   let mines=mines+(10-int (score/1000))
@@ -100,7 +103,8 @@ if damsels=1 then\
   go to @l480
 if damsels=9 then\
   go sub @l9900: go to @l480
-print at 21,0; inverse 1; bright 1;"rescata a las pobres damiselas !": go to @l450
+print at 21,0; inverse 1; bright 1;"Rescata a las pobres damiselas!"
+go to @l450
 
 @l450:
 
@@ -118,7 +122,7 @@ next j
 
 if damsels<>8 then\
   go to @l490
-print at 21,0; ink 7; flash 1; paper 0; bright 1;"ponte entre 3 minas para abrir  "
+print at 21,0; ink 7; flash 1; paper 0; bright 1;"Ponte entre 3 minas para abrir  "
 print at 1,15;"\f\f": print at 8,9; ink 1; bright 1; paper 7;"puerta cerrada"
 for m=60 to 10 step -2.5
   for n=1 to 7: next n
@@ -132,7 +136,9 @@ print at 8,9;"              "
 beep .0875,10
 print at 21,0;"               \a                "
 print at 21,31; ink papercolor; paper papercolor;"\h"
-print at 21,4; inverse 1;"adelante!"
+gosub @udLetters
+print at 21,4; inverse 1;"¡Adelante!"
+gosub @udGraphics
 for n=1 to 20
   beep .002,n+20
 next n
@@ -177,7 +183,7 @@ let r=(screen$ (row,col+1)<>" ")
 let o=o+p+q+r
 if o then\
   beep .04,o*10
-print at 0,0; paper (4-o); ink 9;"minas vecinas ";o
+print at 0,0; paper (4-o); ink 9;"Minas vecinas ";o
 if row=0 then\
   go sub @l3000
 if o=3 and damsels=8 then\
@@ -219,7 +225,7 @@ return
 # XXX TODO -- remove:
 if row=cc then\
   if col=dd or col=ee then\
-    go sub @l6000: return
+    go sub @damselrescued: return
 if damsels=9 then\
   if row=8 and col=5+ss then\
     go to @l8444
@@ -234,20 +240,26 @@ beep 1,-35
 if score>highscore then\
   go sub @newrecord
 print at 0,28; paper 0;"  "
-print at 0,0; paper 0; ink 7;" ";"             nivel ";damsels;" ";at 0,22; flash 1;"punt. ";score
-print at 10,9; ink 7; paper 2; bright 1;"   Otra vez?   "
+print\
+  at 0,0; paper 0; ink 7;"              nivel ";damsels;" ";\
+  at 0,22; flash 1;"punt. ";score
+gosub @udLetters
+print at 10,9; ink 7; paper 2; bright 1;"  ¿Otra vez?  "
+gosub @udGraphics
 if papercolor>=4 then\
   ink 0
 if papercolor<4 then\
   ink 7
-plot 72,96: draw 120,0: draw 0,-9: draw -121,0: draw 0,9
+plot 72,96: draw 104,0: draw 0,-9: draw -105,0: draw 0,9
 ink 9
 
 @l1200:
 
+gosub @udLetters
 print \
   at 21,29; paper bordercolor; ink 9;"   ";\
-  at 21,0; paper bordercolor; ink 9;" puntuacion max.= ";highscore;" por ";h$
+  at 21,0; paper bordercolor; ink 9;" Récor = ";highscore;" por ";h$
+gosub @udGraphics
 
 @again:
 pause 0:let i$=inkey$
@@ -264,8 +276,10 @@ for n=1 to 20: next n
 for a=1 to 21
   print at a,0; over 1; ink 9;"                                "
 next a
-print at 21,1;flash 1; paper 7; ink 0;"Repeticion"
+gosub @udLetters
+print at 21,1;flash 1; paper 7; ink 0;"Repetición"
 print at 21,17;"[R]apido [F]in"
+gosub @udGraphics
 for n=1 to 100: next n
 let y$=t$
 let reprow=code y$(1)-65: let repcol=code y$(2)-65
@@ -296,7 +310,7 @@ let ss=(int ((2000-time)/50))*5
 if ss<50 then\
   let ss=50
 let ss=ss*damsels
-print at 0,0; paper damsels/1.5; ink 9;"nivel ";damsels;"  puntos por tiempo= ";ss;
+print at 0,0; paper damsels/1.5; ink 9;"Nivel=";damsels;"  Puntos por tiempo= ";ss;
 if damsels=1 and ss<100 then\
   print at 0,31; paper 1;" "
 print at 1,0;"\f"
@@ -304,7 +318,7 @@ for n=15 to 50: beep .001+((50-30)/2000),(50+n/2.8): border 2: border 7: border 
 border bordercolor
 if bonus>0 then\
   let score=score+bonus:\
-  print at 21,0; paper 7; bright 1;"bonos iniciales = ";bonus:\
+  print at 21,0; paper 7; bright 1;"Bonos iniciales= ";bonus:\
   let bonus=0:\
   for n=1 to 20 step .6:\
     beep .025,n+5:\
@@ -319,7 +333,7 @@ for n=1 to 80
 next n
 let score=score+ss
 print at 0,30; paper 0;"  "
-print at 0,0; paper 0; ink 7;"minas vecinas 0  no.";damsels;" punt ";score
+print at 0,0; paper 0; ink 7;"Minas vecinas 0  No.";damsels;" Puntos ";score
 for n=1 to 120
 next n
 let mines=mines+10
@@ -344,13 +358,15 @@ next n
 for n=1 to 50
   border 6: border 2: beep .002,40+(n/10): border 6
 next n
+gosub @udLetters
 for m=1 to 4
   for n=7 to 0 step -1
-    print at 10,7; ink n;"un nuevo record!"
+    print at 10,7; ink n;"¡Un nuevo récor!"
     beep .004,50-n
   next n
 next m
-print at 10,7; ink 9;"un nuevo record!"
+print at 10,7; ink 9;"¡Un nuevo récor!"
+gosub @udGraphics
 for n=1 to 6
   print at 0,15;"\d\e"
   for l=1 to 7: next l
@@ -359,11 +375,12 @@ for n=1 to 6
   for l=1 to 7: next l
   beep .006,16
 next n
-print at 21,0; flash 1; paper 1; ink 7;"introduce tus iniciales"; flash 0;"         "
+print at 21,0;\
+  flash 1; paper 1; ink 7;\
+  "Introduce tus iniciales"; flash 0;"         "
 let q$="   "
 for n=1 to 3
   @l5088:
-
   let q$(n)=inkey$
   if q$(n)=" " then\
     go to @l5088
@@ -394,7 +411,10 @@ return
 @l5700:
 
 let level=damsels-1
-let z$="   desde que nivel empiezas?      "
+gosub @udLetters
+let z$="   ¿Desde qué nivel empiezas?      "
+gosub @udGraphics
+
 for n=0 to 21: paper papercolor: beep .002,n+5: print at n,0; over 1;"\::                              \::": next n
 for n=1 to 21: next n
 for n=0 to 31
@@ -412,8 +432,12 @@ beep .1,30
 for n=1 to 25: next n
 
 pause 0:let i$=inkey$
-print at 21,0; ink papercolor; paper papercolor; inverse 1;"     vuelve a intentarlo !!     "
-print at 0,0; ink papercolor; paper papercolor; inverse 1;"     vuelve a intentarlo !!     "
+print at 21,0; ink papercolor; paper papercolor; inverse 1;\
+  "     Vuelve a intentarlo        "
+#  <------------------------------>
+print at 0,0; ink papercolor; paper papercolor; inverse 1;\
+  "     Vuelve a intentarlo        "
+#  <------------------------------>
 if code i$<49 or code i$>57 then\
   beep 1,-15: go to @l5700
 let ll=val i$
@@ -444,20 +468,25 @@ go to @l10
 stop
 
 # ==============================================================
-# subroutine
+# subroutine: damsel rescued
 
-@l6000:
+@damselrescued:
 
-print at row,col;v$: let c$=v$
-paper 7: let c$=v$
-for u=25 to 50 step 5: print at row,col;"\g"
-for n=1 to 8 step 2: beep .002,n+u
-let score=score+5
-print at 0,21; paper 0; ink 7;" score ";score
-next n
-print at row,col;"\d"
-for n=1 to 8 step 2: beep .002,n+u
-next n
+print at row,col;v$
+let c$=v$
+paper 7
+for u=25 to 50 step 5
+  print at row,col;"\g"
+  for n=1 to 8 step 2
+    beep .002,n+u
+    let score=score+5
+# XXX TODO -- create subroutine to print the score
+    print at 0,21; paper 0; ink 7;" Puntos ";score
+  next n
+  print at row,col;"\d"
+  for n=1 to 8 step 2
+    beep .002,n+u
+  next n
 next u
 let time=time+35
 paper papercolor
@@ -468,6 +497,7 @@ return
 
 @instructions:
 
+gosub @udLetters
 border 1: paper 1: ink 7: cls
 #      <------------------------------>
 print "   REGRESO AL CAMPO DE MINAS"
@@ -491,51 +521,63 @@ print '\
 #      <------------------------------>
 pause 0:cls
 
-print 'bright 1;"\a";
+let i$="\a":gosub @icon
 #     <------------------------------>
-print " Tu: Debes atravesar cada campo"
+print " Tú: Debes atravesar cada campo"
 #      <------------------------------>
-print "  de minas, moviendote con las"
+print "  de minas, moviéndote con las"
 print "  teclas del cursor."
 
-print 'bright 1;"\n";
+let i$="\n":gosub @icon
 #     <------------------------------>
-print " Bill el gusano: Esta en el ul-"
+print " Bill el gusano: Está en el úl-"
 #      <------------------------------>
-print "  timo campo. Rescatalo."
+print "  timo campo. Rescátalo."
 
-print 'bright 1;"\o";
+let i$="\o":gosub @icon
 #     <------------------------------>
 print " Minas: En la parte superior"
 #      <------------------------------>
-print "  veras cuantas te rodean."
+print "  verás cuántas te rodean."
 
-print 'bright 1;"\d\e";
+let i$="\d\e":gosub @icon
 #    <------------------------------>
 print " Damiselas: Cuentan como minas"
 #      <------------------------------>
 print "   pero dan puntos."
 
-print 'bright 1;"\h";
+let i$="\h":gosub @icon
 #     <------------------------------>
 print " La mina con patas:"
 #      <------------------------------>
-print "  Te perseguira sin descanso."
+print "  Te perseguirá sin descanso."
 
-print 'bright 1;"\f";
+let i$="\f":gosub @icon
 #     <------------------------------>
-print " Verja: Esta electrificada y"
+print " Verja: Está electrificada y"
 #      <------------------------------>
 print "  cuenta como una mina."
 
-print 'bright 1;"\m";
+let i$="\m":gosub @icon
 #     <------------------------------>
 print " Minadores: ponen minas pero"
 #      <------------------------------>
-print "  tambien las quitan."
+print "  también las quitan."
 
 pause 0
+gosub @udGraphics
 return
+
+# ==============================================================
+# subroutine: icon
+
+# Input:
+# i$ = UDG string
+
+@icon:
+gosub @udGraphics:\
+print 'bright 1;i$;:\
+goto @udLetters
 
 # ==============================================================
 # subroutine
@@ -543,12 +585,16 @@ return
 @l8000:
 
 let pa=papercolor
-print at 21,0; flash 1; bright 1; ink 7; paper 1;"tu mapa ha explotado!(lo siento)"
+print at 21,0;\
+  flash 1; bright 1; ink 7; paper 1;\
+  "Tu mapa ha explotado"
 print at 20,14; paper papercolor;"   "
 for n=19 to 2 step -.5
   beep .05,n-10
   if damsels<=8 or n>14 then\
-    print at n,1; over 1; ink papercolor; paper papercolor;"                              "
+    print at n,1;\
+      over 1; ink papercolor; paper papercolor;\
+      "                              "
   print at row,col; paper pa;c$
 next n
 print at 20,14; paper pa;"   "
@@ -580,7 +626,7 @@ for t=0 to 2
 next t
 ink 0
 go sub @l9300
-print at 0,0; ink 7; paper 0;"    dos mil puntos extra!       "
+print at 0,0; ink 7; paper 0;"   ¡Dos mil puntos extra!       "
 let score=score+2000
 for b=0 to 7
   paper b: ink 9: print at row,col;c$
@@ -596,15 +642,25 @@ for n=0 to 30 step 6
     beep .008,n+m
   next m
 next n
-print at 3,8;"  felicidades  "
-print '" has rescatado a bill. el mun-   do te esta agradecido.         "
-print ''''';" tus puntos = ";score;", que no esta"
-print " nada mal ... por que no vuelvesa jugar y tratas de mejorar tu          puntuacion? "
+#  <------------------------------>
+print at 3,8;\
+  "Felicidades!"
+#  <------------------------------>
+print '\
+  "Has rescatado a Bill. El mundo"'
+  "te está agradecido."
+#  <------------------------------>
+print ''''';\
+  "Puntuación: ";score;"."
+#  <------------------------------>
+print\
+  "¿Por qué no vuelves a jugar y"'
+  "tratas de mejorarla?"
+#  <------------------------------>
 if score>highscore then\
   go sub @newrecord
-let damsels=1: go to @l1200
-let damsels=1: for n=1 to 50000000: if inkey$="" then next n
-go to @newGame
+let damsels=1
+go to @l1200
 
 # ==============================================================
 # subroutine
@@ -632,22 +688,61 @@ return
 
 @start:
 
-border 0: paper 0: ink 9: clear
+border 0: paper 0: ink 9
+clear 65535-21*8*2
+let udg1=65535-21*8*2
+let udg2=udg1+21*8
 # XXX OLD -- poke 23609,32:rem length of keyboard click
-for a=1 to 16
-  read a$
-  print paper 7;" ";
-  for b=0 to 7: read c: poke usr a$+b,c: border b: next b
-  print paper 7;" ";
-next a
-border 0
+gosub @udGraphics
+gosub @readUDG
+gosub @udLetters
+gosub @readUDG
 cls
-print at 10,0; paper 0; ink 7;"pulsa ""i"" para ver instrucciones"'"     otra tecla para jugar      "
+#  <------------------------------>
+print at 10,0; paper 0; ink 7;\
+  "Pulsa ";\
+  inverse 1;"I";inverse 0;\
+         " para ver instrucciones, "'\
+  "     otra tecla para jugar.     "
+#  <------------------------------>
 beep .1 ,23
 pause 0:let i$=inkey$
 if i$="i" or i$="I" then\
   go sub @instructions
-run
+goto @firstrun
+
+# ==============================================================
+# subroutine: select UDG bank 1
+
+@udGraphics:
+
+randomize udg1:\
+poke 23675,peek 23670:poke 23676,peek 23671:\
+randomize:\
+return
+
+# ==============================================================
+# subroutine: select UDG bank 2
+
+@udLetters:
+
+randomize udg2:\
+poke 23675,peek 23670:poke 23676,peek 23671:\
+randomize:\
+return
+
+# ==============================================================
+# subroutine: read UDG bank
+
+@readUDG:
+
+read a$
+if a$="" then return
+let udg=usr a$
+for b=0 to 7:\
+  read c: poke udg+b,c:\
+next b
+goto @readUDG
 
 # ==============================================================
 # subroutine
@@ -693,7 +788,7 @@ return
 # ==============================================================
 # data
 
-# graphics
+# UDG bank 1: game graphics
 
 data "a",24,24,36,195,195,36,24,24
 data "b",90,90,36,219,219,36,90,153
@@ -712,4 +807,202 @@ data "q",0,144,152,148,146,145,144,0
 data "r",0,159,144,158,144,144,159,0
 data "s",0,31,32,30,1,33,30,0
 
-# vim: ft=sinclairbasic
+data "":rem end of UDG bank
+
+# UDG bank 2: Spanish letters and symbols
+
+# a accute
+data "a"
+data bin 00001000
+data bin 00010000
+data bin 00111000
+data bin 00000100
+data bin 00111100
+data bin 01000100
+data bin 00111100
+data bin 00000000
+# A accute
+data "b"
+data bin 00000100
+data bin 00001000
+data bin 00111100
+data bin 01000010
+data bin 01111110
+data bin 01000010
+data bin 01000010
+data bin 00000000
+# e acute
+data "c"
+data bin 00001000
+data bin 00010000
+data bin 00111000
+data bin 01000100
+data bin 01111000
+data bin 01000000
+data bin 00111100
+data bin 00000000
+# E accute
+data "d"
+data bin 00000100
+data bin 00001000
+data bin 01111110
+data bin 01000000
+data bin 01111100
+data bin 01000000
+data bin 01111110
+data bin 00000000
+# i accute
+data "e"
+data bin 00001000
+data bin 00010000
+data bin 00000000
+data bin 00110000
+data bin 00010000
+data bin 00010000
+data bin 00111000
+data bin 00000000
+# I accute
+data "f"
+data bin 00000100
+data bin 00001000
+data bin 00111110
+data bin 00001000
+data bin 00001000
+data bin 00001000
+data bin 00111110
+data bin 00000000
+# o accute
+data "g"
+data bin 00001000
+data bin 00010000
+data bin 00111000
+data bin 01000100
+data bin 01000100
+data bin 01000100
+data bin 00111000
+data bin 00000000
+# O accute
+data "h"
+data bin 00001000
+data bin 00010000
+data bin 00111100
+data bin 01000010
+data bin 01000010
+data bin 01000010
+data bin 00111100
+data bin 00000000
+# u accute
+data "i"
+data bin 00001000
+data bin 00010000
+data bin 01000100
+data bin 01000100
+data bin 01000100
+data bin 01000100
+data bin 00111000
+data bin 00000000
+# U accute
+data "j"
+data bin 00000100
+data bin 01001010
+data bin 01000010
+data bin 01000010
+data bin 01000010
+data bin 01000010
+data bin 00111100
+data bin 00000000
+# n tilde
+data "k"
+data bin 00000000
+data bin 01111000
+data bin 00000000
+data bin 01111000
+data bin 01000100
+data bin 01000100
+data bin 01000100
+data bin 00000000
+# N tilde
+data "l"
+data bin 00111100
+data bin 00000000
+data bin 01100010
+data bin 01010010
+data bin 01001010
+data bin 01000110
+data bin 01000010
+data bin 00000000
+# u umlaut
+data "m"
+data bin 01000100
+data bin 00000000
+data bin 01000100
+data bin 01000100
+data bin 01000100
+data bin 01000100
+data bin 00111000
+data bin 00000000
+# U umlaut
+data "n"
+data bin 01000010
+data bin 00000000
+data bin 01000010
+data bin 01000010
+data bin 01000010
+data bin 01000010
+data bin 00111100
+data bin 00000000
+# inversed question mark
+data "o"
+data bin 00000000
+data bin 00010000
+data bin 00000000
+data bin 00010000
+data bin 00100000
+data bin 01000010
+data bin 00111100
+data bin 00000000
+# inversed exclamation mark
+data "p"
+data bin 00000000
+data bin 00001000
+data bin 00000000
+data bin 00001000
+data bin 00001000
+data bin 00001000
+data bin 00001000
+data bin 00000000
+# # º
+# data "q"
+# data bin 00011000
+# data bin 00100100
+# data bin 00011000
+# data bin 00000000
+# data bin 00111100
+# data bin 00000000
+# data bin 00000000
+# data bin 00000000
+# «
+data "r"
+data bin 00000000
+data bin 00000000
+data bin 00010010
+data bin 00100100
+data bin 01001000
+data bin 00100100
+data bin 00010010
+data bin 00000000
+# »
+data "s"
+data bin 00000000
+data bin 00000000
+data bin 01001000
+data bin 00100100
+data bin 00010010
+data bin 00100100
+data bin 01001000
+data bin 00000000
+
+data "":rem end of UDG bank
+ 
+
+# vim: ft=sinclairbasic:fileencoding=latin1

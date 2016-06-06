@@ -13,5 +13,9 @@ all: regreso_al_campo_de_minas.tap
 clean:
 	rm regreso_al_campo_de_minas.tap
 
-regreso_al_campo_de_minas.tap: regreso_al_campo_de_minas.bas
+regreso_al_campo_de_minas.bas.tmp: regreso_al_campo_de_minas.bas
+	cp -f $< $@
+	vim --noplugin $@ -S translate_chars.vim
+
+regreso_al_campo_de_minas.tap: regreso_al_campo_de_minas.bas.tmp
 	zmakebas -n cdm -a @start -l -o $@ $<
