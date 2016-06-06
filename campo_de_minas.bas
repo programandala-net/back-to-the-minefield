@@ -6,7 +6,8 @@
 # This is a fork under development by Marcos Cruz (programandala.net),
 # started on 2016-06-04.
 #
-# Version 0.1.0+201606061413
+# Version 0.2.0+201606061432
+# (after Semantic Versioning: http://semver.org)
 #
 # This source is in zmakebas format of Sinclair BASIC.
 
@@ -15,7 +16,7 @@ let damsels=1: let bonus=0: let level=1: let highscore=250
 let h$="ian"
 let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 
-@l6:
+@newGame:
 
 if damsels>2 then\
   go to @l5700
@@ -163,7 +164,7 @@ beep .003,-4
 print at oldx,oldy; paper pa;" "
 let t$=t$+chr$ (x+65)+chr$ (y+65)
 if screen$ (x,y)<>" " then\
-  go sub @l1000
+  go sub @explosion
 if damsels=9 and pa<>papercolor and x<17 then\
   go sub @l8000
 print at x,y; paper pa;c$
@@ -205,14 +206,16 @@ if damsels>=5 and papercolor<>pa and time>2000 then\
 let rr=rr+2: beep .0018,60
 let oo=65-code i$(rr): let pp=65-code i$(rr+1)
 if screen$ (oo,pp)<>" " then\
-  go sub @l1000
+  go sub @explosion
 print at oo,pp; paper pa;"\h"
 return
 
 # ==============================================================
-# subroutine
+# subroutine: explosion
 
-@l1000:
+@explosion:
+
+# XXX TODO -- remove mine count from the status bar
 
 # XXX TODO -- remove:
 if x=cc then\
@@ -232,36 +235,26 @@ beep 1,-35
 if score>highscore then\
   go sub @newrecord
 print at 0,28; paper 0;"  "
-print at 0,0; paper 0; ink 7;" ";"otra vez?    nivel ";damsels;" ";at 0,22; flash 1;"punt. ";score
-print at 2,1; paper 0; ink 7;" pulsa una tecla (""i"" = info) "
-# XXX TODO -- change to "again?":
-print at 10,9; ink 7; paper 2; bright 1;"   se acabo   "
+print at 0,0; paper 0; ink 7;" ";"             nivel ";damsels;" ";at 0,22; flash 1;"punt. ";score
+print at 10,9; ink 7; paper 2; bright 1;"   Otra vez?   "
 if papercolor>=4 then\
   ink 0
 if papercolor<4 then\
   ink 7
-plot 72,96: draw 112,0: draw 0,-9: draw -113,0: draw 0,9
+plot 72,96: draw 120,0: draw 0,-9: draw -121,0: draw 0,9
 ink 9
 
 @l1200:
 
-print at 21,29; paper bordercolor; ink 9;"   ";at 21,0; paper bordercolor; ink 9;" puntuacion max.= ";highscore;" por ";h$
-for n=1 to 100: next n
-for n=1 to 10000000
-  if score=highscore then\
-    print at 21,0; paper bordercolor; ink 9;"\d";at 21,31;"\e"
-  if inkey$="" then\
-    for m=1 to 16: next m
-  if score=highscore then\
-    print at 21,0; paper bordercolor; ink 9;"\e";at 21,31;"\d"
-  if inkey$="" then\
-    for m=1 to 16: next m
-let i$=inkey$
-if i$="" then next n
-if i$="i" or i$="i" then\
-  go sub @instructions
-print at 2,1;"                              "
-go to @l6
+print \
+  at 21,29; paper bordercolor; ink 9;"   ";\
+  at 21,0; paper bordercolor; ink 9;" puntuacion max.= ";highscore;" por ";h$
+
+@again:
+pause 0:let i$=inkey$
+if i$="n" or i$="N" then cls:stop
+if i$="s" or i$="S" then goto @newGame
+go to @again
 
 # ==============================================================
 # subroutine: replay
@@ -604,7 +597,7 @@ if score>highscore then\
   go sub @newrecord
 let damsels=1: go to @l1200
 let damsels=1: for n=1 to 50000000: if inkey$="" then next n
-go to @l6
+go to @newGame
 
 # ==============================================================
 # subroutine
