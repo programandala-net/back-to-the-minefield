@@ -19,4 +19,4 @@ regreso_al_campo_de_minas.zmakebas: regreso_al_campo_de_minas.bas
 	vim --noplugin $@ -S preprocess.vim
 
 regreso_al_campo_de_minas.tap: regreso_al_campo_de_minas.zmakebas
-	zmakebas -n cdm -a @start -l -o $@ $<
+	zmakebas -n cdm -a 1 -l -o $@ $<

@@ -11,22 +11,15 @@
 
 # ==============================================================
 
-@first_run:
+border 0: paper 0: ink 7:\
+clear 65535-21*8*2:\
+let version$="0.8.0+201606071622":\
+let udg1=65535-21*8*2:\
+let udg2=udg1+21*8
 
-# ==============================================================
-# constants
+# Note: version number after Semantic Versioning: http://semver.org
 
-let version$="0.7.0+201606071552"
-# (after Semantic Versioning: http://semver.org)
-
-let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
-
-# ==============================================================
-# init
-
-let ink_color=9
-let level=1: let bonus=0: let high_score=250
-let h$="ian"
+goto @init
 
 # ==============================================================
 
@@ -300,7 +293,7 @@ ink 9
 # gosub @select_chars
 # print \
 #   at 21,29; paper border_color; ink 9;"   ";\
-#   at 21,0; paper border_color; ink 9;" Récor = ";high_score;" por ";h$
+#   at 21,0; paper border_color; ink 9;" Récor = ";high_score;" por ";record_player$
 # gosub @select_graphics
 
 @again:
@@ -483,20 +476,20 @@ next n
 print at 21,0;\
   flash 1; paper 1; ink 7;\
   "Introduce tus iniciales"; flash 0;"         "
-let q$="   "
+let record_player$="   "
 for n=1 to 3
   @l5088:
-  let q$(n)=inkey$
-  if q$(n)=" " then\
+  let record_player$(n)=inkey$
+  if record_player$(n)=" " then\
     goto @l5088
-  if code q$(n)>=97 and code q$(n)<=122 then\
-    let q$(n)=chr$ ((code q$(n))-32)
-  print at 21,(24+(2*n)); ink 7; paper 1;q$(n)
+  if record_player$(n)>="a" and record_player$(n)<="z" then\
+    let record_player$(n)=chr$ ((code record_player$(n))-32)
+  print at 21,24+n; ink 7; paper 1;record_player$(n)
   beep .12,(n*5)+20
   for m=1 to 4: next m
 next n
-let h$=q$: let high_score=score
-print at 21,0; paper 7; ink 0;"         muy bien  ";h$;"          "
+let high_score=score
+print at 21,0; paper 7; ink 0;"         muy bien  ";record_player$;"          "
 for n=1 to 12
   beep .0045,-10: border 1: border 2: border 6: border 4
 next n
@@ -596,16 +589,99 @@ paper paper_color
 return
 
 # ==============================================================
-# subroutine: instructions
+# subroutine
 
-@instructions:
+@l8000:
 
+let pa=paper_color
+print at 21,0;\
+  flash 1; bright 1; ink 7; paper 1;\
+  "Tu mapa ha explotado"
+print at 20,14; paper paper_color;"   "
+for n=19 to 2 step -.5
+  beep .05,n-10
+  if level<=8 or n>14 then\
+    print at n,1;\
+      over 1; ink paper_color; paper paper_color;\
+      "                              "
+  print at row,col; paper pa;protagonist$
+next n
+print at 20,14; paper pa;"   "
+print at 21,0;"                                "
+return
+
+# ==============================================================
+# subroutine
+
+@l8450:
+
+# XXX TODO -- simpler
+
+for n=1 to 5
+  print at row+n,col+n;"*"
+  print at row-n,col+n;"*"
+  print at row+n,col-n;"*"
+  print at row-n,col-n;"*"
+next n
+for n=1 to 5
+  print at row,col+n;">"
+  print at row,col-n;"<"
+  print at row+n,col;"#"
+  print at row-n,col;"#"
+next n
+return
+
+# ==============================================================
+# init
+
+@init:
+
+
+let record_player$="IAN"
+
+gosub @select_graphics
+gosub @read_UDG_bank
 gosub @select_chars
-border 1: paper 1: ink 7: cls
-#      <------------------------------>
-print "   REGRESO AL CAMPO DE MINAS"
+gosub @read_UDG_bank
+
+@menu:
+
+border 1: paper 1: ink 7
+gosub @credits
+
+#  <------------------------------>
+print '\
+  "________________________________"''\
+  "Pulsa ";\
+  inverse 1;"I";inverse 0;\
+         " para ver instrucciones,"'\
+  "     otra tecla para jugar."'\
+  "________________________________"\
+#  <------------------------------>
+
+beep .1 ,23
+pause 0:let i$=inkey$
+if i$="i" or i$="I" then\
+  gosub @instructions:\
+  goto @menu
+
+let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
+let ink_color=9
+let level=1: let bonus=0: let high_score=250
+
+goto @new_game
+
+# ==============================================================
+# subroutine: credits
+
+@credits:
+
+cls
+gosub @title
 print
-print "Versión ";v$
+gosub @select_chars
+#      <------------------------------>
+print "Versión ";version$
 print
 print "Una reescritura de:"
 print
@@ -619,17 +695,14 @@ print "Por Marcos Cruz"
 print "(programandala.net), 2016"
 #      <------------------------------>
 
-#      <------------------------------>
-print '\
-       "      ";inverse 1;\
-              "Pulsa una tecla"
-#      <------------------------------>
+return
 
-pause 0:cls
+# ==============================================================
+# subroutine: instructions
 
-#      <------------------------------>
-print "   REGRESO AL CAMPO DE MINAS"
-print
+@instructions:
+
+cls
 let i$="\a":gosub @icon
 #     <------------------------------>
 print " Tú: Debes atravesar cada campo"
@@ -678,6 +751,15 @@ gosub @select_graphics
 return
 
 # ==============================================================
+# subroutine: title
+
+@title:
+
+#      <------------------------------>
+print "   REGRESO AL CAMPO DE MINAS"
+return
+
+# ==============================================================
 # subroutine: icon
 
 # Input:
@@ -687,77 +769,6 @@ return
 gosub @select_graphics:\
 print 'bright 1;i$;:\
 goto @select_chars
-
-# ==============================================================
-# subroutine
-
-@l8000:
-
-let pa=paper_color
-print at 21,0;\
-  flash 1; bright 1; ink 7; paper 1;\
-  "Tu mapa ha explotado"
-print at 20,14; paper paper_color;"   "
-for n=19 to 2 step -.5
-  beep .05,n-10
-  if level<=8 or n>14 then\
-    print at n,1;\
-      over 1; ink paper_color; paper paper_color;\
-      "                              "
-  print at row,col; paper pa;protagonist$
-next n
-print at 20,14; paper pa;"   "
-print at 21,0;"                                "
-return
-
-# ==============================================================
-# subroutine
-
-@l8450:
-
-# XXX TODO -- simpler
-
-for n=1 to 5
-  print at row+n,col+n;"*"
-  print at row-n,col+n;"*"
-  print at row+n,col-n;"*"
-  print at row-n,col-n;"*"
-next n
-for n=1 to 5
-  print at row,col+n;">"
-  print at row,col-n;"<"
-  print at row+n,col;"#"
-  print at row-n,col;"#"
-next n
-return
-
-# ==============================================================
-# start line
-
-@start:
-
-border 0: paper 0: ink 9
-clear 65535-21*8*2
-let udg1=65535-21*8*2
-let udg2=udg1+21*8
-# XXX OLD -- poke 23609,32:rem length of keyboard click
-gosub @select_graphics
-gosub @read_UDG_bank
-gosub @select_chars
-gosub @read_UDG_bank
-cls
-#  <------------------------------>
-print at 10,0; paper 0; ink 7;\
-  "Pulsa ";\
-  inverse 1;"I";inverse 0;\
-         " para ver instrucciones, "'\
-  "     otra tecla para jugar.     "
-#  <------------------------------>
-beep .1 ,23
-pause 0:let i$=inkey$
-if i$="i" or i$="I" then\
-  gosub @instructions
-goto @first_run
 
 # ==============================================================
 # subroutine: select user defined graphics

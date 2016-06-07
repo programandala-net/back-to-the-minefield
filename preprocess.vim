@@ -33,6 +33,7 @@ set nomore
 
 " Convert long string variable names
 
+%substitute,\<record_player\$,h$,gIe
 %substitute,\<protagonist\$,p$,gIe
 %substitute,\<protagonist_with_damsel\$,q$,gIe
 %substitute,\<safe_zone\$,s$,gIe
