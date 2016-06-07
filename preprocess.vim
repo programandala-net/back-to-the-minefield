@@ -44,6 +44,9 @@ set nomore
 
 %substitute,\<border_color\>,bc,gIe
 %substitute,\<back_surrounding_mines\>,bsm,gIe
+%substitute,\<damsel_1_col\>,d1c,gIe
+%substitute,\<damsel_2_col\>,d2c,gIe
+%substitute,\<damsels_row\>,dr,gIe
 %substitute,\<front_surrounding_mines\>,fsm,gIe
 %substitute,\<ink_color\>,ic,gIe
 %substitute,\<left_surrounding_mines\>,lsm,gIe

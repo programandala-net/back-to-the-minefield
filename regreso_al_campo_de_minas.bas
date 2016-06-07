@@ -13,13 +13,12 @@
 
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
-let version$="0.8.0+201606071622":\
+let version$="0.9.0+201606071659":\
 let udg1=65535-21*8*2:\
-let udg2=udg1+21*8
+let udg2=udg1+21*8:\
+goto @init
 
 # Note: version number after Semantic Versioning: http://semver.org
-
-goto @init
 
 # ==============================================================
 
@@ -49,7 +48,7 @@ let time=0
 
 let protagonist$="\a"
 let protagonist_with_damsel$="\b"
-let cc=0: let dd=0: let ee=0
+let damsels_row=0: let damsel_1_col=0: let damsel_2_col=0
 let rr=1
 let oo=21: let pp=15
 let safe_zone$="       < ZONA SEGURA >        "
@@ -86,40 +85,49 @@ goto @l570
 
 @l300:
 
-print at 0,28; paper 0;"    "
-print at 0,0; paper 0; ink 7;"minas vecinas 0";at 0,17;"no.";level;" punt. ";score
+gosub @status_bar
 print at 1,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f  \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
-for n=2 to 19
-  print at n,0;"\f                              \f"
+for n=2 to 19:\
+  print at n,0;"\f                              \f":\
 next n
 print at 20,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 print at row,col;protagonist$
 print at 21,17; flash 1; paper 8; ink 8;"Poniendo minas"
 if level=9 then\
-  let mines=mines+32:\
-  let mines=mines+(10-int (score/1000))
-print at 21,3; flash 1; paper 2; ink 7; inverse 1;"nivel ";level
+  let mines=mines+32+(10-int (score/1000))
+
 print paper 8;bright 1; at 2,1;safe_zone$;at 19,1;safe_zone$
-for w=1 to mines
-  print at int (rnd*16)+3,int (rnd*30)+1; ink paper_color;"\o"
-  beep .0015,35
+for w=1 to mines:\
+  print at int (rnd*16)+3,int (rnd*30)+1; ink paper_color;"\o":\
+  beep .0015,35:\
 next w
 print paper 8;at 2,1;blank_safe_zone$;at 19,1;blank_safe_zone$
 
-print at 10,1; ink paper_color;"\o";at 11,15;"\o\o";at 10,30;"\o"
+print \
+  ink paper_color;\
+  at 10,1;"\o";\
+  at 11,15;"\o\o";\
+  at 10,30;"\o"
+
 print at 21,0;"                               "
+
 if level=1 then\
   goto @l480
 if level=9 then\
   gosub @level9: goto @l480
+
 print at 21,0; inverse 1; bright 1;"Rescata a las pobres damiselas!"
 
-let cc=int (rnd*12)+4: let dd=int (rnd*6)+6: let ee=int (rnd*6)+19
+let damsels_row=int (rnd*12)+4:\
+let damsel_1_col=int (rnd*6)+6:\
+let damsel_2_col=int (rnd*6)+19
 for j=1 to 7
-  print at cc,dd;"\d";at cc,ee;"\d"
+  print at damsels_row,damsel_1_col;"\d";\
+        at damsels_row,damsel_2_col;"\d"
   for e=1 to 11: next e
   beep .002,58
-  print at cc,dd;"\e";at cc,ee;"\e"
+  print at damsels_row,damsel_1_col;"\e";\
+        at damsels_row,damsel_2_col;"\e"
   for e=1 to 11: next e
   beep .002,58
 next j
@@ -197,18 +205,17 @@ print at row,col; paper pa;protagonist$
 #   (screen$ (row,col-1)<>" ")+\
 #   (screen$ (row,col+1)<>" "))
 
-# XXX FIXME -- Also this doesn't work:
+# XXX FIXME -- Also this doesn't work fine:
 
 # let surrounding_mines=(screen$ (row-1,col)<>" ")
 # let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
 # let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
 # let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
 
-let front_surrounding_mines=screen$ (row-1,col)<>" "
-let back_surrounding_mines=screen$ (row+1,col)<>" "
-let left_surrounding_mines=screen$ (row,col-1)<>" "
-let right_surrounding_mines=screen$ (row,col+1)<>" "
-
+let front_surrounding_mines=screen$ (row-1,col)<>" ":\
+let back_surrounding_mines=screen$ (row+1,col)<>" ":\
+let left_surrounding_mines=screen$ (row,col-1)<>" ":\
+let right_surrounding_mines=screen$ (row,col+1)<>" ":\
 let surrounding_mines=\
   front_surrounding_mines+\
   back_surrounding_mines+\
@@ -217,7 +224,7 @@ let surrounding_mines=\
 
 if surrounding_mines then\
   beep .04,surrounding_mines*10
-print at 0,0; paper (4-surrounding_mines); ink 9;"Minas vecinas ";surrounding_mines
+gosub @status_bar
 if row=0 then\
   gosub @l3000
 if surrounding_mines=3 and level=8 then\
@@ -232,6 +239,22 @@ if level>2 and level<9 and time>50 then\
   if rnd>.98 then\
     goto @l100
 goto @l500
+
+# ==============================================================
+# subroutine: status bar
+
+@status_bar:
+
+# XXX TODO -- improve the position of the texts
+
+print paper 0; ink 7;\
+  at 0,0;"Minas vecinas ";\
+    paper (4-surrounding_mines);ink 9;surrounding_mines;\
+  paper 0; ink 7;\
+  at 0,15;"Niv. ";level;" ";\
+  at 0,22;"Punt. 0000";\
+  at 0,31-(score>9)-(score>99)-(score>999);score:\
+return
 
 # ==============================================================
 # subroutine
@@ -257,8 +280,8 @@ return
 # XXX TODO -- remove mine count from the status bar
 
 # XXX TODO -- remove:
-if row=cc then\
-  if col=dd or col=ee then\
+if row=damsels_row then\
+  if col=damsel_1_col or col=damsel_2_col then\
     gosub @damsel_rescued: return
 if level=9 then\
   if row=8 and col=5+ss then\
@@ -273,10 +296,7 @@ print at row,col; paper 7; ink 0; over 1;chr$ (65+int (rnd*60))
 beep 1,-35
 if score>high_score then\
   gosub @new_record
-print at 0,28; paper 0;"  "
-print\
-  at 0,0; paper 0; ink 7;"              nivel ";level;" ";\
-  at 0,22; flash 1;"punt. ";score
+gosub @status_bar
 gosub @select_chars
 print at 10,9; ink 7; paper 2; bright 1;"  ¿Otra vez?  "
 gosub @select_graphics
@@ -408,12 +428,13 @@ let time_score=(int ((2000-time)/50))*5
 if time_score<50 then\
   let time_score=50
 let time_score=time_score*level
-print at 0,0; paper level/1.5; ink 9;"Nivel=";level;"  Puntos por tiempo= ";time_score;
-if level=1 and time_score<100 then\
-  print at 0,31; paper 1;" "
-print at 1,0;"\f"
-for n=15 to 50: beep .001+((50-30)/2000),(50+n/2.8): border 2: border 7: border 0: next n
+for n=15 to 50:\
+  beep .001+((50-30)/2000),(50+n/2.8):\
+  border 2: border 7: border 0:\
+next n
 border border_color
+
+# XXX TODO -- remove
 if bonus>0 then\
   let score=score+bonus:\
   print at 21,0; paper 7; bright 1;"Bonos iniciales= ";bonus:\
@@ -422,7 +443,9 @@ if bonus>0 then\
     beep .025,n+5:\
   next n:\
   print at 21,0;"                                "
+
 gosub @replay
+
 for g=4 to 22 step 6
   beep .005,g+24
 next g
@@ -430,8 +453,7 @@ for n=1 to 80
   border 1: border 2: border 3: border 4: border 5: border 6
 next n
 let score=score+time_score
-print at 0,30; paper 0;"  "
-print at 0,0; paper 0; ink 7;"Minas vecinas 0  No.";level;" Puntos ";score
+gosub @status_bar
 for n=1 to 120
 next n
 let mines=mines+10
@@ -636,7 +658,6 @@ return
 
 @init:
 
-
 let record_player$="IAN"
 
 gosub @select_graphics
@@ -668,6 +689,7 @@ if i$="i" or i$="I" then\
 let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 let ink_color=9
 let level=1: let bonus=0: let high_score=250
+let surrounding_mines=0
 
 goto @new_game
 
