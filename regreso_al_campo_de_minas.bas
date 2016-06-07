@@ -13,7 +13,7 @@
 
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
-let version$="0.9.0+201606071659":\
+let version$="0.10.0+201606071719":\
 let udg1=65535-21*8*2:\
 let udg2=udg1+21*8:\
 goto @init
@@ -37,7 +37,7 @@ border border_color: paper paper_color: ink ink_color: cls
 gosub @select_graphics
 
 # coordinates
-let row=21: let col=15
+let row=20: let col=15
 let old_row=row: let old_col=col
 
 # list of coordinates, stored as chars
@@ -50,7 +50,7 @@ let protagonist$="\a"
 let protagonist_with_damsel$="\b"
 let damsels_row=0: let damsel_1_col=0: let damsel_2_col=0
 let rr=1
-let oo=21: let pp=15
+let oo=20: let pp=15
 let safe_zone$="       < ZONA SEGURA >        "
 let blank_safe_zone$="                              "
 let pa=7
@@ -109,7 +109,7 @@ print \
   at 11,15;"\o\o";\
   at 10,30;"\o"
 
-print at 21,0;"                               "
+print at 21,0;blank_row$
 
 if level=1 then\
   goto @l480
@@ -145,13 +145,12 @@ for m=60 to 10 step -2.5
   for n=1 to 7: next n
   beep .125,m
 next m
-print at 21,0;"                                "
+print at 21,0;blank_row$
 print at 8,9;"              "
 
 @l490:
 
 beep .0875,10
-print at 21,0;"               \a                "
 print at 21,31; ink paper_color; paper paper_color;"\h"
 
 # XXX OLD
@@ -173,7 +172,7 @@ let old_row=row: let old_col=col
 
 let i$=inkey$
 let row=row+(i$=k$(4))-(i$=k$(3))
-let row=row-(row=22)
+let row=row-(row=21)
 let col=col+(i$=k$(2))-(i$=k$(1))
 let time=time+1
 if level>=4 then\
@@ -225,8 +224,9 @@ let surrounding_mines=\
 if surrounding_mines then\
   beep .04,surrounding_mines*10
 gosub @status_bar
-if row=0 then\
-  gosub @l3000
+if row=1 then\
+  goto @level_passed
+
 if surrounding_mines=3 and level=8 then\
   print at 8,9; flash 1;"puerta abierta":\
   for c=1 to 40: beep .001,30+c/4:\
@@ -392,7 +392,7 @@ goto @l1200
 
 for n=1 to 20: next n
 for a=1 to 21
-  print at a,0; over 1; ink 9;"                                "
+  print at a,0; over 1; ink 9;blank_row$
 next a
 gosub @select_chars
 print at 21,1;flash 1; paper 7; ink 0;"Repetición"
@@ -416,13 +416,13 @@ next t
 
 @replay_end:
 
-print at 21,0;"                                "
+print at 21,0;blank_row$
 return
 
 # ==============================================================
-# subroutine
+# subroutine: level passed
 
-@l3000:
+@level_passed:
 
 let time_score=(int ((2000-time)/50))*5
 if time_score<50 then\
@@ -442,7 +442,7 @@ if bonus>0 then\
   for n=1 to 20 step .6:\
     beep .025,n+5:\
   next n:\
-  print at 21,0;"                                "
+  print at 21,0;blank_row$
 
 gosub @replay
 
@@ -629,7 +629,7 @@ for n=19 to 2 step -.5
   print at row,col; paper pa;protagonist$
 next n
 print at 20,14; paper pa;"   "
-print at 21,0;"                                "
+print at 21,0;blank_row$
 return
 
 # ==============================================================
@@ -690,6 +690,7 @@ let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 let ink_color=9
 let level=1: let bonus=0: let high_score=250
 let surrounding_mines=0
+let blank_row$="                                "
 
 goto @new_game
 
