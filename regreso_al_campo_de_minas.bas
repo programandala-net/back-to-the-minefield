@@ -6,7 +6,7 @@
 # This is a fork under development by Marcos Cruz (programandala.net),
 # started on 2016-06-04.
 #
-# Version 0.5.0+201606062111
+# Version 0.6.0+201606062114
 # (after Semantic Versioning: http://semver.org)
 #
 # This source is in the zmakebas format of Sinclair BASIC.
@@ -84,7 +84,7 @@ for n=2 to 19
 next n
 print at 20,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 print at row,col;c$
-print at 21,17; flash 1; paper 2; ink 7;"Poniendo minas"
+print at 21,17; flash 1; paper 8; ink 8;"Poniendo minas"
 if level=9 then\
   let mines=mines+32:\
   let mines=mines+(10-int (score/1000))
@@ -135,9 +135,12 @@ print at 8,9;"              "
 beep .0875,10
 print at 21,0;"               \a                "
 print at 21,31; ink papercolor; paper papercolor;"\h"
-gosub @udLetters
-print at 21,4; inverse 1;"¡Adelante!"
-gosub @udGraphics
+
+# XXX OLD
+# gosub @udLetters
+# print at 21,4; inverse 1;"¡Adelante!"
+# gosub @udGraphics
+
 for n=1 to 20
   beep .002,n+20
 next n
@@ -254,11 +257,12 @@ ink 9
 
 @l1200:
 
-gosub @udLetters
-print \
-  at 21,29; paper bordercolor; ink 9;"   ";\
-  at 21,0; paper bordercolor; ink 9;" Récor = ";highscore;" por ";h$
-gosub @udGraphics
+# XXX OLD
+# gosub @udLetters
+# print \
+#   at 21,29; paper bordercolor; ink 9;"   ";\
+#   at 21,0; paper bordercolor; ink 9;" Récor = ";highscore;" por ";h$
+# gosub @udGraphics
 
 @again:
 pause 0:let i$=inkey$
