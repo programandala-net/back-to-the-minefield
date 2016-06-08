@@ -14,7 +14,7 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.11.0+201606081810":\
+let version$="0.12.0+201606081925":\
 
 goto @init
 
@@ -43,8 +43,7 @@ let row=20: let col=15
 let old_row=row: let old_col=col
 
 # list of coordinates, stored as chars
-# XXX TODO -- don't add 65
-let t$=chr$ (row+65)+chr$ (col+65)
+let t$=chr$ row+chr$ col
 
 # counter
 let time=0
@@ -189,7 +188,7 @@ beep .003,-4
 @l535:
 
 print at old_row,old_col; paper pa;" "
-let t$=t$+chr$ (row+65)+chr$ (col+65)
+let t$=t$+chr$ row+chr$ col
 if screen$ (row,col)<>" " then\
   gosub @explosion
 if level=9 and pa<>paper_color and row<17 then\
@@ -404,11 +403,10 @@ gosub @select_graphics
 for n=1 to 100: next n
 
 # XXX TODO -- don't copy the string
-let y$=t$
-let replay_row=code y$(1)-65:\
-let replay_col=code y$(2)-65
+let replay_row=code t$(1):\
+let replay_col=code t$(2)
 
-for t=1 to len y$ step 2
+for t=1 to len t$ step 2
 
 @replay_control:
   let i$=inkey$
@@ -422,14 +420,10 @@ for t=1 to len y$ step 2
     goto @replay_control
 
   print at replay_row,replay_col; paper 7;" "
-  let replay_row=code y$(1)-65:\
-  let replay_col=code y$(2)-65:\
+  let replay_row=code t$(t):\
+  let replay_col=code t$(t+1):\
   print at replay_row,replay_col; paper 7;protagonist$
   beep .005,5+(t*40/(len t$))
-
-# XXX TODO -- don't cut the string
-
-  let y$=y$(3 to )
 
 next t
 
