@@ -13,25 +13,27 @@
 
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
-let version$="0.10.0+201606071719":\
-let udg1=65535-21*8*2:\
-let udg2=udg1+21*8:\
+
+let version$="0.11.0+201606081810":\
+
 goto @init
 
 # Note: version number after Semantic Versioning: http://semver.org
 
 # ==============================================================
 
+# XXX TODO -- move
+
 @new_game:
 
 if level>2 then\
   goto @l5700
-let mines=50: let score=0: let bonus=0: 
+let mines=50: let score=0: let bonus=0:
 let paper_color=6: let border_color=0
 
 # ==============================================================
 
-@l10:
+@new_level:
 
 border border_color: paper paper_color: ink ink_color: cls
 gosub @select_graphics
@@ -41,6 +43,7 @@ let row=20: let col=15
 let old_row=row: let old_col=col
 
 # list of coordinates, stored as chars
+# XXX TODO -- don't add 65
 let t$=chr$ (row+65)+chr$ (col+65)
 
 # counter
@@ -228,7 +231,7 @@ if row=1 then\
   goto @level_passed
 
 if surrounding_mines=3 and level=8 then\
-  print at 8,9; flash 1;"puerta abierta":\
+  print at 8,9; flash 1;"Puerta abierta":\
   for c=1 to 40: beep .001,30+c/4:\
     border 0: border 7:\
   next c:\
@@ -367,7 +370,7 @@ for n=0 to 30 step 6
 next n
 #  <------------------------------>
 print at 3,8;\
-  "Felicidades!"
+  "¡Felicidades!"
 #  <------------------------------>
 print '\
   "Has rescatado a Bill. El mundo"'
@@ -390,33 +393,56 @@ goto @l1200
 
 @replay:
 
-for n=1 to 20: next n
-for a=1 to 21
-  print at a,0; over 1; ink 9;blank_row$
+for a=1 to 21:\
+  print at a,0; over 1; ink 9;blank_row$:\
 next a
 gosub @select_chars
-print at 21,1;flash 1; paper 7; ink 0;"Repetición"
-print at 21,17;"[R]apido [F]in"
+print at 21,0;flash 1; paper 7; ink 0;"Repetición"
+let paused_replay=0:\
+gosub @show_replay_controls
 gosub @select_graphics
 for n=1 to 100: next n
+
+# XXX TODO -- don't copy the string
 let y$=t$
-let replay_row=code y$(1)-65: let replay_col=code y$(2)-65
+let replay_row=code y$(1)-65:\
+let replay_col=code y$(2)-65
+
 for t=1 to len y$ step 2
+
+@replay_control:
   let i$=inkey$
   if i$="f" or i$="F" then\
     goto @replay_end
-  if i$<>"r" and i$<>"R" then\
-    for m=1 to 5: next m
+  if i$="p" or i$="P" then\
+    let paused_replay=not paused_replay:\
+    beep .1,paused_replay*10:\
+    gosub @show_replay_controls
+  if paused_replay then \
+    goto @replay_control
+
   print at replay_row,replay_col; paper 7;" "
-  let replay_row=code y$(1)-65: let replay_col=code y$(2)-65
+  let replay_row=code y$(1)-65:\
+  let replay_col=code y$(2)-65:\
   print at replay_row,replay_col; paper 7;protagonist$
   beep .005,5+(t*40/(len t$))
+
+# XXX TODO -- don't cut the string
+
   let y$=y$(3 to )
+
 next t
 
 @replay_end:
 
-print at 21,0;blank_row$
+print at 21,0;blank_row$:\
+return
+
+@show_replay_controls:
+
+print \
+  at 21,9;replay_pause_message$(paused_replay+1);\
+  at 21,21;"[F]inalizar":\
 return
 
 # ==============================================================
@@ -465,7 +491,7 @@ if paper_color=6 then\
   let mines=50
 if level=7 then\
   let mines=20
-goto @l10
+goto @new_level
 
 # ==============================================================
 # subroutine: new record
@@ -583,7 +609,7 @@ if new_level=7 then\
   let paper_color=0: let border_color=0: let mines=20: let bonus=3500
 if new_level=8 then\
   let paper_color=6: let border_color=2: let mines=50: let bonus=4200
-goto @l10
+goto @new_level
 
 # ==============================================================
 # subroutine: damsel rescued
@@ -658,12 +684,28 @@ return
 
 @init:
 
+# Graphics
+
+# There are two UDG banks, the first one for graphics and the second
+# one for the Spanish characters.
+
+let udg1=65535-21*8*2:\
+let udg2=udg1+21*8:\
+gosub @select_graphics:\
+gosub @read_UDG_bank:\
+gosub @select_chars:\
+gosub @read_UDG_bank
+
+# Constants
+
 let record_player$="IAN"
 
-gosub @select_graphics
-gosub @read_UDG_bank
-gosub @select_chars
-gosub @read_UDG_bank
+dim replay_pause_message$(2,11):\
+let replay_pause_message$(1)="[P]ausar":\
+let replay_pause_message$(2)="[P]roseguir"
+
+# ==============================================================
+# menu
 
 @menu:
 
@@ -1121,6 +1163,6 @@ data bin 01001000
 data bin 00000000
 
 data "":rem end of UDG bank
- 
+
 
 # vim: ft=sinclairbasic:fileencoding=latin1
