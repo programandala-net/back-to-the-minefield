@@ -14,7 +14,7 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.12.0+201606081925":\
+let version$="0.13.0+201606081943":\
 
 goto @init
 
@@ -26,17 +26,25 @@ goto @init
 
 @new_game:
 
-if level>2 then\
-  goto @l5700
-let mines=50: let score=0: let bonus=0:
-let paper_color=6: let border_color=0
+let level=1:\
+let mines=50:\
+let score=0:\
+let bonus=0:\
+let paper_color=6:\
+let border_color=0
 
 # ==============================================================
 
 @new_level:
 
-border border_color: paper paper_color: ink ink_color: cls
+border border_color:\
+paper paper_color:\
+ink ink_color:\
+cls
+
 gosub @select_graphics
+
+let surrounding_mines=0
 
 # coordinates
 let row=20: let col=15
@@ -53,10 +61,27 @@ let protagonist_with_damsel$="\b"
 let damsels_row=0: let damsel_1_col=0: let damsel_2_col=0
 let rr=1
 let oo=20: let pp=15
-let safe_zone$="       < ZONA SEGURA >        "
-let blank_safe_zone$="                              "
 let pa=7
 let ss=0
+
+# XXX TODO -- convert to data or calculations:
+if level=1 then\
+  let paper_color=6: let border_color=0: let mines=50: let bonus=0
+if level=2 then\
+  let paper_color=5: let border_color=0: let mines=60: let bonus=250
+if level=3 then\
+  let paper_color=4: let border_color=0: let mines=70: let bonus=750
+if level=4 then\
+  let paper_color=3: let border_color=0: let mines=80: let bonus=1500
+if level=5 then\
+  let paper_color=2: let border_color=0: let mines=90: let bonus=2200
+if level=6 then\
+  let paper_color=1: let border_color=0: let mines=100: let bonus=2700
+if level=7 then\
+  let paper_color=0: let border_color=0: let mines=20: let bonus=3500
+if level=8 then\
+  let paper_color=6: let border_color=2: let mines=50: let bonus=4200
+
 goto @l300
 
 # ==============================================================
@@ -476,15 +501,26 @@ let score=score+time_score
 gosub @status_bar
 for n=1 to 120
 next n
+
+# XXX TODO -- remove, calculate
 let mines=mines+10
+# XXX TODO -- remove, calculate
 let paper_color=paper_color-1
+
 let level=level+1
+
+# XXX TODO -- remove
 if paper_color<0 then\
   let border_color=border_color+2: let paper_color=6
+
+# XXX TODO -- remove
 if paper_color=6 then\
   let mines=50
+
+# XXX TODO -- remove
 if level=7 then\
   let mines=20
+
 goto @new_level
 
 # ==============================================================
@@ -547,63 +583,6 @@ for n=1 to 3: next n
 beep .1,14: beep .1,12
 print at 10,7;"                  "
 return
-
-@l5700:
-
-let max_level=level-1
-gosub @select_chars
-let z$="   ¿Desde qué nivel empiezas?      "
-gosub @select_graphics
-
-for n=0 to 21: paper paper_color: beep .002,n+5: print at n,0; over 1;"\::                              \::": next n
-for n=1 to 21: next n
-for n=0 to 31
-  paper paper_color: ink paper_color
-  plot n*8,0: draw 0,175
-  beep .0015,64: beep .0015,59
-  print at 10,n; paper int (rnd*6); ink 9;z$(n+1)
-next n
-ink 9
-print at 13,13; flash 1;"1";at 13,14;" a ";at 13,18; flash 1;max_level
-print at 13,13; flash 1;"1"
-print at 13,14;" a "
-print at 13,18; flash 1;max_level
-beep .1,30
-for n=1 to 25: next n
-
-pause 0:let i$=inkey$
-print at 21,0; ink paper_color; paper paper_color; inverse 1;\
-  "     Vuelve a intentarlo        "
-#  <------------------------------>
-print at 0,0; ink paper_color; paper paper_color; inverse 1;\
-  "     Vuelve a intentarlo        "
-#  <------------------------------>
-if code i$<49 or code i$>57 then\
-  beep 1,-15: goto @l5700
-let new_level=val i$
-if new_level>max_level or new_level<>(int new_level) or new_level<1 then\
-  beep 1,-15: goto @l5700
-let score=0
-let level=new_level
-for n=30 to 34: beep .006,n: next n
-# XXX TODO -- convert to data
-if new_level=1 then\
-  let paper_color=6: let border_color=0: let mines=50: let bonus=0
-if new_level=2 then\
-  let paper_color=5: let border_color=0: let mines=60: let bonus=250
-if new_level=3 then\
-  let paper_color=4: let border_color=0: let mines=70: let bonus=750
-if new_level=4 then\
-  let paper_color=3: let border_color=0: let mines=80: let bonus=1500
-if new_level=5 then\
-  let paper_color=2: let border_color=0: let mines=90: let bonus=2200
-if new_level=6 then\
-  let paper_color=1: let border_color=0: let mines=100: let bonus=2700
-if new_level=7 then\
-  let paper_color=0: let border_color=0: let mines=20: let bonus=3500
-if new_level=8 then\
-  let paper_color=6: let border_color=2: let mines=50: let bonus=4200
-goto @new_level
 
 # ==============================================================
 # subroutine: damsel rescued
@@ -692,11 +671,19 @@ gosub @read_UDG_bank
 
 # Constants
 
-let record_player$="IAN"
-
 dim replay_pause_message$(2,11):\
 let replay_pause_message$(1)="[P]ausar":\
 let replay_pause_message$(2)="[P]roseguir"
+
+let blank_row$="                                "
+
+let safe_zone$      ="       < ZONA SEGURA >        ":\
+let blank_safe_zone$="                              "
+
+# Variables
+
+let record_player$="IAN":\
+let high_score=250
 
 # ==============================================================
 # menu
@@ -724,9 +711,7 @@ if i$="i" or i$="I" then\
 
 let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 let ink_color=9
-let level=1: let bonus=0: let high_score=250
-let surrounding_mines=0
-let blank_row$="                                "
+let level=1: let bonus=0
 
 goto @new_game
 
