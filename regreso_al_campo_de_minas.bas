@@ -1,20 +1,20 @@
-# Regreso al campo de minas
+rem Regreso al campo de minas
 #
-# "Campo de minas" was published by Indescomp. It was the Spanish
-# version of "Minefield", written by Ian Andrew.
+#   "Campo de minas" was published by Indescomp. It was the Spanish
+#   version of "Minefield", written by Ian Andrew.
 #
-# This is a fork under development by Marcos Cruz (programandala.net),
-# started on 2016-06-04.
+#   This is a fork under development
+rem by Marcos Cruz (programandala.net), 2016.
 #
-# This source is in the zmakebas format of Sinclair BASIC,
-# with extended features (e.g. long string variable names).
+#   This source is in the zmakebas format of Sinclair BASIC, with
+#   extended features (e.g. long string variable names).
 
 # ==============================================================
 
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.20.0+201606091928":\
+let version$="0.21.0+201606091942":\
 
 goto @init
 
@@ -238,11 +238,8 @@ print at row,col; paper pa;protagonist$
 
 @l570:
 
-gosub @calculate_surrounding_mines
+gosub @update_surrounding_mines
 
-if surrounding_mines then\
-  beep .04,surrounding_mines*10
-gosub @update_status_bar
 # XXX TODO -- move up
 if row=1 then\
   goto @level_passed
@@ -282,10 +279,17 @@ print #1;ink 9;paper 8; \
   at 1,15;level;" ";\
   at 1,25-(score>9)-(score>99)-(score>999);score
 
-@update_surrounding_mines:
+@print_surrounding_mines:
 
 print #1; ink 9; paper (4-surrounding_mines);\
   at 1,0; surrounding_mines:\
+return
+
+@update_surrounding_mines:
+
+gosub @calculate_surrounding_mines:\
+gosub @print_surrounding_mines:\
+beep .04*sgn surrounding_mines,surrounding_mines*10:\
 return
 
 # ==============================================================
@@ -469,9 +473,9 @@ for t=1 to len t$ step 2
   let row=code t$(t):\
   let col=code t$(t+1):\
   print at row,col; paper 7;protagonist$:\
-  gosub @calculate_surrounding_mines:\
-  gosub @update_status_bar:\
-  beep .005,5+(t*40/(len t$))
+  gosub @update_surrounding_mines:\
+  if not surrounding_mines then\
+    beep .005,5+(t*40/(len t$))
 
 next t
 
