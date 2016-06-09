@@ -14,24 +14,51 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.16.0+201606091815":\
+let version$="0.17.0+201606091844":\
 
 goto @init
 
 # Note: version number after Semantic Versioning: http://semver.org
 
 # ==============================================================
+# Miners
 
-# XXX TODO -- move with @new_level before @l300
+# XXX TODO -- convert to a subrountine and move it down -- or remove
+
+@miners:
+
+let rn=int (rnd*13)+4
+for a=3 to 30
+  if a=10 or a=20 then next a
+  print at 21,19; paper paper_color; ink 9;"más minas "
+  if attr (rn,a)=56 then\
+     goto @l115
+  print at rn,a;"\m"
+  @l115:
+
+  let k=rn-1+int (rnd*3)
+  if attr (k,a-1)<>56 then\
+    print at k,a-1;"\o"
+  beep .002,55
+  print at 21,19;"          "
+  if attr (rn,a)=56 then\
+    goto @l150
+  print at rn,a;" "
+  @l150:
+
+next a
+goto @l570
+
+# ==============================================================
+# Start a new game
 
 @new_game:
 
-let level=1:\
+let level=first_level:\
 let score=0
 
 # ==============================================================
-
-# XXX TODO -- move before @l300
+# Enter a new level
 
 @new_level:
 
@@ -61,36 +88,6 @@ let paper_color=7-level:\
 let border_color=paper_color:\
 let mines=32+level*8
 
-goto @l300
-
-# ==============================================================
-
-@l100:
-
-let rn=int (rnd*13)+4
-for a=3 to 30
-  if a=10 or a=20 then next a
-  print at 21,19; paper paper; ink 9;"mas minas "
-  if attr (rn,a)=56 then\
-     goto @l115
-  print at rn,a;"\m"
-  @l115:
-
-  let k=rn-1+int (rnd*3)
-  if attr (k,a-1)<>56 then\
-    print at k,a-1;"\o"
-  beep .002,55
-  print at 21,19;"          "
-  if attr (rn,a)=56 then\
-    goto @l150
-  print at rn,a;" "
-  @l150:
-
-next a
-goto @l570
-
-@l300:
-
 border border_color:\
 paper paper_color:\
 ink ink_color:\
@@ -112,6 +109,7 @@ for w=1 to mines:\
 next w
 print paper 8;at 2,1;blank_safe_zone$;at 19,1;blank_safe_zone$
 
+# XXX TODO -- remove:
 print \
   ink paper_color;\
   at 10,1;"\o";\
@@ -262,7 +260,7 @@ if surrounding_mines=3 and level=(last_level-1) then\
 
 if level>2 and level<last_level and time>50 then\
   if rnd>.98 then\
-    goto @l100
+    goto @miners
 
 goto @l500
 
@@ -434,8 +432,10 @@ goto @l1200
 # XXX FIXME -- don't show the final explosion when the user quits the
 # replay 
 #
-# XXX FIXME -- remove the protagonist before the replay
-
+# XXX FIXME -- when the the protagonist has reached the door, remove
+# it before the replay
+#
+# XXX FIXME -- remove the walking mine before the replay.
 
 @replay:
 
@@ -671,7 +671,7 @@ load "UDG.BIN" code udg1
 
 # Constants
 
-let first_level=1
+let first_level=3
 let last_level=7
 
 dim replay_pause_message$(2,11):\
