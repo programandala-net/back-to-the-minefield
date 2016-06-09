@@ -14,7 +14,7 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.18.0+201606091854":\
+let version$="0.19.0+201606091913":\
 
 goto @init
 
@@ -105,7 +105,7 @@ for w=1 to mines:\
   print at int (rnd*16)+3,int (rnd*30)+1; ink paper_color;"\o":\
   beep .0015,35:\
 next w
-print paper 8;at 2,1;blank_safe_zone$;at 19,1;blank_safe_zone$
+print paper 8;at 2,1;blank_field_row$;at 19,1;blank_field_row$
 
 print at 21,0;blank_row$
 
@@ -197,7 +197,7 @@ if screen$ (row,col)<>" " then\
   gosub @explosion
 
 if level=last_level and pa<>paper_color and row<17 then\
-  gosub @l8000
+  gosub @erase_the_path
 
 print at row,col; paper pa;protagonist$
 
@@ -287,7 +287,7 @@ print at oo,pp; paper pa;" "
 let i$=t$+t$
 
 if level>=5 and paper_color<>pa and time>2000 then\
-  gosub @l8000
+  gosub @erase_the_path
 
 let rr=rr+2: beep .0018,60
 let oo=code i$(rr): let pp=code i$(rr+1)
@@ -600,21 +600,24 @@ let time=time+35
 return
 
 # ==============================================================
-# subroutine
+# subroutine: erase the path
 
-@l8000:
+@erase_the_path:
+
+# XXX TODO -- use the history instead
 
 let pa=paper_color
 print at 21,0;\
-  flash 1; bright 1; ink 7; paper 1;\
-  "Tu mapa ha explotado"
+  flash 1; bright 1; paper 8; ink 8;\
+  "     Tu rastro se ha borrado     "
+#  <------------------------------->   
 print at 20,14; paper paper_color;"   "
 for n=19 to 2 step -.5
   beep .05,n-10
   if level<last_level or n>14 then\
     print at n,1;\
       over 1; ink paper_color; paper paper_color;\
-      "                              "
+      blank_field_row$
   print at row,col; paper pa;protagonist$
 next n
 print at 20,14; paper pa;"   "
@@ -667,8 +670,8 @@ let replay_pause_message$(2)="[P]roseguir"
 
 let blank_row$="                                "
 
-let safe_zone$      ="       < ZONA SEGURA >        ":\
-let blank_safe_zone$="                              "
+let safe_zone$      ="<<<<<<<< ZONA SEGURA >>>>>>>>>":\
+let blank_field_row$="                              "
 
 let ink_color=9
 
