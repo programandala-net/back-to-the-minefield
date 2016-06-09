@@ -14,11 +14,45 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.19.0+201606091913":\
+let version$="0.20.0+201606091928":\
 
 goto @init
 
 # Note: version number after Semantic Versioning: http://semver.org
+
+# ==============================================================
+# subroutine: calculate surrounding mines
+
+@calculate_surrounding_mines:
+
+# XXX FIXME -- There's a bug in Sinclar BASIC: the following
+# calculation returns a wrong non-integer value:
+
+# let surrounding_mines=int(\
+#   (screen$ (row-1,col)<>" ")+\
+#   (screen$ (row+1,col)<>" ")+\
+#   (screen$ (row,col-1)<>" ")+\
+#   (screen$ (row,col+1)<>" "))
+
+# XXX FIXME -- Also this doesn't work fine:
+
+# let surrounding_mines=(screen$ (row-1,col)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
+
+# XXX REMARK -- This slow method works fine:
+
+let front_surrounding_mines=screen$ (row-1,col)<>" ":\
+let back_surrounding_mines=screen$ (row+1,col)<>" ":\
+let left_surrounding_mines=screen$ (row,col-1)<>" ":\
+let right_surrounding_mines=screen$ (row,col+1)<>" ":\
+let surrounding_mines=\
+  front_surrounding_mines+\
+  back_surrounding_mines+\
+  left_surrounding_mines+\
+  right_surrounding_mines:
+return
 
 # ==============================================================
 # Miners
@@ -92,6 +126,7 @@ ink ink_color:\
 cls
 
 gosub @new_status_bar
+# XXX TODO -- use a constant for the top and bottom rows of the field
 print at 1,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f  \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 for n=2 to 19:\
   print at n,0;"\f                              \f":\
@@ -203,31 +238,7 @@ print at row,col; paper pa;protagonist$
 
 @l570:
 
-# XXX FIXME -- There's a bug in Sinclar BASIC: the following
-# calculation returns a wrong non-integer value:
-
-# let surrounding_mines=int(\
-#   (screen$ (row-1,col)<>" ")+\
-#   (screen$ (row+1,col)<>" ")+\
-#   (screen$ (row,col-1)<>" ")+\
-#   (screen$ (row,col+1)<>" "))
-
-# XXX FIXME -- Also this doesn't work fine:
-
-# let surrounding_mines=(screen$ (row-1,col)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
-
-let front_surrounding_mines=screen$ (row-1,col)<>" ":\
-let back_surrounding_mines=screen$ (row+1,col)<>" ":\
-let left_surrounding_mines=screen$ (row,col-1)<>" ":\
-let right_surrounding_mines=screen$ (row,col+1)<>" ":\
-let surrounding_mines=\
-  front_surrounding_mines+\
-  back_surrounding_mines+\
-  left_surrounding_mines+\
-  right_surrounding_mines
+gosub @calculate_surrounding_mines
 
 if surrounding_mines then\
   beep .04,surrounding_mines*10
@@ -267,11 +278,14 @@ print #1;paper 8;ink 9;\
 
 @update_status_bar:
 
-print #1;ink 9;\
-  at 1,0; paper (4-surrounding_mines);surrounding_mines;\
-  paper 8; \
+print #1;ink 9;paper 8; \
   at 1,15;level;" ";\
-  at 1,25-(score>9)-(score>99)-(score>999);score:\
+  at 1,25-(score>9)-(score>99)-(score>999);score
+
+@update_surrounding_mines:
+
+print #1; ink 9; paper (4-surrounding_mines);\
+  at 1,0; surrounding_mines:\
 return
 
 # ==============================================================
@@ -415,9 +429,6 @@ goto @l1200
 # ==============================================================
 # subroutine: replay
 
-# XXX TODO -- improve, update the number of surrounding mines during
-# the replay
-#
 # XXX FIXME -- don't show the final explosion when the user quits the
 # replay 
 #
@@ -438,9 +449,8 @@ gosub @show_replay_controls
 gosub @select_graphics
 for n=1 to 100: next n
 
-# XXX TODO -- don't copy the string
-let replay_row=code t$(1):\
-let replay_col=code t$(2)
+let row=code t$(1):\
+let col=code t$(2)
 
 for t=1 to len t$ step 2
 
@@ -455,10 +465,12 @@ for t=1 to len t$ step 2
   if paused_replay then \
     goto @replay_control
 
-  print at replay_row,replay_col; paper 7;" "
-  let replay_row=code t$(t):\
-  let replay_col=code t$(t+1):\
-  print at replay_row,replay_col; paper 7;protagonist$
+  print at row,col; paper 7;" "
+  let row=code t$(t):\
+  let col=code t$(t+1):\
+  print at row,col; paper 7;protagonist$:\
+  gosub @calculate_surrounding_mines:\
+  gosub @update_status_bar:\
   beep .005,5+(t*40/(len t$))
 
 next t
@@ -575,7 +587,7 @@ return
 print at row,col;protagonist_with_damsel$
 let protagonist$=protagonist_with_damsel$
 
-# XXX TODO -- remove, simplify:
+# XXX TODO -- simplify the sound effect:
 
 # XXX OLD:
 paper 7
@@ -611,7 +623,10 @@ print at 21,0;\
   flash 1; bright 1; paper 8; ink 8;\
   "     Tu rastro se ha borrado     "
 #  <------------------------------->   
+
 print at 20,14; paper paper_color;"   "
+
+# XXX TODO -- use a constant for the top and bottom rows of the field
 for n=19 to 2 step -.5
   beep .05,n-10
   if level<last_level or n>14 then\
@@ -661,7 +676,7 @@ load "UDG.BIN" code udg1
 
 # Constants
 
-let first_level=7:rem XXX TMP -- for debugging -- default=1
+let first_level=1:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 dim replay_pause_message$(2,11):\
