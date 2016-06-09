@@ -14,7 +14,7 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.13.0+201606081943":\
+let version$="0.14.0+201606091709":\
 
 goto @init
 
@@ -22,25 +22,18 @@ goto @init
 
 # ==============================================================
 
-# XXX TODO -- move
+# XXX TODO -- move with @new_level before @l300
 
 @new_game:
 
 let level=1:\
-let mines=50:\
-let score=0:\
-let bonus=0:\
-let paper_color=6:\
-let border_color=0
+let score=0
 
 # ==============================================================
 
-@new_level:
+# XXX TODO -- move before @l300
 
-border border_color:\
-paper paper_color:\
-ink ink_color:\
-cls
+@new_level:
 
 gosub @select_graphics
 
@@ -64,23 +57,9 @@ let oo=20: let pp=15
 let pa=7
 let ss=0
 
-# XXX TODO -- convert to data or calculations:
-if level=1 then\
-  let paper_color=6: let border_color=0: let mines=50: let bonus=0
-if level=2 then\
-  let paper_color=5: let border_color=0: let mines=60: let bonus=250
-if level=3 then\
-  let paper_color=4: let border_color=0: let mines=70: let bonus=750
-if level=4 then\
-  let paper_color=3: let border_color=0: let mines=80: let bonus=1500
-if level=5 then\
-  let paper_color=2: let border_color=0: let mines=90: let bonus=2200
-if level=6 then\
-  let paper_color=1: let border_color=0: let mines=100: let bonus=2700
-if level=7 then\
-  let paper_color=0: let border_color=0: let mines=20: let bonus=3500
-if level=8 then\
-  let paper_color=6: let border_color=2: let mines=50: let bonus=4200
+let paper_color=7-level:\
+let border_color=paper_color:\
+let mines=32+level*8
 
 goto @l300
 
@@ -112,6 +91,11 @@ goto @l570
 
 @l300:
 
+border border_color:\
+paper paper_color:\
+ink ink_color:\
+cls
+
 gosub @status_bar
 print at 1,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f  \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 for n=2 to 19:\
@@ -120,8 +104,6 @@ next n
 print at 20,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 print at row,col;protagonist$
 print at 21,17; flash 1; paper 8; ink 8;"Poniendo minas"
-if level=9 then\
-  let mines=mines+32+(10-int (score/1000))
 
 print paper 8;bright 1; at 2,1;safe_zone$;at 19,1;safe_zone$
 for w=1 to mines:\
@@ -138,10 +120,12 @@ print \
 
 print at 21,0;blank_row$
 
-if level=1 then\
+if level=first_level then\
   goto @l480
-if level=9 then\
+if level=last_level then\
   gosub @level9: goto @l480
+
+# XXX REMARK -- levels second..last_but_one:
 
 print at 21,0; inverse 1; bright 1;"Rescata a las pobres damiselas!"
 
@@ -161,8 +145,11 @@ next j
 
 @l480:
 
-if level<>8 then\
+if level<>(last_level-1) then\
   goto @l490
+
+# XXX REMARK -- last but one level:
+
 print at 21,0;\
   ink 7; flash 1; paper 0; bright 1;\
   "Ponte entre 3 minas para abrir  "
@@ -201,13 +188,17 @@ let i$=inkey$
 let row=row+(i$=k$(4))-(i$=k$(3))
 let row=row-(row=21)
 let col=col+(i$=k$(2))-(i$=k$(1))
+
 let time=time+1
+
 if level>=4 then\
   if time>(260*paper_color+70) then\
     if int (time/(3*paper_color+1))=(time/(3*paper_color+1)) then\
       gosub @l543
+
 if old_row=row and old_col=col then\
   goto @l520
+
 beep .003,-4
 
 @l535:
@@ -216,8 +207,10 @@ print at old_row,old_col; paper pa;" "
 let t$=t$+chr$ row+chr$ col
 if screen$ (row,col)<>" " then\
   gosub @explosion
-if level=9 and pa<>paper_color and row<17 then\
+
+if level=last_level and pa<>paper_color and row<17 then\
   gosub @l8000
+
 print at row,col; paper pa;protagonist$
 
 @l570:
@@ -251,10 +244,12 @@ let surrounding_mines=\
 if surrounding_mines then\
   beep .04,surrounding_mines*10
 gosub @status_bar
+# XXX TODO -- move up
 if row=1 then\
   goto @level_passed
 
-if surrounding_mines=3 and level=8 then\
+# XXX TODO -- improve
+if surrounding_mines=3 and level=(last_level-1) then\
   print at 8,9; flash 1;"Puerta abierta":\
   for c=1 to 40: beep .001,30+c/4:\
     border 0: border 7:\
@@ -262,9 +257,11 @@ if surrounding_mines=3 and level=8 then\
   print at 1,15;"  ":\
   print at 8,9;"              ":\
   border 2
-if level>2 and level<9 and time>50 then\
+
+if level>2 and level<last_level and time>50 then\
   if rnd>.98 then\
     goto @l100
+
 goto @l500
 
 # ==============================================================
@@ -288,12 +285,18 @@ return
 
 @l543:
 
+# XXX TODO -- what for?
+
 print at oo,pp; paper pa;" "
+
+# XXX TODO -- why?:
 let i$=t$+t$
+
 if level>=5 and paper_color<>pa and time>2000 then\
   gosub @l8000
+
 let rr=rr+2: beep .0018,60
-let oo=65-code i$(rr): let pp=65-code i$(rr+1)
+let oo=code i$(rr): let pp=code i$(rr+1)
 if screen$ (oo,pp)<>" " then\
   gosub @explosion
 print at oo,pp; paper pa;"\h"
@@ -310,9 +313,11 @@ return
 if row=damsels_row then\
   if col=damsel_1_col or col=damsel_2_col then\
     gosub @damsel_rescued: return
-if level=9 then\
+
+if level=last_level then\
   if row=8 and col=5+ss then\
     goto @l8444
+
 for w=20 to 1 step -1
   beep .003,w: print at row,col;"\c"
   beep .002,10: print at row,col;"\o"
@@ -334,6 +339,7 @@ if paper_color<4 then\
 plot 72,96: draw 112,0: draw 0,-9: draw -113,0: draw 0,9
 ink 9
 
+# XXX OLD
 @l1200:
 
 # XXX OLD
@@ -409,7 +415,7 @@ print\
 #  <------------------------------>
 if score>high_score then\
   gosub @new_record
-let level=1
+
 goto @l1200
 
 # ==============================================================
@@ -469,6 +475,10 @@ return
 
 @level_passed:
 
+# XXX TODO -- remove surrounding mines
+
+# XXX TODO -- improve time score with the frames system variable
+
 let time_score=(int ((2000-time)/50))*5
 if time_score<50 then\
   let time_score=50
@@ -479,16 +489,6 @@ for n=15 to 50:\
 next n
 border border_color
 
-# XXX TODO -- remove
-if bonus>0 then\
-  let score=score+bonus:\
-  print at 21,0; paper 7; bright 1;"Bonos iniciales= ";bonus:\
-  let bonus=0:\
-  for n=1 to 20 step .6:\
-    beep .025,n+5:\
-  next n:\
-  print at 21,0;blank_row$
-
 gosub @replay
 
 for g=4 to 22 step 6
@@ -497,30 +497,16 @@ next g
 for n=1 to 80
   border 1: border 2: border 3: border 4: border 5: border 6
 next n
+
+# XXX TODO -- use the mines instead
 let score=score+time_score
+
 gosub @status_bar
-for n=1 to 120
+
+for n=1 to 120:\
 next n
 
-# XXX TODO -- remove, calculate
-let mines=mines+10
-# XXX TODO -- remove, calculate
-let paper_color=paper_color-1
-
-let level=level+1
-
-# XXX TODO -- remove
-if paper_color<0 then\
-  let border_color=border_color+2: let paper_color=6
-
-# XXX TODO -- remove
-if paper_color=6 then\
-  let mines=50
-
-# XXX TODO -- remove
-if level=7 then\
-  let mines=20
-
+let level=level+1:\
 goto @new_level
 
 # ==============================================================
@@ -621,7 +607,7 @@ print at 21,0;\
 print at 20,14; paper paper_color;"   "
 for n=19 to 2 step -.5
   beep .05,n-10
-  if level<=8 or n>14 then\
+  if level<last_level or n>14 then\
     print at n,1;\
       over 1; ink paper_color; paper paper_color;\
       "                              "
@@ -671,6 +657,9 @@ gosub @read_UDG_bank
 
 # Constants
 
+let first_level=1
+let last_level=7
+
 dim replay_pause_message$(2,11):\
 let replay_pause_message$(1)="[P]ausar":\
 let replay_pause_message$(2)="[P]roseguir"
@@ -680,6 +669,10 @@ let blank_row$="                                "
 let safe_zone$      ="       < ZONA SEGURA >        ":\
 let blank_safe_zone$="                              "
 
+let ink_color=9
+
+let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
+
 # Variables
 
 let record_player$="IAN":\
@@ -687,6 +680,8 @@ let high_score=250
 
 # ==============================================================
 # menu
+
+# XXX TODO -- rewrite, complete
 
 @menu:
 
@@ -708,10 +703,6 @@ pause 0:let i$=inkey$
 if i$="i" or i$="I" then\
   gosub @instructions:\
   goto @menu
-
-let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
-let ink_color=9
-let level=1: let bonus=0
 
 goto @new_game
 

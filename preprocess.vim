@@ -50,8 +50,10 @@ set nomore
 %substitute,\<damsel_1_col\>,d1c,gIe
 %substitute,\<damsel_2_col\>,d2c,gIe
 %substitute,\<damsels_row\>,dr,gIe
+%substitute,\<first_level\>,fl,gIe
 %substitute,\<front_surrounding_mines\>,fsm,gIe
 %substitute,\<ink_color\>,ic,gIe
+%substitute,\<last_level\>,ll,gIe
 %substitute,\<left_surrounding_mines\>,lsm,gIe
 %substitute,\<right_surrounding_mines\>,rsm,gIe
 %substitute,\<surrounding_mines\>,sm,gIe
