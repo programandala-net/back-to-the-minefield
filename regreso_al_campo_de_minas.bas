@@ -14,7 +14,7 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.15.0+201606091750":\
+let version$="0.16.0+201606091815":\
 
 goto @init
 
@@ -96,7 +96,7 @@ paper paper_color:\
 ink ink_color:\
 cls
 
-gosub @status_bar
+gosub @new_status_bar
 print at 1,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f  \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 for n=2 to 19:\
   print at n,0;"\f                              \f":\
@@ -127,6 +127,7 @@ if level=last_level then\
 
 # XXX REMARK -- levels second..last_but_one:
 
+# XXX TODO -- remove
 print at 21,0; inverse 1; bright 1;"Rescata a las pobres damiselas!"
 
 let damsels_row=int (rnd*12)+4:\
@@ -150,6 +151,7 @@ if level<>(last_level-1) then\
 
 # XXX REMARK -- last but one level:
 
+# XXX TODO -- remove
 print at 21,0;\
   ink 7; flash 1; paper 0; bright 1;\
   "Ponte entre 3 minas para abrir  "
@@ -243,7 +245,7 @@ let surrounding_mines=\
 
 if surrounding_mines then\
   beep .04,surrounding_mines*10
-gosub @status_bar
+gosub @update_status_bar
 # XXX TODO -- move up
 if row=1 then\
   goto @level_passed
@@ -267,17 +269,22 @@ goto @l500
 # ==============================================================
 # subroutine: status bar
 
-@status_bar:
+@new_status_bar:
 
-# XXX TODO -- improve the position of the texts
-
-print paper 0; ink 7;\
+input #1:\
+print #1;paper 8;ink 9;\
   at 0,0;"Minas vecinas ";\
-    paper (4-surrounding_mines);ink 9;surrounding_mines;\
-  paper 0; ink 7;\
-  at 0,15;"Niv. ";level;" ";\
-  at 0,22;"Punt. 0000";\
-  at 0,31-(score>9)-(score>99)-(score>999);score:\
+  at 0,15;"Nivel";\
+  at 0,22;"Puntos";\
+  at 1,22;"0000"
+
+@update_status_bar:
+
+print #1;ink 9;\
+  at 1,0; paper (4-surrounding_mines);surrounding_mines;\
+  paper 8; \
+  at 1,15;level;" ";\
+  at 1,25-(score>9)-(score>99)-(score>999);score:\
 return
 
 # ==============================================================
@@ -328,7 +335,7 @@ print at row,col; paper 7; ink 0; over 1;chr$ (65+int (rnd*60))
 beep 1,-35
 if score>high_score then\
   gosub @new_record
-gosub @status_bar
+gosub @update_status_bar
 gosub @select_chars
 print at 10,9; ink 7; paper 2; bright 1;"  ¿Otra vez?  "
 gosub @select_graphics
@@ -421,6 +428,15 @@ goto @l1200
 # ==============================================================
 # subroutine: replay
 
+# XXX TODO -- improve, update the number of surrounding mines during
+# the replay
+#
+# XXX FIXME -- don't show the final explosion when the user quits the
+# replay 
+#
+# XXX FIXME -- remove the protagonist before the replay
+
+
 @replay:
 
 for a=1 to 21:\
@@ -501,7 +517,7 @@ next n
 # XXX TODO -- use the mines instead
 let score=score+time_score
 
-gosub @status_bar
+gosub @update_status_bar
 
 for n=1 to 120:\
 next n
@@ -577,13 +593,14 @@ return
 
 print at row,col;protagonist_with_damsel$
 let protagonist$=protagonist_with_damsel$
+
+# XXX TODO -- remove, simplify
 paper 7
 for u=25 to 50 step 5
   print at row,col;"\g"
   for n=1 to 8 step 2
     beep .002,n+u
     let score=score+5
-# XXX TODO -- create subroutine to print the score
     print at 0,21; paper 0; ink 7;" Puntos ";score
   next n
   print at row,col;"\d"
