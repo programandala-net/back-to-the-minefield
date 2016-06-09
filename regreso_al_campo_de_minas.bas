@@ -14,7 +14,7 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.17.0+201606091844":\
+let version$="0.18.0+201606091854":\
 
 goto @init
 
@@ -30,7 +30,6 @@ goto @init
 let rn=int (rnd*13)+4
 for a=3 to 30
   if a=10 or a=20 then next a
-  print at 21,19; paper paper_color; ink 9;"más minas "
   if attr (rn,a)=56 then\
      goto @l115
   print at rn,a;"\m"
@@ -40,7 +39,6 @@ for a=3 to 30
   if attr (k,a-1)<>56 then\
     print at k,a-1;"\o"
   beep .002,55
-  print at 21,19;"          "
   if attr (rn,a)=56 then\
     goto @l150
   print at rn,a;" "
@@ -109,24 +107,14 @@ for w=1 to mines:\
 next w
 print paper 8;at 2,1;blank_safe_zone$;at 19,1;blank_safe_zone$
 
-# XXX TODO -- remove:
-print \
-  ink paper_color;\
-  at 10,1;"\o";\
-  at 11,15;"\o\o";\
-  at 10,30;"\o"
-
 print at 21,0;blank_row$
 
 if level=first_level then\
   goto @l480
 if level=last_level then\
-  gosub @level9: goto @l480
+  gosub @last_level: goto @l480
 
 # XXX REMARK -- levels second..last_but_one:
-
-# XXX TODO -- remove
-print at 21,0; inverse 1; bright 1;"Rescata a las pobres damiselas!"
 
 let damsels_row=int (rnd*12)+4:\
 let damsel_1_col=int (rnd*6)+6:\
@@ -149,7 +137,7 @@ if level<>(last_level-1) then\
 
 # XXX REMARK -- last but one level:
 
-# XXX TODO -- remove
+# XXX TODO -- remove?
 print at 21,0;\
   ink 7; flash 1; paper 0; bright 1;\
   "Ponte entre 3 minas para abrir  "
@@ -249,6 +237,7 @@ if row=1 then\
   goto @level_passed
 
 # XXX TODO -- improve
+# XXX TODO -- remove?
 if surrounding_mines=3 and level=(last_level-1) then\
   print at 8,9; flash 1;"Puerta abierta":\
   for c=1 to 40: beep .001,30+c/4:\
@@ -514,7 +503,7 @@ for n=1 to 80
   border 1: border 2: border 3: border 4: border 5: border 6
 next n
 
-# XXX TODO -- use the mines instead
+# XXX TODO -- use also the mines
 let score=score+time_score
 
 gosub @update_status_bar
@@ -545,14 +534,6 @@ for m=1 to 4
 next m
 print at 10,7; ink 9;"¡Un nuevo récor!"
 gosub @select_graphics
-for n=1 to 6
-  print at 0,15;"\d\e"
-  for l=1 to 7: next l
-  beep .006,13
-  print at 0,15;"\e\d"
-  for l=1 to 7: next l
-  beep .006,16
-next n
 print at 21,0;\
   flash 1; paper 1; ink 7;\
   "Introduce tus iniciales"; flash 0;"         "
@@ -594,14 +575,17 @@ return
 print at row,col;protagonist_with_damsel$
 let protagonist$=protagonist_with_damsel$
 
-# XXX TODO -- remove, simplify
+# XXX TODO -- remove, simplify:
+
+# XXX OLD:
 paper 7
+
 for u=25 to 50 step 5
   print at row,col;"\g"
   for n=1 to 8 step 2
     beep .002,n+u
     let score=score+5
-    print at 0,21; paper 0; ink 7;" Puntos ";score
+    gosub @update_status_bar
   next n
   print at row,col;"\d"
   for n=1 to 8 step 2
@@ -609,7 +593,10 @@ for u=25 to 50 step 5
   next n
 next u
 let time=time+35
-paper paper_color
+
+# XXX OLD
+#paper paper_color
+
 return
 
 # ==============================================================
@@ -671,7 +658,7 @@ load "UDG.BIN" code udg1
 
 # Constants
 
-let first_level=3
+let first_level=7:rem XXX TMP -- for debugging -- default=1
 let last_level=7
 
 dim replay_pause_message$(2,11):\
@@ -863,13 +850,16 @@ print at 12,4+ss;"\ :";\
 return
 
 # ==============================================================
-# subroutine: level 9
+# subroutine: last level
 
-@level9:
+@last_level:
 
 let ss=int (rnd*11)+6
 beep .3,-12
+
+# XXX OLD -- close the door:
 print at 0,15;"\h\h";at 1,15;"\f\f"
+
 beep .3,-12
 for n=0 to 1:\
   for m=0 to 6:\
