@@ -14,7 +14,7 @@
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.14.0+201606091709":\
+let version$="0.15.0+201606091750":\
 
 goto @init
 
@@ -650,10 +650,7 @@ return
 
 let udg1=65535-21*8*2:\
 let udg2=udg1+21*8:\
-gosub @select_graphics:\
-gosub @read_UDG_bank:\
-gosub @select_chars:\
-gosub @read_UDG_bank
+load "UDG.BIN" code udg1 
 
 # Constants
 
@@ -826,19 +823,6 @@ randomize:\
 return
 
 # ==============================================================
-# subroutine: read UDG bank
-
-@read_UDG_bank:
-
-read a$
-if a$="" then return
-let udg=usr a$
-for b=0 to 7:\
-  read c: poke udg+b,c:\
-next b
-goto @read_UDG_bank
-
-# ==============================================================
 # subroutine
 
 @l9300:
@@ -893,246 +877,5 @@ print at 11,5+ss; ink paper_color; paper paper_color;"\o"
 flash 0
 print at 8,5+ss; flash 0;"\n"
 return
-
-# ==============================================================
-# data
-
-# UDG bank 1: game graphics
-
-# protagonist:
-data "a",24,24,36,195,195,36,24,24
-# protagonist carrying a damsel:
-data "b",90,90,36,219,219,36,90,153
-# mine exploding:
-data "c",165,165,66,90,40,189,126,129
-# damsel 1:
-data "d",72,84,73,62,8,28,62,62
-# damsel 2:
-data "e",18,42,146,124,16,56,124,124
-# fence:
-data "f",8,16,8,186,93,16,8,16
-# protagonist carrying a damsel:
-data "g",90,90,36,195,195,36,90,153
-# walking mine:
-data "h",0,0,0,0,60,126,165,165
-# fence door?:
-data "k",0,0,0,0,0,0,85,170
-# miner:
-data "m",192,32,18,13,63,16,32,192
-# Bill:
-data "n",0,0,192,192,78,74,91,112
-# mine:
-data "o",0,0,0,0,60,126,0,0
-
-# XXX OLD -- not used
-# # Part 1 of "MINES":
-# data "p",0,132,204,180,132,132,132,0
-# # Part 2 of "MINES":
-# data "q",0,144,152,148,146,145,144,0
-# # Part 3 of "MINES":
-# data "r",0,159,144,158,144,144,159,0
-# # Part 4 of "MINES":
-# data "s",0,31,32,30,1,33,30,0
-
-data "":rem end of UDG bank
-
-# UDG bank 2: Spanish letters and symbols
-
-# a accute
-data "a"
-data bin 00001000
-data bin 00010000
-data bin 00111000
-data bin 00000100
-data bin 00111100
-data bin 01000100
-data bin 00111100
-data bin 00000000
-# A accute
-data "b"
-data bin 00000100
-data bin 00001000
-data bin 00111100
-data bin 01000010
-data bin 01111110
-data bin 01000010
-data bin 01000010
-data bin 00000000
-# e acute
-data "c"
-data bin 00001000
-data bin 00010000
-data bin 00111000
-data bin 01000100
-data bin 01111000
-data bin 01000000
-data bin 00111100
-data bin 00000000
-# E accute
-data "d"
-data bin 00000100
-data bin 00001000
-data bin 01111110
-data bin 01000000
-data bin 01111100
-data bin 01000000
-data bin 01111110
-data bin 00000000
-# i accute
-data "e"
-data bin 00001000
-data bin 00010000
-data bin 00000000
-data bin 00110000
-data bin 00010000
-data bin 00010000
-data bin 00111000
-data bin 00000000
-# I accute
-data "f"
-data bin 00000100
-data bin 00001000
-data bin 00111110
-data bin 00001000
-data bin 00001000
-data bin 00001000
-data bin 00111110
-data bin 00000000
-# o accute
-data "g"
-data bin 00001000
-data bin 00010000
-data bin 00111000
-data bin 01000100
-data bin 01000100
-data bin 01000100
-data bin 00111000
-data bin 00000000
-# O accute
-data "h"
-data bin 00001000
-data bin 00010000
-data bin 00111100
-data bin 01000010
-data bin 01000010
-data bin 01000010
-data bin 00111100
-data bin 00000000
-# u accute
-data "i"
-data bin 00001000
-data bin 00010000
-data bin 01000100
-data bin 01000100
-data bin 01000100
-data bin 01000100
-data bin 00111000
-data bin 00000000
-# U accute
-data "j"
-data bin 00000100
-data bin 01001010
-data bin 01000010
-data bin 01000010
-data bin 01000010
-data bin 01000010
-data bin 00111100
-data bin 00000000
-# n tilde
-data "k"
-data bin 00000000
-data bin 01111000
-data bin 00000000
-data bin 01111000
-data bin 01000100
-data bin 01000100
-data bin 01000100
-data bin 00000000
-# N tilde
-data "l"
-data bin 00111100
-data bin 00000000
-data bin 01100010
-data bin 01010010
-data bin 01001010
-data bin 01000110
-data bin 01000010
-data bin 00000000
-# u umlaut
-data "m"
-data bin 01000100
-data bin 00000000
-data bin 01000100
-data bin 01000100
-data bin 01000100
-data bin 01000100
-data bin 00111000
-data bin 00000000
-# U umlaut
-data "n"
-data bin 01000010
-data bin 00000000
-data bin 01000010
-data bin 01000010
-data bin 01000010
-data bin 01000010
-data bin 00111100
-data bin 00000000
-# inversed question mark
-data "o"
-data bin 00000000
-data bin 00010000
-data bin 00000000
-data bin 00010000
-data bin 00100000
-data bin 01000010
-data bin 00111100
-data bin 00000000
-# inversed exclamation mark
-data "p"
-data bin 00000000
-data bin 00001000
-data bin 00000000
-data bin 00001000
-data bin 00001000
-data bin 00001000
-data bin 00001000
-data bin 00000000
-
-# XXX OLD -- not used
-# # º
-# data "q"
-# data bin 00011000
-# data bin 00100100
-# data bin 00011000
-# data bin 00000000
-# data bin 00111100
-# data bin 00000000
-# data bin 00000000
-# data bin 00000000
-
-# «
-data "r"
-data bin 00000000
-data bin 00000000
-data bin 00010010
-data bin 00100100
-data bin 01001000
-data bin 00100100
-data bin 00010010
-data bin 00000000
-# »
-data "s"
-data bin 00000000
-data bin 00000000
-data bin 01001000
-data bin 00100100
-data bin 00010010
-data bin 00100100
-data bin 01001000
-data bin 00000000
-
-data "":rem end of UDG bank
-
 
 # vim: ft=sinclairbasic:fileencoding=latin1

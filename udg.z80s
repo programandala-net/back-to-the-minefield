@@ -1,0 +1,227 @@
+; udg.z80s
+;
+; This file is part of
+; Regreso al campo de minas
+; By Marcos Cruz (programandala.net)
+;
+; User Defined Graphics
+;
+; 2016-06-09: Start, converted to Z80 from the BASIC source.
+
+; ==============================================================
+; UDG bank 1: game graphics
+
+  org 0
+
+bank1 equ $
+
+; A -- protagonist:
+defb 24,24,36,195,195,36,24,24
+; B -- protagonist carrying a damsel:
+defb 90,90,36,219,219,36,90,153
+; C -- mine exploding:
+defb 165,165,66,90,40,189,126,129
+; D -- damsel 1:
+defb 72,84,73,62,8,28,62,62
+; E -- damsel 2:
+defb 18,42,146,124,16,56,124,124
+; F -- fence:
+defb 8,16,8,186,93,16,8,16
+; G -- protagonist carrying a damsel:
+defb 90,90,36,195,195,36,90,153
+; H -- walking mine:
+defb 0,0,0,0,60,126,165,165
+; I -- not used:
+defs 8,0
+; J -- not used:
+defs 8,0
+; K -- fence door?:
+defb 0,0,0,0,0,0,85,170
+; L -- not used:
+defs 8,0
+; M -- miner:
+defb 192,32,18,13,63,16,32,192
+; N -- Bill:
+defb 0,0,192,192,78,74,91,112
+; O -- mine:
+defb 0,0,0,0,60,126,0,0
+
+; ==============================================================
+; UDG bank 2: Spanish letters and symbols
+
+  org bank1+21*8
+
+bank2 equ $
+
+; A -- a accute:
+defb %00001000
+defb %00010000
+defb %00111000
+defb %00000100
+defb %00111100
+defb %01000100
+defb %00111100
+defb %00000000
+; B -- A accute:
+defb %00000100
+defb %00001000
+defb %00111100
+defb %01000010
+defb %01111110
+defb %01000010
+defb %01000010
+defb %00000000
+; C -- e acute:
+defb %00001000
+defb %00010000
+defb %00111000
+defb %01000100
+defb %01111000
+defb %01000000
+defb %00111100
+defb %00000000
+; D -- E accute:
+defb %00000100
+defb %00001000
+defb %01111110
+defb %01000000
+defb %01111100
+defb %01000000
+defb %01111110
+defb %00000000
+; E -- i accute:
+defb %00001000
+defb %00010000
+defb %00000000
+defb %00110000
+defb %00010000
+defb %00010000
+defb %00111000
+defb %00000000
+; F -- I accute:
+defb %00000100
+defb %00001000
+defb %00111110
+defb %00001000
+defb %00001000
+defb %00001000
+defb %00111110
+defb %00000000
+; G -- o accute:
+defb %00001000
+defb %00010000
+defb %00111000
+defb %01000100
+defb %01000100
+defb %01000100
+defb %00111000
+defb %00000000
+; H -- O accute:
+defb %00001000
+defb %00010000
+defb %00111100
+defb %01000010
+defb %01000010
+defb %01000010
+defb %00111100
+defb %00000000
+; I -- u accute:
+defb %00001000
+defb %00010000
+defb %01000100
+defb %01000100
+defb %01000100
+defb %01000100
+defb %00111000
+defb %00000000
+; J -- U accute:
+defb %00000100
+defb %01001010
+defb %01000010
+defb %01000010
+defb %01000010
+defb %01000010
+defb %00111100
+defb %00000000
+; K -- n tilde:
+defb %00000000
+defb %01111000
+defb %00000000
+defb %01111000
+defb %01000100
+defb %01000100
+defb %01000100
+defb %00000000
+; L -- N tilde:
+defb %00111100
+defb %00000000
+defb %01100010
+defb %01010010
+defb %01001010
+defb %01000110
+defb %01000010
+defb %00000000
+; M -- u umlaut:
+defb %01000100
+defb %00000000
+defb %01000100
+defb %01000100
+defb %01000100
+defb %01000100
+defb %00111000
+defb %00000000
+; N -- U umlaut:
+defb %01000010
+defb %00000000
+defb %01000010
+defb %01000010
+defb %01000010
+defb %01000010
+defb %00111100
+defb %00000000
+; O -- inversed question mark:
+defb %00000000
+defb %00010000
+defb %00000000
+defb %00010000
+defb %00100000
+defb %01000010
+defb %00111100
+defb %00000000
+; P -- inversed exclamation mark:
+defb %00000000
+defb %00001000
+defb %00000000
+defb %00001000
+defb %00001000
+defb %00001000
+defb %00001000
+defb %00000000
+; Q -- º:
+defb %00011000
+defb %00100100
+defb %00011000
+defb %00000000
+defb %00111100
+defb %00000000
+defb %00000000
+defb %00000000
+; R -- «
+defb %00000000
+defb %00000000
+defb %00010010
+defb %00100100
+defb %01001000
+defb %00100100
+defb %00010010
+defb %00000000
+; S -- »:
+defb %00000000
+defb %00000000
+defb %01001000
+defb %00100100
+defb %00010010
+defb %00100100
+defb %01001000
+defb %00000000
+
