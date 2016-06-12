@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.21.0+201606091942":\
+let version$="0.22.0+201606112125":\
 
 goto @init
 
@@ -25,7 +25,7 @@ goto @init
 
 @calculate_surrounding_mines:
 
-# XXX FIXME -- There's a bug in Sinclar BASIC: the following
+# XXX REMAK -- There's a bug in Sinclar BASIC: the following
 # calculation returns a wrong non-integer value:
 
 # let surrounding_mines=int(\
@@ -34,7 +34,7 @@ goto @init
 #   (screen$ (row,col-1)<>" ")+\
 #   (screen$ (row,col+1)<>" "))
 
-# XXX FIXME -- Also this doesn't work fine:
+# XXX REMARK -- Also this doesn't work fine:
 
 # let surrounding_mines=(screen$ (row-1,col)<>" ")
 # let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
@@ -57,7 +57,7 @@ return
 # ==============================================================
 # Miners
 
-# XXX TODO -- convert to a subrountine and move it down -- or remove
+# XXX TODO -- convert to a subroutine and move it down -- or remove
 
 @miners:
 
@@ -704,30 +704,42 @@ let high_score=250
 # ==============================================================
 # menu
 
-# XXX TODO -- rewrite, complete
+# XXX TODO -- complete
 
 @menu:
 
 border 1: paper 1: ink 7
-gosub @credits
+cls
+gosub @title
+
+gosub @select_chars
 
 #  <------------------------------>
 print '\
   "________________________________"''\
-  "Pulsa ";\
-  inverse 1;"I";inverse 0;\
-         " para ver instrucciones,"'\
-  "     otra tecla para jugar."'\
+  inverse 1;"I";inverse 0;"nstrucciones"''\
+  inverse 1;"J";inverse 0;"ugar"''\
+  inverse 1;"C";inverse 0;"réditos"''\
   "________________________________"\
 #  <------------------------------>
 
-beep .1 ,23
+@menu_key:
+
 pause 0:let i$=inkey$
+
 if i$="i" or i$="I" then\
   gosub @instructions:\
   goto @menu
 
-goto @new_game
+if i$="j" or i$="J" then\
+  goto @new_game
+
+if i$="c" or i$="C" then\
+  gosub @credits:\
+  goto @menu
+
+beep .1 ,23:\
+goto @menu_key
 
 # ==============================================================
 # subroutine: credits
@@ -753,6 +765,8 @@ print "Por Marcos Cruz"
 print "(programandala.net), 2016"
 #      <------------------------------>
 
+pause 0
+gosub @select_graphics
 return
 
 # ==============================================================
@@ -761,12 +775,12 @@ return
 @instructions:
 
 cls
+gosub @title
 let i$="\a":gosub @icon
 #     <------------------------------>
-print " Tú: Debes atravesar cada campo"
+print " Tú: Atraviesa los campos"
 #      <------------------------------>
-print "  de minas, moviéndote con las"
-print "  teclas del cursor."
+print "  de minas, usando el cursor."
 
 let i$="\n":gosub @icon
 #     <------------------------------>
