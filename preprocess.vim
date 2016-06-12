@@ -44,6 +44,7 @@ set nomore
 %substitute,\<safe_zone\$,s$,gIe
 %substitute,\<blank_field_row\$,u$,gIe
 %substitute,\<version\$,v$,gIe
+%substitute,\<message\$,w$,gIe
 
 " Shorten for-next variable names
 %substitute,\<miner_col\>,i,gIe

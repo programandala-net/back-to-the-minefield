@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.26.0+201606122340":\
+let version$="0.27.201606130002":\
 
 goto @init
 
@@ -135,7 +135,7 @@ let pa=7:\
 let ss=0
 
 let paper_color=7-level:\
-let border_color=paper_color:\
+let border_color=0:\
 let mines=32+level*8
 
 border border_color:\
@@ -143,7 +143,6 @@ paper paper_color:\
 ink ink_color:\
 cls
 
-gosub @new_status_bar
 print at top_fence_row,0;fence$:\
 for n=top_safe_row to bottom_safe_row:\
   print at n,0;"\f                              \f":\
@@ -151,7 +150,9 @@ next n:\
 print at bottom_fence_row,0;fence$
 print at row,col;protagonist$
 
-print at 21,17; flash 1; paper 8; ink 8;"Poniendo minas"
+#print at 21,17; flash 1; paper 8; ink 8;"Poniendo minas"
+let message$="Poniendo minas...":\
+gosub @message
 
 print paper 8;bright 1;\
   at top_fence_row+1,1;safe_zone$;\
@@ -168,7 +169,9 @@ print paper 8;\
   at top_fence_row+1,1;blank_field_row$;\
   at bottom_fence_row-1,1;blank_field_row$
 
-print at 21,0;blank_row$
+# XXX OLD
+#print at 21,0;blank_row$
+gosub @new_status_bar
 
 if level=first_level then\
   goto @l480
@@ -176,7 +179,7 @@ if level=last_level then\
   gosub @last_level: goto @l480
 
 # XXX REMARK -- levels second..last_but_one:
-
+# XXX TODO -- move to a subroutine
 let damsels_row=int (rnd*12)+4:\
 let damsel_1_col=int (rnd*6)+6:\
 let damsel_2_col=int (rnd*6)+19
@@ -215,7 +218,7 @@ print at 8,9;"              "
 
 beep .0875,10
 # XXX OLD:
-print at 21,31; ink paper_color; paper paper_color;"\h"
+#print at 21,31; ink paper_color; paper paper_color;"\h"
 
 # XXX OLD
 # gosub @select_chars
@@ -225,7 +228,7 @@ print at 21,31; ink paper_color; paper paper_color;"\h"
 for n=1 to 20
   beep .002,n+20
 next n
-print at 21,4;"         ": beep .05,37
+#print at 21,4;"         ": beep .05,37
 goto @l535
 
 @l500:
@@ -373,16 +376,8 @@ beep 1,-35
 if score>high_score then\
   gosub @new_record
 gosub @update_status_bar
-gosub @select_chars
-print at 10,9; ink 7; paper 2; bright 1;"  ¿Otra vez?  "
-gosub @select_graphics
-# XXX TODO -- remove:
-if paper_color>=4 then\
-  ink 0
-if paper_color<4 then\
-  ink 7
-plot 72,96: draw 112,0: draw 0,-9: draw -113,0: draw 0,9
-ink 9
+let message$="¿Otra vez?":\
+gosub @message
 
 # XXX OLD
 @l1200:
@@ -399,6 +394,19 @@ pause 0:let i$=inkey$
 if i$="n" or i$="N" then cls:stop
 if i$="s" or i$="S" then goto @new_game
 goto @again
+
+# ==============================================================
+# subroutine: message
+
+@message:
+
+gosub @select_chars:\
+input;:\
+print #1;\
+  at 0,0;blank_row$;\
+  at 1,(32-len message$)/2;ink 9;message$;:\
+gosub @select_graphics:\
+return
 
 # ==============================================================
 
@@ -480,7 +488,12 @@ for i=1 to 21:\
   print at i,0; over 1;paper paper_color;ink 9;blank_row$:\
 next i
 gosub @select_chars
-print at 21,0;flash 1; paper 7; ink 0;"Repetición"
+
+# XXX OLD
+#print at 21,0;flash 1; paper 7; ink 0;"Repetición"
+let message$="Repetición":\
+gosub @message
+
 let paused_replay=0:\
 gosub @show_replay_controls
 gosub @select_graphics
@@ -514,6 +527,7 @@ next t
 
 @replay_end:
 
+# XXX TODO -- finish
 print at 21,0;blank_row$:\
 return
 
@@ -583,9 +597,13 @@ for m=1 to 4
 next m
 print at 10,7; ink 9;"¡Un nuevo récor!"
 gosub @select_graphics
+
+# XXX TODO -- adapt
+
 print at 21,0;\
   flash 1; paper 1; ink 7;\
   "Introduce tus iniciales"; flash 0;"         "
+
 let record_player$="   "
 for n=1 to 3
   @l5088:
@@ -656,6 +674,8 @@ return
 # XXX TODO -- use the history instead
 
 let pa=paper_color
+
+# XXX TODO -- adapt
 print at 21,0;\
   flash 1; bright 1; paper 8; ink 8;\
   "     Tu rastro se ha borrado     "
@@ -673,6 +693,8 @@ for n=19 to 2 step -.5
   print at row,col; paper pa;protagonist$
 next n
 print at 20,14; paper pa;"   "
+
+# XXX TODO -- adapt
 print at 21,0;blank_row$
 return
 
