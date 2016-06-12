@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.25.0+201606122219":\
+let version$="0.26.0+201606122340":\
 
 goto @init
 
@@ -376,6 +376,7 @@ gosub @update_status_bar
 gosub @select_chars
 print at 10,9; ink 7; paper 2; bright 1;"  ¿Otra vez?  "
 gosub @select_graphics
+# XXX TODO -- remove:
 if paper_color>=4 then\
   ink 0
 if paper_color<4 then\
@@ -475,9 +476,9 @@ goto @l1200
 
 @replay:
 
-for a=1 to 21:\
-  print at a,0; over 1; ink 9;blank_row$:\
-next a
+for i=1 to 21:\
+  print at i,0; over 1;paper paper_color;ink 9;blank_row$:\
+next i
 gosub @select_chars
 print at 21,0;flash 1; paper 7; ink 0;"Repetición"
 let paused_replay=0:\
