@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.27.201606130002":\
+let version$="0.28.201606130010":\
 
 goto @init
 
@@ -519,9 +519,7 @@ for t=1 to len t$ step 2
   let row=code t$(t):\
   let col=code t$(t+1):\
   print at row,col; paper 7;protagonist$:\
-  gosub @update_surrounding_mines:\
-  if not surrounding_mines then\
-    beep .005,5+(t*40/(len t$))
+  beep .005,5+(t*40/(len t$))
 
 next t
 
