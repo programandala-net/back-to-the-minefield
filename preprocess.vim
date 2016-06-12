@@ -7,6 +7,7 @@
 " 2016-06-06: Start. Translate Spanish characters.
 " 2016-06-07: Shorten variable names. Add file header. Remove comments.
 " 2016-06-08: Remove indented comments.
+" 2016-06-12: Update.
 
 set nomore
 
@@ -35,6 +36,7 @@ set nomore
 " Shorten string variable names
 
 %substitute,\<blank_row\$,b$,gIe
+%substitute,\<fence\$,f$,gIe
 %substitute,\<record_player\$,h$,gIe
 %substitute,\<replay_pause_message\$,m$,gIe
 %substitute,\<protagonist\$,p$,gIe
@@ -46,7 +48,9 @@ set nomore
 " Shorten numeric variable names
 
 %substitute,\<border_color\>,bc,gIe
+%substitute,\<bottom_fence_row\>,bfr,gIe
 %substitute,\<back_surrounding_mines\>,bsm,gIe
+%substitute,\<bottom_safe_row\>,bsr,gIe
 %substitute,\<damsel_1_col\>,d1c,gIe
 %substitute,\<damsel_2_col\>,d2c,gIe
 %substitute,\<damsels_row\>,dr,gIe
@@ -54,11 +58,15 @@ set nomore
 %substitute,\<front_surrounding_mines\>,fsm,gIe
 %substitute,\<ink_color\>,ic,gIe
 %substitute,\<last_level\>,ll,gIe
+%substitute,\<mined_rows\>,mr,gIe
 %substitute,\<left_surrounding_mines\>,lsm,gIe
 %substitute,\<right_surrounding_mines\>,rsm,gIe
 %substitute,\<surrounding_mines\>,sm,gIe
 %substitute,\<paper_color\>,pc,gIe
 %substitute,\<paused_replay\>,pr,gIe
+%substitute,\<top_fence_row\>,tfr,gIe
+%substitute,\<top_mined_row\>,tmr,gIe
+%substitute,\<top_safe_row\>,tsr,gIe
 
 " Remove underscore from remaining variables and labels (zmakebas does not
 " accept them, though the manual says only colon and space are forbidden):

@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.22.0+201606112125":\
+let version$="0.23.0+201606121938":\
 
 goto @init
 
@@ -55,11 +55,11 @@ let surrounding_mines=\
 return
 
 # ==============================================================
-# Miners
+# Miner
 
 # XXX TODO -- convert to a subroutine and move it down -- or remove
 
-@miners:
+@miner:
 
 let rn=int (rnd*13)+4
 for a=3 to 30
@@ -94,6 +94,10 @@ let score=0
 
 @new_level:
 
+# XXX FIXME -- Paper becomes white at the replay of level 3, and
+# affects the miner and replay of level 4. It seems the problem has to
+# do with the replay.
+
 gosub @select_graphics
 
 let surrounding_mines=0
@@ -126,21 +130,29 @@ ink ink_color:\
 cls
 
 gosub @new_status_bar
-# XXX TODO -- use a constant for the top and bottom rows of the field
-print at 1,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f\f  \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
-for n=2 to 19:\
+print at top_fence_row,0;fence$:\
+for n=top_safe_row to bottom_safe_row:\
   print at n,0;"\f                              \f":\
-next n
-print at 20,0;"\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
+next n:\
+print at bottom_fence_row,0;fence$
 print at row,col;protagonist$
+
 print at 21,17; flash 1; paper 8; ink 8;"Poniendo minas"
 
-print paper 8;bright 1; at 2,1;safe_zone$;at 19,1;safe_zone$
+print paper 8;bright 1;\
+  at top_fence_row+1,1;safe_zone$;\
+  at bottom_fence_row-1,1;safe_zone$
+
 for w=1 to mines:\
-  print at int (rnd*16)+3,int (rnd*30)+1; ink paper_color;"\o":\
+  print\
+    at int (rnd*mined_rows)+top_mined_row,int (rnd*30)+1;\
+    ink paper_color;"\o":\
   beep .0015,35:\
 next w
-print paper 8;at 2,1;blank_field_row$;at 19,1;blank_field_row$
+
+print paper 8;\
+  at top_fence_row+1,1;blank_field_row$;\
+  at bottom_fence_row-1,1;blank_field_row$
 
 print at 21,0;blank_row$
 
@@ -240,8 +252,7 @@ print at row,col; paper pa;protagonist$
 
 gosub @update_surrounding_mines
 
-# XXX TODO -- move up
-if row=1 then\
+if row=top_fence_row then\
   goto @level_passed
 
 # XXX TODO -- improve
@@ -257,7 +268,7 @@ if surrounding_mines=3 and level=(last_level-1) then\
 
 if level>2 and level<last_level and time>50 then\
   if rnd>.98 then\
-    goto @miners
+    goto @miner
 
 goto @l500
 
@@ -683,11 +694,20 @@ load "UDG.BIN" code udg1
 let first_level=1:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
+let top_fence_row=0:\
+let bottom_fence_row=20:\
+let top_safe_row=top_fence_row+1:\
+let top_mined_row=top_safe_row+1:\
+let bottom_safe_row=bottom_fence_row-1:\
+let mined_rows=bottom_safe_row-top_safe_row-1
+
 dim replay_pause_message$(2,11):\
 let replay_pause_message$(1)="[P]ausar":\
 let replay_pause_message$(2)="[P]roseguir"
 
 let blank_row$="                                "
+
+let fence$="\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 
 let safe_zone$      ="<<<<<<<< ZONA SEGURA >>>>>>>>>":\
 let blank_field_row$="                              "
