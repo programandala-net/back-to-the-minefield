@@ -67,6 +67,9 @@ set nomore
 %substitute,\<top_fence_row\>,tfr,gIe
 %substitute,\<top_mined_row\>,tmr,gIe
 %substitute,\<top_safe_row\>,tsr,gIe
+%substitute,\<walking_mine_col\>,wmc,gIe
+%substitute,\<walking_mine_row\>,wmr,gIe
+%substitute,\<walking_mine_step\>,wms,gIe
 
 " Remove underscore from remaining variables and labels (zmakebas does not
 " accept them, though the manual says only colon and space are forbidden):

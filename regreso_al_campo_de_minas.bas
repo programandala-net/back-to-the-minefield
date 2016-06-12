@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.23.0+201606121938":\
+let version$="0.24.0+201606121953":\
 
 goto @init
 
@@ -24,6 +24,10 @@ goto @init
 # subroutine: calculate surrounding mines
 
 @calculate_surrounding_mines:
+
+# XXX TODO -- Move to its original location. There's no point reusing
+# this during the replay, because the mines during the replay could be
+# different, because of the miners.
 
 # XXX REMAK -- There's a bug in Sinclar BASIC: the following
 # calculation returns a wrong non-integer value:
@@ -103,7 +107,7 @@ gosub @select_graphics
 let surrounding_mines=0
 
 # coordinates
-let row=20: let col=15
+let row=bottom_fence_row: let col=start_col
 let old_row=row: let old_col=col
 
 # list of coordinates, stored as chars
@@ -112,12 +116,17 @@ let t$=chr$ row+chr$ col
 # counter
 let time=0
 
-let protagonist$="\a"
+let protagonist$="\a":\
 let protagonist_with_damsel$="\b"
-let damsels_row=0: let damsel_1_col=0: let damsel_2_col=0
-let rr=1
-let oo=20: let pp=15
-let pa=7
+
+let damsels_row=0:\
+let damsel_1_col=0:\
+let damsel_2_col=0
+
+let walking_mine_step=1:\
+let walking_mine_row=row:\
+let walking_mine_col=col:\
+let pa=7:\
 let ss=0
 
 let paper_color=7-level:\
@@ -200,6 +209,7 @@ print at 8,9;"              "
 @l490:
 
 beep .0875,10
+# XXX OLD:
 print at 21,31; ink paper_color; paper paper_color;"\h"
 
 # XXX OLD
@@ -229,7 +239,7 @@ let time=time+1
 if level>=4 then\
   if time>(260*paper_color+70) then\
     if int (time/(3*paper_color+1))=(time/(3*paper_color+1)) then\
-      gosub @l543
+      gosub @walking_mine
 
 if old_row=row and old_col=col then\
   goto @l520
@@ -304,25 +314,31 @@ beep .04*sgn surrounding_mines,surrounding_mines*10:\
 return
 
 # ==============================================================
-# subroutine
+# subroutine: walking mine
 
-@l543:
+@walking_mine:
 
-# XXX TODO -- what for?
+# XXX TODO -- try, after the latest changes (2016-06-12)
 
-print at oo,pp; paper pa;" "
+print at walking_mine_row,walking_mine_col; paper pa;" "
 
 # XXX TODO -- why?:
-let i$=t$+t$
+# XXX OLD
+# let i$=t$+t$
 
+# XXX TODO -- move this out:
 if level>=5 and paper_color<>pa and time>2000 then\
   gosub @erase_the_path
 
-let rr=rr+2: beep .0018,60
-let oo=code i$(rr): let pp=code i$(rr+1)
-if screen$ (oo,pp)<>" " then\
+let walking_mine_step=walking_mine_step+2:\
+beep .0018,60
+let walking_mine_row=code t$(walking_mine_step):\
+let walking_mine_col=code t$(walking_mine_step+1):\
+if screen$ (walking_mine_row,walking_mine_col)<>" " then\
   gosub @explosion
-print at oo,pp; paper pa;"\h"
+
+# XXX TODO -- improve:
+print at walking_mine_row,walking_mine_col; paper pa;"\h":\
 return
 
 # ==============================================================
@@ -699,7 +715,8 @@ let bottom_fence_row=20:\
 let top_safe_row=top_fence_row+1:\
 let top_mined_row=top_safe_row+1:\
 let bottom_safe_row=bottom_fence_row-1:\
-let mined_rows=bottom_safe_row-top_safe_row-1
+let mined_rows=bottom_safe_row-top_safe_row-1:\
+let start_row=15
 
 dim replay_pause_message$(2,11):\
 let replay_pause_message$(1)="[P]ausar":\
