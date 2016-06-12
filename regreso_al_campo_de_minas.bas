@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.24.0+201606121953":\
+let version$="0.25.0+201606122219":\
 
 goto @init
 
@@ -61,28 +61,33 @@ return
 # ==============================================================
 # Miner
 
-# XXX TODO -- convert to a subroutine and move it down -- or remove
+# XXX TODO -- convert to a subroutine and move it down
 
 @miner:
 
-let rn=int (rnd*13)+4
-for a=3 to 30
-  if a=10 or a=20 then next a
-  if attr (rn,a)=56 then\
-     goto @l115
-  print at rn,a;"\m"
-  @l115:
+let miner_row=int (rnd*13)+4
 
-  let k=rn-1+int (rnd*3)
-  if attr (k,a-1)<>56 then\
-    print at k,a-1;"\o"
+for miner_col=3 to 30
+
+# XXX OLD
+#  if miner_col=10 or miner_col=20 then next miner_col
+
+  if attr(miner_row,miner_col)<>56 then\
+    print paper 8;ink 9;\
+      at miner_row,miner_col;"\m"
+
+  let mined_row=miner_row-1+int (rnd*3)
+  if attr(mined_row,miner_col-1)<>56 then\
+    print paper paper_color;ink 9;\
+      at mined_row,miner_col-1;"\o"
+
   beep .002,55
-  if attr (rn,a)=56 then\
-    goto @l150
-  print at rn,a;" "
-  @l150:
 
-next a
+  if attr(miner_row,miner_col)<>56 then\
+    print paper paper_color;\
+      at miner_row,miner_col;" "
+
+next miner_col
 goto @l570
 
 # ==============================================================
@@ -707,7 +712,7 @@ load "UDG.BIN" code udg1
 
 # Constants
 
-let first_level=1:rem XXX TMP -- change for debugging -- default=1
+let first_level=3:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 let top_fence_row=0:\
@@ -716,7 +721,7 @@ let top_safe_row=top_fence_row+1:\
 let top_mined_row=top_safe_row+1:\
 let bottom_safe_row=bottom_fence_row-1:\
 let mined_rows=bottom_safe_row-top_safe_row-1:\
-let start_row=15
+let start_col=15
 
 dim replay_pause_message$(2,11):\
 let replay_pause_message$(1)="[P]ausar":\

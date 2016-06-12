@@ -45,6 +45,9 @@ set nomore
 %substitute,\<blank_field_row\$,u$,gIe
 %substitute,\<version\$,v$,gIe
 
+" Shorten for-next variable names
+%substitute,\<miner_col\>,i,gIe
+
 " Shorten numeric variable names
 
 %substitute,\<border_color\>,bc,gIe
@@ -58,7 +61,9 @@ set nomore
 %substitute,\<front_surrounding_mines\>,fsm,gIe
 %substitute,\<ink_color\>,ic,gIe
 %substitute,\<last_level\>,ll,gIe
-%substitute,\<mined_rows\>,mr,gIe
+%substitute,\<mine_row\>,mr0,gIe
+%substitute,\<mined_rows\>,mr1,gIe
+%substitute,\<miner_row\>,mr2,gIe
 %substitute,\<left_surrounding_mines\>,lsm,gIe
 %substitute,\<right_surrounding_mines\>,rsm,gIe
 %substitute,\<surrounding_mines\>,sm,gIe
