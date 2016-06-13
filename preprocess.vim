@@ -42,6 +42,7 @@ set nomore
 %substitute,\<protagonist\$,p$,gIe
 %substitute,\<protagonist_with_damsel\$,q$,gIe
 %substitute,\<safe_zone\$,s$,gIe
+%substitute,\<trail\$,t$,gIe
 %substitute,\<blank_field_row\$,u$,gIe
 %substitute,\<version\$,v$,gIe
 %substitute,\<message\$,w$,gIe

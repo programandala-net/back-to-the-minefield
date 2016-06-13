@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.28.201606130010":\
+let version$="0.29.201606131721":\
 
 goto @init
 
@@ -103,20 +103,18 @@ let score=0
 
 @new_level:
 
-# XXX FIXME -- Paper becomes white at the replay of level 3, and
-# affects the miner and replay of level 4. It seems the problem has to
-# do with the replay.
-
 gosub @select_graphics
 
 let surrounding_mines=0
 
 # coordinates
-let row=bottom_fence_row: let col=start_col
-let old_row=row: let old_col=col
+let row=bottom_fence_row:\
+let col=start_col:\
+let old_row=row:\
+let old_col=col
 
 # list of coordinates, stored as chars
-let t$=chr$ row+chr$ col
+let trail$=chr$ row+chr$ col
 
 # counter
 let time=0
@@ -128,7 +126,7 @@ let damsels_row=0:\
 let damsel_1_col=0:\
 let damsel_2_col=0
 
-let walking_mine_step=1:\
+let walking_mine_step=-1:\
 let walking_mine_row=row:\
 let walking_mine_col=col:\
 let pa=7:\
@@ -257,7 +255,7 @@ beep .003,-4
 @l535:
 
 print at old_row,old_col; paper pa;" "
-let t$=t$+chr$ row+chr$ col
+let trail$=trail$+chr$ row+chr$ col
 if screen$ (row,col)<>" " then\
   gosub @explosion
 
@@ -330,18 +328,14 @@ return
 
 print at walking_mine_row,walking_mine_col; paper pa;" "
 
-# XXX TODO -- why?:
-# XXX OLD
-# let i$=t$+t$
-
 # XXX TODO -- move this out:
-if level>=5 and paper_color<>pa and time>2000 then\
-  gosub @erase_the_path
+# if level>=5 and paper_color<>pa and time>2000 then\
+#   gosub @erase_the_path
 
 let walking_mine_step=walking_mine_step+2:\
 beep .0018,60
-let walking_mine_row=code t$(walking_mine_step):\
-let walking_mine_col=code t$(walking_mine_step+1):\
+let walking_mine_row=code trail$(walking_mine_step):\
+let walking_mine_col=code trail$(walking_mine_step+1):\
 if screen$ (walking_mine_row,walking_mine_col)<>" " then\
   gosub @explosion
 
@@ -499,10 +493,10 @@ gosub @show_replay_controls
 gosub @select_graphics
 for n=1 to 100: next n
 
-let row=code t$(1):\
-let col=code t$(2)
+let row=code trail$(1):\
+let col=code trail$(2)
 
-for t=1 to len t$ step 2
+for t=1 to len trail$ step 2
 
 @replay_control:
   let i$=inkey$
@@ -516,10 +510,10 @@ for t=1 to len t$ step 2
     goto @replay_control
 
   print at row,col; paper 7;" "
-  let row=code t$(t):\
-  let col=code t$(t+1):\
+  let row=code trail$(t):\
+  let col=code trail$(t+1):\
   print at row,col; paper 7;protagonist$:\
-  beep .005,5+(t*40/(len t$))
+  beep .005,5+(t*40/(len trail$))
 
 next t
 
@@ -557,16 +551,14 @@ border border_color
 
 gosub @replay
 
-for g=4 to 22 step 6
-  beep .005,g+24
+for g=4 to 22 step 6:\
+  beep .005,g+24:\
 next g
-for n=1 to 80
-  border 1: border 2: border 3: border 4: border 5: border 6
+for n=1 to 80:\
+  border 1: border 2: border 3: border 4: border 5: border 6:\
 next n
 
-# XXX TODO -- use also the mines
-let score=score+time_score
-
+let score=score+time_score+mines:\
 gosub @update_status_bar
 
 for n=1 to 120:\
@@ -637,25 +629,29 @@ return
 
 @damsel_rescued:
 
-print at row,col;protagonist_with_damsel$
-let protagonist$=protagonist_with_damsel$
+# XXX OLD
+#print at row,col;protagonist_with_damsel$
+#let protagonist$=protagonist_with_damsel$
 
 # XXX TODO -- simplify the sound effect:
 
 # XXX OLD:
 paper 7
 
-for u=25 to 50 step 5
-  print at row,col;"\g"
-  for n=1 to 8 step 2
-    beep .002,n+u
-    let score=score+5
-    gosub @update_status_bar
-  next n
-  print at row,col;"\d"
-  for n=1 to 8 step 2
-    beep .002,n+u
-  next n
+for u=25 to 50 step 5:\
+# XXX OLD
+#  print at row,col;"\g":\
+#  for n=1 to 8 step 2:\
+#   beep .002,n+u:\
+   beep .002,u:\
+    let score=score+5:\
+    gosub @update_status_bar:\
+#  next n:\
+# XXX OLD
+#  print at row,col;"\d":\
+#  for n=1 to 8 step 2
+#    beep .002,n+u
+#  next n
 next u
 let time=time+35
 
@@ -733,7 +729,7 @@ load "UDG.BIN" code udg1
 
 # Constants
 
-let first_level=3:rem XXX TMP -- change for debugging -- default=1
+let first_level=4:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 let top_fence_row=0:\
