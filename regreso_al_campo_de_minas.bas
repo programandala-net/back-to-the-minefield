@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.33.0+201606130018":\
+let version$="0.34.0+201606130028":\
 
 goto @init
 
@@ -110,7 +110,6 @@ next n:\
 print at bottom_fence_row,0;fence$
 print at row,col;protagonist$
 
-#print at 21,17; flash 1; paper 8; ink 8;"Poniendo minas"
 let message$="Poniendo minas...":\
 gosub @message
 
@@ -235,11 +234,11 @@ let message$=\
   "Ponte entre 3 minas para abrir":\
 #  <------------------------------->
 gosub @message
-for i=60 to 10 step -2.5:\
+for i=60 to 10 step -5:\
   print at top_fence_row,door_col;"   ":\
-  for j=1 to 7: next j:\
   beep .125,i:\
   print at top_fence_row,door_col;"\f\f\f":\
+  for j=1 to 7: next j:\
 next i:\
 gosub @no_message:\
 return
@@ -249,15 +248,16 @@ return
 
 @open_the_door:
 
-let message$="Puerta abierta":\
+let message$=\
+  "Puerta abierta":\
+#  <------------------------------->
 gosub @message:\
-for c=1 to 40:\
-  border 7:\
+for i=10 to 60 step 5:\
   print at top_fence_row,door_col;"\f\f\f":\
-  beep .001,30+c/4:\
-  border border_color:\
+  beep .125,i:\
   print at top_fence_row,door_col;"   ":\
-next c:\
+  for j=1 to 7: next j:\
+next i:\
 gosub @no_message:\
 return
  
