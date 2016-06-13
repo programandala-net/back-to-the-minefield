@@ -57,7 +57,8 @@ set nomore
 %substitute,\<bottom_fence_row\>,bfr,gIe
 %substitute,\<back_surrounding_mines\>,bsm,gIe
 %substitute,\<bottom_safe_row\>,bsr,gIe
-%substitute,\<door_col\>,dc,gIe
+%substitute,\<door_closed\>,dcl,gIe
+%substitute,\<door_col\>,dco,gIe
 %substitute,\<damsel_1_col\>,d1c,gIe
 %substitute,\<damsel_2_col\>,d2c,gIe
 %substitute,\<damsels_row\>,dr,gIe

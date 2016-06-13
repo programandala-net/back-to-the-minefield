@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.34.0+201606130028":\
+let version$="0.35.0+201606130037":\
 
 goto @init
 
@@ -67,7 +67,8 @@ let score=0
 
 gosub @select_graphics
 
-let surrounding_mines=0
+let surrounding_mines=0:\
+let door_closed=0
 
 # coordinates
 let row=bottom_fence_row:\
@@ -214,9 +215,9 @@ gosub @update_surrounding_mines
 if row=top_fence_row then\
   goto @level_passed
 
-if level=(last_level-1) then\
-  if surrounding_mines=3 then\
-    gosub @open_the_door
+if door_closed then\
+    if surrounding_mines=3 then\
+      gosub @open_the_door
 
 # XXX TODO -- improve
 if level>2 and level<last_level and time>50 then\
@@ -241,6 +242,7 @@ for i=60 to 10 step -5:\
   for j=1 to 7: next j:\
 next i:\
 gosub @no_message:\
+let door_closed=1:\
 return
 
 # ==============================================================
@@ -259,6 +261,7 @@ for i=10 to 60 step 5:\
   for j=1 to 7: next j:\
 next i:\
 gosub @no_message:\
+let door_closed=0:\
 return
  
 # ==============================================================
