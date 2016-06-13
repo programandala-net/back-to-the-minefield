@@ -14,49 +14,11 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.29.201606131721":\
+let version$="0.30.201606131725":\
 
 goto @init
 
 # Note: version number after Semantic Versioning: http://semver.org
-
-# ==============================================================
-# subroutine: calculate surrounding mines
-
-@calculate_surrounding_mines:
-
-# XXX TODO -- Move to its original location. There's no point reusing
-# this during the replay, because the mines during the replay could be
-# different, because of the miners.
-
-# XXX REMAK -- There's a bug in Sinclar BASIC: the following
-# calculation returns a wrong non-integer value:
-
-# let surrounding_mines=int(\
-#   (screen$ (row-1,col)<>" ")+\
-#   (screen$ (row+1,col)<>" ")+\
-#   (screen$ (row,col-1)<>" ")+\
-#   (screen$ (row,col+1)<>" "))
-
-# XXX REMARK -- Also this doesn't work fine:
-
-# let surrounding_mines=(screen$ (row-1,col)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
-
-# XXX REMARK -- This slow method works fine:
-
-let front_surrounding_mines=screen$ (row-1,col)<>" ":\
-let back_surrounding_mines=screen$ (row+1,col)<>" ":\
-let left_surrounding_mines=screen$ (row,col-1)<>" ":\
-let right_surrounding_mines=screen$ (row,col+1)<>" ":\
-let surrounding_mines=\
-  front_surrounding_mines+\
-  back_surrounding_mines+\
-  left_surrounding_mines+\
-  right_surrounding_mines:
-return
 
 # ==============================================================
 # Miner
@@ -314,9 +276,37 @@ return
 
 @update_surrounding_mines:
 
-gosub @calculate_surrounding_mines:\
+# XXX REMAK -- There's a bug in Sinclar BASIC: the following
+# calculation returns a wrong non-integer value:
+
+# let surrounding_mines=int(\
+#   (screen$ (row-1,col)<>" ")+\
+#   (screen$ (row+1,col)<>" ")+\
+#   (screen$ (row,col-1)<>" ")+\
+#   (screen$ (row,col+1)<>" "))
+
+# XXX REMARK -- Also this doesn't work fine:
+
+# let surrounding_mines=(screen$ (row-1,col)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
+
+# XXX REMARK -- This slow method works fine:
+
+let front_surrounding_mines=screen$ (row-1,col)<>" ":\
+let back_surrounding_mines=screen$ (row+1,col)<>" ":\
+let left_surrounding_mines=screen$ (row,col-1)<>" ":\
+let right_surrounding_mines=screen$ (row,col+1)<>" ":\
+let surrounding_mines=\
+  front_surrounding_mines+\
+  back_surrounding_mines+\
+  left_surrounding_mines+\
+  right_surrounding_mines:\
+
 gosub @print_surrounding_mines:\
 beep .04*sgn surrounding_mines,surrounding_mines*10:\
+
 return
 
 # ==============================================================
