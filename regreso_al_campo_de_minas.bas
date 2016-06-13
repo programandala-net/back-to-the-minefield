@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.30.201606131725":\
+let version$="0.31.201606132149":\
 
 goto @init
 
@@ -129,8 +129,7 @@ print paper 8;\
   at top_fence_row+1,1;blank_field_row$;\
   at bottom_fence_row-1,1;blank_field_row$
 
-# XXX OLD
-#print at 21,0;blank_row$
+gosub @no_message:\
 gosub @new_status_bar
 
 if level=first_level then\
@@ -253,9 +252,11 @@ goto @l500
 # ==============================================================
 # subroutine: status bar
 
+# XXX TODO -- add record
+
 @new_status_bar:
 
-input #1:\
+input ;:\
 print #1;paper 8;ink 9;\
   at 0,0;"Minas vecinas ";\
   at 0,15;"Nivel";\
@@ -349,13 +350,12 @@ if level=last_level then\
   if row=8 and col=5+ss then\
     goto @l8444
 
-for w=20 to 1 step -1
-  beep .003,w: print at row,col;"\c"
+for i=20 to 1 step -1
+  beep .003,i: print at row,col;"\c"
   beep .002,10: print at row,col;"\o"
-next w
+next i
 beep 1.6,-35
 gosub @replay
-print at row,col; paper 7; ink 0; over 1;chr$ (65+int (rnd*60))
 beep 1,-35
 if score>high_score then\
   gosub @new_record
@@ -384,12 +384,16 @@ goto @again
 
 @message:
 
+gosub @no_message:\
 gosub @select_chars:\
-input;:\
-print #1;\
-  at 0,0;blank_row$;\
-  at 1,(32-len message$)/2;ink 9;message$;:\
+print bright 1; ink 9; paper border_color;\
+  at 21,(32-len message$)/2;message$;:\
 gosub @select_graphics:\
+return
+
+@no_message:
+
+print at 21,0;paper border_color;blank_row$;:\
 return
 
 # ==============================================================
@@ -458,28 +462,19 @@ goto @l1200
 # ==============================================================
 # subroutine: replay
 
-# XXX FIXME -- don't show the final explosion when the user quits the
-# replay 
-#
-# XXX FIXME -- when the the protagonist has reached the door, remove
-# it before the replay
-#
-# XXX FIXME -- remove the walking mine before the replay.
-
 @replay:
+
+# XXX TODO -- 
+# print at walking_mine_row,walking_mine_col;" ";\
+#       at row,col;" "
 
 for i=1 to 21:\
   print at i,0; over 1;paper paper_color;ink 9;blank_row$:\
 next i
 gosub @select_chars
 
-# XXX OLD
-#print at 21,0;flash 1; paper 7; ink 0;"Repetición"
-let message$="Repetición":\
-gosub @message
-
 let paused_replay=0:\
-gosub @show_replay_controls
+gosub @show_replay_bar
 gosub @select_graphics
 for n=1 to 100: next n
 
@@ -490,14 +485,18 @@ for t=1 to len trail$ step 2
 
 @replay_control:
   let i$=inkey$
+  if paused_replay then \
+    let paused_replay=(i$=""):\
+    beep .1*not paused_replay,0:\
+    if paused_replay then \
+      gosub @show_replay_bar:\
+      goto @replay_control
   if i$="f" or i$="F" then\
     goto @replay_end
   if i$="p" or i$="P" then\
-    let paused_replay=not paused_replay:\
-    beep .1,paused_replay*10:\
-    gosub @show_replay_controls
-  if paused_replay then \
-    goto @replay_control
+    let paused_replay=1:\
+    beep .1,10:\
+    gosub @show_replay_bar
 
   print at row,col; paper 7;" "
   let row=code trail$(t):\
@@ -509,15 +508,13 @@ next t
 
 @replay_end:
 
-# XXX TODO -- finish
-print at 21,0;blank_row$:\
+gosub @no_message:\
 return
 
-@show_replay_controls:
+@show_replay_bar:
 
-print \
-  at 21,9;replay_pause_message$(paused_replay+1);\
-  at 21,21;"[F]inalizar":\
+let message$=replay_controls$(paused_replay+1):\
+  gosub @message:\
 return
 
 # ==============================================================
@@ -548,6 +545,7 @@ for n=1 to 80:\
   border 1: border 2: border 3: border 4: border 5: border 6:\
 next n
 
+# XXX TODO -- variable to flash the score
 let score=score+time_score+mines:\
 gosub @update_status_bar
 
@@ -730,9 +728,9 @@ let bottom_safe_row=bottom_fence_row-1:\
 let mined_rows=bottom_safe_row-top_safe_row-1:\
 let start_col=15
 
-dim replay_pause_message$(2,11):\
-let replay_pause_message$(1)="[P]ausar":\
-let replay_pause_message$(2)="[P]roseguir"
+dim replay_controls$(2,27):\
+let replay_controls$(1)="REPETICIÓN:  [P]ausa  [F]in":\
+let replay_controls$(2)="Una tecla para seguir"
 
 let blank_row$="                                "
 

@@ -8,6 +8,7 @@
 " 2016-06-07: Shorten variable names. Add file header. Remove comments.
 " 2016-06-08: Remove indented comments.
 " 2016-06-12: Update.
+" 2016-06-13: Update.
 
 set nomore
 
@@ -38,7 +39,7 @@ set nomore
 %substitute,\<blank_row\$,b$,gIe
 %substitute,\<fence\$,f$,gIe
 %substitute,\<record_player\$,h$,gIe
-%substitute,\<replay_pause_message\$,m$,gIe
+%substitute,\<replay_controls\$,m$,gIe
 %substitute,\<protagonist\$,p$,gIe
 %substitute,\<protagonist_with_damsel\$,q$,gIe
 %substitute,\<safe_zone\$,s$,gIe
