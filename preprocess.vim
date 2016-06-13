@@ -72,6 +72,8 @@ set nomore
 %substitute,\<surrounding_mines\>,sm,gIe
 %substitute,\<paper_color\>,pc,gIe
 %substitute,\<paused_replay\>,pr,gIe
+%substitute,\<record\>,r,gIe
+%substitute,\<score\>,s,gIe
 %substitute,\<top_fence_row\>,tfr,gIe
 %substitute,\<top_mined_row\>,tmr,gIe
 %substitute,\<top_safe_row\>,tsr,gIe

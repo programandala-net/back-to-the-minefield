@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.31.201606132149":\
+let version$="0.32.201606132351":\
 
 goto @init
 
@@ -257,22 +257,27 @@ goto @l500
 @new_status_bar:
 
 input ;:\
+gosub @select_chars:\
 print #1;paper 8;ink 9;\
-  at 0,0;"Minas vecinas ";\
-  at 0,15;"Nivel";\
-  at 0,22;"Puntos";\
-  at 1,22;"0000"
+  at 0, 0;"Nivel";\
+  at 0,10;"Minas";\
+  at 0,18;"Puntos";\
+  at 1,18;"0000";\
+  at 0,26;"Récor";\
+  at 1,26;"0000":\
+gosub @select_graphics
 
 @update_status_bar:
 
 print #1;ink 9;paper 8; \
-  at 1,15;level;" ";\
-  at 1,25-(score>9)-(score>99)-(score>999);score
+  at 1,0;level;" ";\
+  at 1,21-(score>9)-(score>99)-(score>999);score;\
+  at 1,29-(record>9)-(record>99)-(record>999);record
 
 @print_surrounding_mines:
 
 print #1; ink 9; paper (4-surrounding_mines);\
-  at 1,0; surrounding_mines:\
+  at 1,10;surrounding_mines;"    ":\
 return
 
 @update_surrounding_mines:
@@ -357,7 +362,7 @@ next i
 beep 1.6,-35
 gosub @replay
 beep 1,-35
-if score>high_score then\
+if score>record then\
   gosub @new_record
 gosub @update_status_bar
 let message$="¿Otra vez?":\
@@ -370,7 +375,7 @@ gosub @message
 # gosub @select_chars
 # print \
 #   at 21,29; paper border_color; ink 9;"   ";\
-#   at 21,0; paper border_color; ink 9;" Récor = ";high_score;" por ";record_player$
+#   at 21,0; paper border_color; ink 9;" Récor = ";record;" por ";record_player$
 # gosub @select_graphics
 
 @again:
@@ -454,7 +459,7 @@ print\
   "¿Por qué no vuelves a jugar y"'
   "tratas de mejorarla?"
 #  <------------------------------>
-if score>high_score then\
+if score>record then\
   gosub @new_record
 
 goto @l1200
@@ -594,7 +599,7 @@ for n=1 to 3
   beep .12,(n*5)+20
   for m=1 to 4: next m
 next n
-let high_score=score
+let record=score
 print at 21,0; paper 7; ink 0;"         muy bien  ";record_player$;"          "
 for n=1 to 12
   beep .0045,-10: border 1: border 2: border 6: border 4
@@ -746,7 +751,7 @@ let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 # Variables
 
 let record_player$="IAN":\
-let high_score=250
+let record=250
 
 # ==============================================================
 # menu
