@@ -57,6 +57,7 @@ set nomore
 %substitute,\<bottom_fence_row\>,bfr,gIe
 %substitute,\<back_surrounding_mines\>,bsm,gIe
 %substitute,\<bottom_safe_row\>,bsr,gIe
+%substitute,\<door_col\>,dc,gIe
 %substitute,\<damsel_1_col\>,d1c,gIe
 %substitute,\<damsel_2_col\>,d2c,gIe
 %substitute,\<damsels_row\>,dr,gIe
@@ -74,6 +75,7 @@ set nomore
 %substitute,\<paused_replay\>,pr,gIe
 %substitute,\<record\>,r,gIe
 %substitute,\<score\>,s,gIe
+%substitute,\<start_col\>,sc,gIe
 %substitute,\<top_fence_row\>,tfr,gIe
 %substitute,\<top_mined_row\>,tmr,gIe
 %substitute,\<top_safe_row\>,tsr,gIe

@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.32.201606132351":\
+let version$="0.33.0+201606130018":\
 
 goto @init
 
@@ -155,25 +155,8 @@ next j
 
 @l480:
 
-if level<>(last_level-1) then\
-  goto @l490
-
-# XXX REMARK -- last but one level:
-
-# XXX TODO -- remove?
-print at 21,0;\
-  ink 7; flash 1; paper 0; bright 1;\
-  "Ponte entre 3 minas para abrir  "
-print at 1,15;"\f\f"
-print at 8,9; ink 1; bright 1; paper 7;"puerta cerrada"
-for m=60 to 10 step -2.5
-  for n=1 to 7: next n
-  beep .125,m
-next m
-print at 21,0;blank_row$
-print at 8,9;"              "
-
-@l490:
+if level=(last_level-1) then\
+  gosub @close_the_door
 
 beep .0875,10
 # XXX OLD:
@@ -232,23 +215,52 @@ gosub @update_surrounding_mines
 if row=top_fence_row then\
   goto @level_passed
 
-# XXX TODO -- improve
-# XXX TODO -- remove?
-if surrounding_mines=3 and level=(last_level-1) then\
-  print at 8,9; flash 1;"Puerta abierta":\
-  for c=1 to 40: beep .001,30+c/4:\
-    border 0: border 7:\
-  next c:\
-  print at 1,15;"  ":\
-  print at 8,9;"              ":\
-  border 2
+if level=(last_level-1) then\
+  if surrounding_mines=3 then\
+    gosub @open_the_door
 
+# XXX TODO -- improve
 if level>2 and level<last_level and time>50 then\
   if rnd>.98 then\
     goto @miner
 
 goto @l500
 
+# ==============================================================
+# subroutine: close the door
+
+@close_the_door:
+
+let message$=\
+  "Ponte entre 3 minas para abrir":\
+#  <------------------------------->
+gosub @message
+for i=60 to 10 step -2.5:\
+  print at top_fence_row,door_col;"   ":\
+  for j=1 to 7: next j:\
+  beep .125,i:\
+  print at top_fence_row,door_col;"\f\f\f":\
+next i:\
+gosub @no_message:\
+return
+
+# ==============================================================
+# subroutine: open the door
+
+@open_the_door:
+
+let message$="Puerta abierta":\
+gosub @message:\
+for c=1 to 40:\
+  border 7:\
+  print at top_fence_row,door_col;"\f\f\f":\
+  beep .001,30+c/4:\
+  border border_color:\
+  print at top_fence_row,door_col;"   ":\
+next c:\
+gosub @no_message:\
+return
+ 
 # ==============================================================
 # subroutine: status bar
 
@@ -722,7 +734,7 @@ load "UDG.BIN" code udg1
 
 # Constants
 
-let first_level=4:rem XXX TMP -- change for debugging -- default=1
+let first_level=6:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 let top_fence_row=0:\
@@ -731,6 +743,7 @@ let top_safe_row=top_fence_row+1:\
 let top_mined_row=top_safe_row+1:\
 let bottom_safe_row=bottom_fence_row-1:\
 let mined_rows=bottom_safe_row-top_safe_row-1:\
+let door_col=14:\
 let start_col=15
 
 dim replay_controls$(2,27):\
