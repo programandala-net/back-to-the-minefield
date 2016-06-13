@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.35.0+201606130037":\
+let version$="0.36.0+201606130052":\
 
 goto @init
 
@@ -97,7 +97,7 @@ let ss=0
 
 let paper_color=7-level:\
 let border_color=0:\
-let mines=32+level*8
+let mines=32+level*4
 
 border border_color:\
 paper paper_color:\
@@ -291,7 +291,7 @@ print #1;ink 9;paper 8; \
 
 @print_surrounding_mines:
 
-print #1; ink 9; paper (4-surrounding_mines);\
+print #1; ink 9; paper detector_color(surrounding_mines+1);\
   at 1,10;surrounding_mines;"    ":\
 return
 
@@ -420,7 +420,7 @@ return
 
 @l8444:
 
-gosub @l9300
+gosub @the_nest
 let dx=30
 for u=.155 to .005 step -.01
   print at 0,dx; ink 0; paper 7;"\n "
@@ -442,7 +442,7 @@ for t=0 to 2
   next l
 next t
 ink 0
-gosub @l9300
+gosub @the_nest
 print at 0,0; ink 7; paper 0;"   ¡Dos mil puntos extra!       "
 let score=score+2000
 for b=0 to 7
@@ -764,6 +764,12 @@ let ink_color=9
 
 let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 
+dim detector_color(4):\
+let detector_color(1)=4:\
+let detector_color(2)=5:\
+let detector_color(3)=6:\
+let detector_color(4)=2
+
 # Variables
 
 let record_player$="IAN":\
@@ -931,9 +937,9 @@ randomize:\
 return
 
 # ==============================================================
-# subroutine
+# subroutine: the_nest
 
-@l9300:
+@the_nest:
 
 print at 4,4+ss;"\ :";\
       at 4,6+ss;"\: "
@@ -956,13 +962,15 @@ return
 # ==============================================================
 # subroutine: last level
 
+# XXX TODO -- rewrite
+# XXX FIXME --
+
 @last_level:
 
 let ss=int (rnd*11)+6
 beep .3,-12
 
-# XXX OLD -- close the door:
-print at 0,15;"\h\h";at 1,15;"\f\f"
+print at top_fence_row,door_col;"\f\f\f"
 
 beep .3,-12
 for n=0 to 1:\
@@ -982,7 +990,7 @@ for n=2 to -1 step -1
     ink n
   if n=-1 then\
     flash 1: bright 0
-  gosub @l9300
+  gosub @the_nest
 next n
 print at 11,5+ss; ink paper_color; paper paper_color;"\o"
 flash 0

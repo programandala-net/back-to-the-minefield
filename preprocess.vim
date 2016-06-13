@@ -9,6 +9,7 @@
 " 2016-06-08: Remove indented comments.
 " 2016-06-12: Update.
 " 2016-06-13: Update.
+" 2016-06-14: Update.
 
 set nomore
 
@@ -50,6 +51,10 @@ set nomore
 
 " Shorten for-next variable names
 %substitute,\<miner_col\>,i,gIe
+
+" Shorten numeric array names
+
+%substitute,\<detector_color\>,d,gIe
 
 " Shorten numeric variable names
 
