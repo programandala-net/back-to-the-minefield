@@ -35,6 +35,8 @@
 #
 # 2016-06-09: Improve with UDG defined in Z80 source. Create also a DSK disk
 # image for +3.
+#
+# 2016-06-13: Use start line 1 and increment 1.
 
 # ==============================================================
 
@@ -62,7 +64,7 @@ tmp/regreso_al_campo_de_minas.zmakebas: \
 	vim --noplugin $@ -S preprocess.vim
 
 tmp/main.tap: tmp/regreso_al_campo_de_minas.zmakebas
-	zmakebas -n DISK -a 1 -l -o $@ $<
+	zmakebas -n DISK -a 1 -l -i 1 -s 1 -o $@ $<
 
 regreso_al_campo_de_minas.tap: tmp/main.tap tmp/udg.tap
 	cat $^ > $@
