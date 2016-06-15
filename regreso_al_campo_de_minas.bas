@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2:\
 
-let version$="0.44.0+201606151905":\
+let version$="0.45.0+201606151909":\
 
 goto @init
 
@@ -172,6 +172,7 @@ let trail$=trail$+chr$ row+chr$ col
 if door_closed then\
     if row=key_row then\
       if col=key_col then\
+        print at row,col; paper pa;protagonist$:\
         gosub @open_the_door:\
         goto @step_done
 
@@ -182,9 +183,9 @@ if screen$ (row,col)<>" " then\
 if level=last_level and pa<>paper_color and row<17 then\
   gosub @erase_the_path
 
-@step_done:
-
 print at row,col; paper pa;protagonist$
+
+@step_done:
 
 # XXX REMAK -- There's a bug in Sinclar BASIC: the following
 # calculation returns a wrong non-integer value:
