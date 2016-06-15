@@ -14,11 +14,18 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2:\
 
-let version$="0.39.0+201606151827":\
+let version$="0.40.0+201606151846":\
 
 goto @init
 
 # Note: version number after Semantic Versioning: http://semver.org
+
+# ==============================================================
+# Functions
+
+deffn random_row()=int(rnd*mined_rows)+top_mined_row
+
+deffn random_col()=int(rnd*30)+1
 
 # ==============================================================
 # Miner
@@ -118,7 +125,7 @@ print paper 8;bright 1;\
 
 for w=1 to mines:\
   print\
-    at int (rnd*mined_rows)+top_mined_row,int (rnd*30)+1;\
+    at fn random_row(),fn random_col();\
     ink paper_color;"\o":\
   beep .0015,35:\
 next w
@@ -157,8 +164,6 @@ if level=(last_level-1) then\
   gosub @close_the_door
 
 beep .0875,10
-# XXX OLD:
-#print at 21,31; ink paper_color; paper paper_color;"\h"
 
 # XXX OLD
 # gosub @select_chars
@@ -198,11 +203,21 @@ beep .003,-4
 
 print at old_row,old_col; paper pa;" "
 let trail$=trail$+chr$ row+chr$ col
+
+if door_closed then\
+    if row=key_row then\
+      if col=key_col then\
+        gosub @open_the_door:\
+        goto @step_done
+
 if screen$ (row,col)<>" " then\
   gosub @explosion
 
+# XXX TODO -- remove
 if level=last_level and pa<>paper_color and row<17 then\
   gosub @erase_the_path
+
+@step_done:
 
 print at row,col; paper pa;protagonist$
 
@@ -213,11 +228,7 @@ gosub @update_surrounding_mines
 if row=top_fence_row then\
   goto @level_passed
 
-if door_closed then\
-    if surrounding_mines=3 then\
-      gosub @open_the_door
-
-# XXX TODO -- improve
+# XXX TODO -- improve or remove
 if level>2 and level<last_level and time>50 then\
   if rnd>.98 then\
     goto @miner
@@ -229,8 +240,12 @@ goto @l500
 
 @close_the_door:
 
+let key_row=fn random_row():\
+let key_col=fn random_col():\
+print at key_row,key_col;"\p"\
+
 let message$=\
-  "Ponte entre 3 minas para abrir":\
+  "Necesitas la llave para salir":\
 #  <------------------------------->
 gosub @message
 for i=60 to 10 step -5:\

@@ -90,6 +90,11 @@ set nomore
 %substitute,\<walking_mine_row\>,wmr,gIe
 %substitute,\<walking_mine_step\>,wms,gIe
 
+" Shorten function names
+
+%substitute,\<\(\(def\)\?\s*fn \)\+random_row\>,\1 r,gIe
+%substitute,\<\(\(def\)\?\s*fn \)\+random_col\>,\1 c,gIe
+
 " Remove underscore from remaining variables and labels (zmakebas does not
 " accept them, though the manual says only colon and space are forbidden):
 
