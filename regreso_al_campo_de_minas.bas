@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2:\
 
-let version$="0.42.0+201606151901":\
+let version$="0.43.0+201606151904":\
 
 goto @init
 
@@ -186,7 +186,38 @@ if level=last_level and pa<>paper_color and row<17 then\
 
 print at row,col; paper pa;protagonist$
 
-gosub @update_surrounding_mines
+# XXX REMAK -- There's a bug in Sinclar BASIC: the following
+# calculation returns a wrong non-integer value:
+
+# let surrounding_mines=int(\
+#   (screen$ (row-1,col)<>" ")+\
+#   (screen$ (row+1,col)<>" ")+\
+#   (screen$ (row,col-1)<>" ")+\
+#   (screen$ (row,col+1)<>" "))
+
+# XXX REMARK -- Also this doesn't work fine:
+
+# let surrounding_mines=(screen$ (row-1,col)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
+
+# XXX REMARK -- This slow method works fine:
+
+let front_surrounding_mines=screen$ (row-1,col)<>" ":\
+let back_surrounding_mines=screen$ (row+1,col)<>" ":\
+let left_surrounding_mines=screen$ (row,col-1)<>" ":\
+let right_surrounding_mines=screen$ (row,col+1)<>" ":\
+let surrounding_mines=\
+  front_surrounding_mines+\
+  back_surrounding_mines+\
+  left_surrounding_mines+\
+  right_surrounding_mines:\
+
+gosub @print_surrounding_mines:\
+beep .04*sgn surrounding_mines,surrounding_mines*10:\
+
+return
 
 if row=top_fence_row then\
   goto @level_passed
@@ -238,8 +269,6 @@ return
 # ==============================================================
 # subroutine: status bar
 
-# XXX TODO -- add record
-
 @new_status_bar:
 
 input ;:\
@@ -264,41 +293,6 @@ print #1;ink 9;paper 8;inverse 1; \
 
 print #1; ink 9; paper detector_color(surrounding_mines+1);\
   at 1,6;"      ";surrounding_mines;"      ":\
-return
-
-@update_surrounding_mines:
-
-# XXX REMAK -- There's a bug in Sinclar BASIC: the following
-# calculation returns a wrong non-integer value:
-
-# let surrounding_mines=int(\
-#   (screen$ (row-1,col)<>" ")+\
-#   (screen$ (row+1,col)<>" ")+\
-#   (screen$ (row,col-1)<>" ")+\
-#   (screen$ (row,col+1)<>" "))
-
-# XXX REMARK -- Also this doesn't work fine:
-
-# let surrounding_mines=(screen$ (row-1,col)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
-
-# XXX REMARK -- This slow method works fine:
-
-let front_surrounding_mines=screen$ (row-1,col)<>" ":\
-let back_surrounding_mines=screen$ (row+1,col)<>" ":\
-let left_surrounding_mines=screen$ (row,col-1)<>" ":\
-let right_surrounding_mines=screen$ (row,col+1)<>" ":\
-let surrounding_mines=\
-  front_surrounding_mines+\
-  back_surrounding_mines+\
-  left_surrounding_mines+\
-  right_surrounding_mines:\
-
-gosub @print_surrounding_mines:\
-beep .04*sgn surrounding_mines,surrounding_mines*10:\
-
 return
 
 # ==============================================================
