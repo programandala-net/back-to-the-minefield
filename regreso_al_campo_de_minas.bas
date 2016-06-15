@@ -11,10 +11,10 @@ rem by Marcos Cruz (programandala.net), 2016.
 
 # ==============================================================
 
-border 0: paper 0: ink 7:\
+border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2:\
 
-let version$="0.38.0+201606151812":\
+let version$="0.39.0+201606151827":\
 
 goto @init
 
@@ -105,11 +105,8 @@ ink ink_color:\
 cls:\
 gosub @no_message
 
-print at top_fence_row,0;fence$:\
-for n=top_safe_row to bottom_safe_row:\
-  print at n,0;"\f                              \f":\
-next n:\
-print at bottom_fence_row,0;fence$
+load!"fence.scr"code
+
 print at row,col;protagonist$
 
 let message$="Poniendo minas...":\
@@ -736,6 +733,8 @@ let udg1=65535-21*8*2:\
 let udg2=udg1+21*8:\
 load "UDG.BIN" code udg1 
 
+
+
 # Constants
 
 let first_level=6:rem XXX TMP -- change for debugging -- default=1
@@ -776,6 +775,16 @@ let detector_color(4)=2
 
 let record_player$="IAN":\
 let record=250
+
+# Files
+
+gosub @select_graphics:\
+print at top_fence_row,0;fence$:\
+for n=top_safe_row to bottom_safe_row:\
+  print at n,0;"\f                              \f":\
+next n:\
+print at bottom_fence_row,0;fence$:\
+save!"fence.scr"code 16384,6144
 
 # ==============================================================
 # menu
