@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2:\
 
-let version$="0.43.0+201606151904":\
+let version$="0.44.0+201606151905":\
 
 goto @init
 
@@ -215,9 +215,7 @@ let surrounding_mines=\
   right_surrounding_mines:\
 
 gosub @print_surrounding_mines:\
-beep .04*sgn surrounding_mines,surrounding_mines*10:\
-
-return
+beep .04*sgn surrounding_mines,surrounding_mines*10
 
 if row=top_fence_row then\
   goto @level_passed
