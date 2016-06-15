@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2:\
 
-let version$="0.45.0+201606151909":\
+let version$="0.46.0+201606151914":\
 
 goto @init
 
@@ -179,10 +179,6 @@ if door_closed then\
 if screen$ (row,col)<>" " then\
   gosub @explosion
 
-# XXX TODO -- remove
-if level=last_level and pa<>paper_color and row<17 then\
-  gosub @erase_the_path
-
 print at row,col; paper pa;protagonist$
 
 @step_done:
@@ -302,10 +298,6 @@ return
 # XXX TODO -- try, after the latest changes (2016-06-12)
 
 print at walking_mine_row,walking_mine_col; paper pa;" "
-
-# XXX TODO -- move this out:
-# if level>=5 and paper_color<>pa and time>2000 then\
-#   gosub @erase_the_path
 
 let walking_mine_step=walking_mine_step+2:\
 beep .0018,60
@@ -630,38 +622,6 @@ let time=time+35
 # XXX OLD
 #paper paper_color
 
-return
-
-# ==============================================================
-# subroutine: erase the path
-
-@erase_the_path:
-
-# XXX TODO -- use the history instead
-
-let pa=paper_color
-
-# XXX TODO -- adapt
-print at 21,0;\
-  flash 1; bright 1; paper 8; ink 8;\
-  "     Tu rastro se ha borrado     "
-#  <------------------------------->   
-
-print at 20,14; paper paper_color;"   "
-
-# XXX TODO -- use a constant for the top and bottom rows of the field
-for n=19 to 2 step -.5
-  beep .05,n-10
-  if level<last_level or n>14 then\
-    print at n,1;\
-      over 1; ink paper_color; paper paper_color;\
-      blank_field_row$
-  print at row,col; paper pa;protagonist$
-next n
-print at 20,14; paper pa;"   "
-
-# XXX TODO -- adapt
-print at 21,0;blank_row$
 return
 
 # ==============================================================
