@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 7:\
 clear 65535-21*8*2:\
 
-let version$="0.37.0+201606142113":\
+let version$="0.38.0+201606151812":\
 
 goto @init
 
@@ -102,7 +102,8 @@ let mines=32+level*4
 border border_color:\
 paper paper_color:\
 ink ink_color:\
-cls
+cls:\
+gosub @no_message
 
 print at top_fence_row,0;fence$:\
 for n=top_safe_row to bottom_safe_row:\
@@ -275,24 +276,24 @@ input ;:\
 gosub @select_chars:\
 print #1;paper 8;ink 9;\
   at 0, 0;"Nivel";\
-  at 0,10;"Minas";\
-  at 0,18;"Puntos";\
-  at 1,18;"0000";\
-  at 0,26;"Récor";\
-  at 1,26;"0000":\
+  at 0, 6;"Minas vecinas";\
+  at 0,20;"Puntos";inverse 1;\
+  at 1,20;" 0000 ";inverse 0;\
+  at 0,27;"Récor";inverse 1;\
+  at 1,27;" 0000":\
 gosub @select_graphics
 
 @update_status_bar:
 
-print #1;ink 9;paper 8; \
-  at 1,0;level;" ";\
+print #1;ink 9;paper 8;inverse 1; \
+  at 1,0;"  ";level;"  ";\
   at 1,21-(score>9)-(score>99)-(score>999);score;\
-  at 1,29-(record>9)-(record>99)-(record>999);record
+  at 1,31-(record>9)-(record>99)-(record>999);record
 
 @print_surrounding_mines:
 
 print #1; ink 9; paper detector_color(surrounding_mines+1);\
-  at 1,10;surrounding_mines;"    ":\
+  at 1,6;"      ";surrounding_mines;"      ":\
 return
 
 @update_surrounding_mines:
@@ -407,13 +408,13 @@ goto @again
 gosub @no_message:\
 gosub @select_chars:\
 print bright 1; ink 9; paper border_color;\
-  at 21,(32-len message$)/2;message$;:\
+  at message_row,(32-len message$)/2;message$;:\
 gosub @select_graphics:\
 return
 
 @no_message:
 
-print at 21,0;paper border_color;blank_row$;:\
+print at message_row,0;paper border_color;blank_row$;:\
 return
 
 # ==============================================================
@@ -740,8 +741,9 @@ load "UDG.BIN" code udg1
 let first_level=6:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
-let top_fence_row=0:\
-let bottom_fence_row=20:\
+let message_row=0:\
+let top_fence_row=1:\
+let bottom_fence_row=21:\
 let top_safe_row=top_fence_row+1:\
 let top_mined_row=top_safe_row+1:\
 let bottom_safe_row=bottom_fence_row-1:\

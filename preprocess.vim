@@ -71,9 +71,10 @@ set nomore
 %substitute,\<front_surrounding_mines\>,fsm,gIe
 %substitute,\<ink_color\>,ic,gIe
 %substitute,\<last_level\>,ll,gIe
-%substitute,\<mine_row\>,mr0,gIe
-%substitute,\<mined_rows\>,mr1,gIe
-%substitute,\<miner_row\>,mr2,gIe
+%substitute,\<message_row\>,mr0,gIe
+%substitute,\<mine_row\>,mr1,gIe
+%substitute,\<mined_rows\>,mr2,gIe
+%substitute,\<miner_row\>,mr3,gIe
 %substitute,\<left_surrounding_mines\>,lsm,gIe
 %substitute,\<right_surrounding_mines\>,rsm,gIe
 %substitute,\<surrounding_mines\>,sm,gIe
