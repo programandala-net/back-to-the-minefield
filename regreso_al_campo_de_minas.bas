@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2:\
 
-let version$="0.41.0+201606151847":\
+let version$="0.42.0+201606151901":\
 
 goto @init
 
@@ -80,9 +80,6 @@ ink ink_color:\
 cls:\
 gosub @no_message:\
 load!"fence.scr"code
-
-# XXX TODO -- move down
-print at row,col;protagonist$
 
 let message$="Poniendo minas...":\
 gosub @message
