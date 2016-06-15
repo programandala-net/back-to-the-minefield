@@ -10,6 +10,7 @@
 " 2016-06-12: Update.
 " 2016-06-13: Update.
 " 2016-06-14: Update.
+" 2016-06-15: Update.
 
 set nomore
 
@@ -49,9 +50,6 @@ set nomore
 %substitute,\<version\$,v$,gIe
 %substitute,\<message\$,w$,gIe
 
-" Shorten for-next variable names
-%substitute,\<miner_col\>,i,gIe
-
 " Shorten numeric array names
 
 %substitute,\<detector_color\>,d,gIe
@@ -74,7 +72,6 @@ set nomore
 %substitute,\<message_row\>,mr0,gIe
 %substitute,\<mine_row\>,mr1,gIe
 %substitute,\<mined_rows\>,mr2,gIe
-%substitute,\<miner_row\>,mr3,gIe
 %substitute,\<left_surrounding_mines\>,lsm,gIe
 %substitute,\<right_surrounding_mines\>,rsm,gIe
 %substitute,\<surrounding_mines\>,sm,gIe

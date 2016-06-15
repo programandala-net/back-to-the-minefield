@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2:\
 
-let version$="0.40.0+201606151846":\
+let version$="0.41.0+201606151847":\
 
 goto @init
 
@@ -26,38 +26,6 @@ goto @init
 deffn random_row()=int(rnd*mined_rows)+top_mined_row
 
 deffn random_col()=int(rnd*30)+1
-
-# ==============================================================
-# Miner
-
-# XXX TODO -- convert to a subroutine and move it down
-
-@miner:
-
-let miner_row=int (rnd*13)+4
-
-for miner_col=3 to 30
-
-# XXX OLD
-#  if miner_col=10 or miner_col=20 then next miner_col
-
-  if attr(miner_row,miner_col)<>56 then\
-    print paper 8;ink 9;\
-      at miner_row,miner_col;"\m"
-
-  let mined_row=miner_row-1+int (rnd*3)
-  if attr(mined_row,miner_col-1)<>56 then\
-    print paper paper_color;ink 9;\
-      at mined_row,miner_col-1;"\o"
-
-  beep .002,55
-
-  if attr(miner_row,miner_col)<>56 then\
-    print paper paper_color;\
-      at miner_row,miner_col;" "
-
-next miner_col
-goto @l570
 
 # ==============================================================
 # Start a new game
@@ -110,10 +78,10 @@ border border_color:\
 paper paper_color:\
 ink ink_color:\
 cls:\
-gosub @no_message
-
+gosub @no_message:\
 load!"fence.scr"code
 
+# XXX TODO -- move down
 print at row,col;protagonist$
 
 let message$="Poniendo minas...":\
@@ -221,17 +189,10 @@ if level=last_level and pa<>paper_color and row<17 then\
 
 print at row,col; paper pa;protagonist$
 
-@l570:
-
 gosub @update_surrounding_mines
 
 if row=top_fence_row then\
   goto @level_passed
-
-# XXX TODO -- improve or remove
-if level>2 and level<last_level and time>50 then\
-  if rnd>.98 then\
-    goto @miner
 
 goto @l500
 
