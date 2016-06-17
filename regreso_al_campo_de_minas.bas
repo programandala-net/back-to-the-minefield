@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.47.0+201606170959":\
+let version$="0.47.0+201606171018":\
 
 goto @init
 
@@ -178,9 +178,7 @@ if door_closed then\
 
 # make the first UDG bank the current font, in order to detect
 # the graphics with `screen$()`:
-randomize udg1-264:\
-poke 23606,peek 23670:poke 23607,peek 23671:\
-randomize:\
+poke 23606,udg1_font_low:poke 23607,udg1_font_high:\
 
 let found_char=code screen$(row,col):\
 let front_surrounding_mines=screen$(row-1,col)=mine_char$:\
@@ -245,7 +243,7 @@ gosub @print_surrounding_mines:\
 beep .04*sgn surrounding_mines,surrounding_mines*10
 
 if row=top_fence_row then\
-  print at row,col; paper pa;" ";\
+  print at row,col; paper pa;" ":\
   goto @level_passed
 
 goto @l500
@@ -669,6 +667,9 @@ return
 let udg1=65535-21*8*2:\
 let udg2=udg1+21*8:\
 load "UDG.BIN" code udg1-8
+let udg1_font=udg1-256-8:\
+let udg1_font_high=int(udg1_font/256):\
+let udg1_font_low=udg1_font-(udg1_font_high*256)
 
 # Constants
 

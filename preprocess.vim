@@ -94,6 +94,11 @@ set nomore
 %substitute,\<top_fence_row\>,tfr,gIe
 %substitute,\<top_mined_row\>,tmr,gIe
 %substitute,\<top_safe_row\>,tsr,gIe
+%substitute,\<udg1\>,u1,gIe
+%substitute,\<udg2\>,u2,gIe
+%substitute,\<udg1_font\>,uf,gIe
+%substitute,\<udg1_font_high\>,uh,gIe
+%substitute,\<udg1_font_low\>,ul,gIe
 %substitute,\<walking_mine_col\>,wmc,gIe
 %substitute,\<walking_mine_row\>,wmr,gIe
 %substitute,\<walking_mine_step\>,wms,gIe
