@@ -12,9 +12,9 @@ rem by Marcos Cruz (programandala.net), 2016.
 # ==============================================================
 
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
-clear 65535-21*8*2:\
+clear 65535-21*8*2-8:\
 
-let version$="0.46.0+201606151914":\
+let version$="0.47.0+201606170959":\
 
 goto @init
 
@@ -57,12 +57,15 @@ let trail$=chr$ row+chr$ col
 # counter
 let time=0
 
-let protagonist$="\a":\
-let protagonist_with_damsel$="\b"
+dim protagonist$(2):\
+let protagonist$="\d\e":\
+let protagonist_frame=0:\
+let flower$="\q"
 
-let damsels_row=0:\
-let damsel_1_col=0:\
-let damsel_2_col=0
+# XXX OLD
+# let damsels_row=0:\
+# let damsel_1_col=0:\
+# let damsel_2_col=0
 
 let walking_mine_step=-1:\
 let walking_mine_row=row:\
@@ -91,7 +94,7 @@ print paper 8;bright 1;\
 for w=1 to mines:\
   print\
     at fn random_row(),fn random_col();\
-    ink paper_color;"\o":\
+    ink paper_color;mine_udg$:\
   beep .0015,35:\
 next w
 
@@ -109,19 +112,12 @@ if level=last_level then\
 
 # XXX REMARK -- levels second..last_but_one:
 # XXX TODO -- move to a subroutine
-let damsels_row=int (rnd*12)+4:\
-let damsel_1_col=int (rnd*6)+6:\
-let damsel_2_col=int (rnd*6)+19
-for j=1 to 7
-  print at damsels_row,damsel_1_col;"\d";\
-        at damsels_row,damsel_2_col;"\d"
-  for e=1 to 11: next e
-  beep .002,58
-  print at damsels_row,damsel_1_col;"\e";\
-        at damsels_row,damsel_2_col;"\e"
-  for e=1 to 11: next e
-  beep .002,58
-next j
+# XXX TODO -- store the position of the flowers, in order
+# to restore them before the replay
+let flowers=int(rnd*level)+1:\
+for i=1 to flowers:\
+  print at fn random_row(),fn random_col();flower$:\
+next i:\
 
 @l480:
 
@@ -149,15 +145,17 @@ let old_row=row: let old_col=col
 
 let i$=inkey$
 let row=row+(i$=k$(4))-(i$=k$(3))
-let row=row-(row=21)
+let row=row-(row=(bottom_fence_row+1))
 let col=col+(i$=k$(2))-(i$=k$(1))
 
+# XXX TODO -- remove
 let time=time+1
 
-if level>=4 then\
-  if time>(260*paper_color+70) then\
-    if int (time/(3*paper_color+1))=(time/(3*paper_color+1)) then\
-      gosub @walking_mine
+# XXX TODO -- improve or remove
+# if level>=4 then\
+#   if time>(260*paper_color+70) then\
+#     if int (time/(3*paper_color+1))=(time/(3*paper_color+1)) then\
+#       gosub @walking_mine
 
 if old_row=row and old_col=col then\
   goto @l520
@@ -169,17 +167,44 @@ beep .003,-4
 print at old_row,old_col; paper pa;" "
 let trail$=trail$+chr$ row+chr$ col
 
+# XXX TODO -- move down to save the print
 if door_closed then\
     if row=key_row then\
       if col=key_col then\
-        print at row,col; paper pa;protagonist$:\
+        print at row,col; paper pa;protagonist$(protagonist_frame+1):\
+        let protagonist_frame=not protagonist_frame:\
         gosub @open_the_door:\
         goto @step_done
 
-if screen$ (row,col)<>" " then\
-  gosub @explosion
+# make the first UDG bank the current font, in order to detect
+# the graphics with `screen$()`:
+randomize udg1-264:\
+poke 23606,peek 23670:poke 23607,peek 23671:\
+randomize:\
 
-print at row,col; paper pa;protagonist$
+let found_char=code screen$(row,col):\
+let front_surrounding_mines=screen$(row-1,col)=mine_char$:\
+let back_surrounding_mines=screen$(row+1,col)=mine_char$:\
+let left_surrounding_mines=screen$(row,col-1)=mine_char$:\
+let right_surrounding_mines=screen$(row,col+1)=mine_char$:\
+
+# restore the default font:
+poke 23606,0:poke 23607,60
+
+# mine?
+if found_char=mine_char then\
+  goto @explosion
+
+# fence?
+if found_char=fence_char then\
+  goto @explosion
+
+# flower?
+if found_char=flower_char then\
+  gosub @pick_flower
+
+print at row,col; paper pa;protagonist$(protagonist_frame+1):\
+let protagonist_frame=not protagonist_frame:\
 
 @step_done:
 
@@ -201,20 +226,26 @@ print at row,col; paper pa;protagonist$
 
 # XXX REMARK -- This slow method works fine:
 
-let front_surrounding_mines=screen$ (row-1,col)<>" ":\
-let back_surrounding_mines=screen$ (row+1,col)<>" ":\
-let left_surrounding_mines=screen$ (row,col-1)<>" ":\
-let right_surrounding_mines=screen$ (row,col+1)<>" ":\
+# let front_surrounding_mines=screen$ (row-1,col)<>" ":\
+# let back_surrounding_mines=screen$ (row+1,col)<>" ":\
+# let left_surrounding_mines=screen$ (row,col-1)<>" ":\
+# let right_surrounding_mines=screen$ (row,col+1)<>" ":\
+# let surrounding_mines=\
+#   front_surrounding_mines+\
+#   back_surrounding_mines+\
+#   left_surrounding_mines+\
+#   right_surrounding_mines:\
+
 let surrounding_mines=\
   front_surrounding_mines+\
   back_surrounding_mines+\
   left_surrounding_mines+\
   right_surrounding_mines:\
-
 gosub @print_surrounding_mines:\
 beep .04*sgn surrounding_mines,surrounding_mines*10
 
 if row=top_fence_row then\
+  print at row,col; paper pa;" ";\
   goto @level_passed
 
 goto @l500
@@ -226,7 +257,7 @@ goto @l500
 
 let key_row=fn random_row():\
 let key_col=fn random_col():\
-print at key_row,key_col;"\p"\
+print at key_row,key_col;key_udg$\
 
 let message$=\
   "Necesitas la llave para salir":\
@@ -281,7 +312,7 @@ gosub @select_graphics
 
 print #1;ink 9;paper 8;inverse 1; \
   at 1,0;"  ";level;"  ";\
-  at 1,21-(score>9)-(score>99)-(score>999);score;\
+  at 1,24-(score>9)-(score>99)-(score>999);score;\
   at 1,31-(record>9)-(record>99)-(record>999);record
 
 @print_surrounding_mines:
@@ -292,6 +323,8 @@ return
 
 # ==============================================================
 # subroutine: walking mine
+
+# XXX TODO -- improve or remove
 
 @walking_mine:
 
@@ -304,34 +337,41 @@ beep .0018,60
 let walking_mine_row=code trail$(walking_mine_step):\
 let walking_mine_col=code trail$(walking_mine_step+1):\
 if screen$ (walking_mine_row,walking_mine_col)<>" " then\
-  gosub @explosion
+  goto @explosion
 
 # XXX TODO -- improve:
 print at walking_mine_row,walking_mine_col; paper pa;"\h":\
 return
 
 # ==============================================================
-# subroutine: explosion
+# subroutine: pick flower
+
+@pick_flower:
+
+# XXX TODO --
+let score=score+10
+gosub @update_status_bar
+return
+
+# ==============================================================
+# explosion
 
 @explosion:
 
 # XXX TODO -- remove mine count from the status bar
 
-# XXX TODO -- remove:
-if row=damsels_row then\
-  if col=damsel_1_col or col=damsel_2_col then\
-    gosub @damsel_rescued: return
-
 if level=last_level then\
   if row=8 and col=5+ss then\
     goto @l8444
 
-for i=20 to 1 step -1
-  beep .003,i: print at row,col;"\c"
-  beep .002,10: print at row,col;"\o"
+for i=20 to 1 step -1:\
+  beep .003,i: print at row,col;"\c":\
+  beep .002,10: print at row,col;dead_protagonist_udg$:\
 next i
 beep 1.6,-35
-gosub @replay
+print at row,col;mine_udg$:\
+gosub @replay:\
+print at row,col;dead_protagonist_udg$
 beep 1,-35
 if score>record then\
   gosub @new_record
@@ -402,7 +442,9 @@ gosub @the_nest
 print at 0,0; ink 7; paper 0;"   ¡Dos mil puntos extra!       "
 let score=score+2000
 for b=0 to 7
-  paper b: ink 9: print at row,col;protagonist$
+  paper b: ink 9
+  print at row,col;protagonist$(protagonist_frame+1):\
+  let protagonist_frame=not protagonist_frame
   for n=1 to 14
     beep .002,50-n+b
     border 1: border 2: border 3: border 4
@@ -477,7 +519,8 @@ for t=1 to len trail$ step 2
   print at row,col; paper 7;" "
   let row=code trail$(t):\
   let col=code trail$(t+1):\
-  print at row,col; paper 7;protagonist$:\
+  print at row,col; paper 7;protagonist$(protagonist_frame+1):\
+  let protagonist_frame=not protagonist_frame
   beep .005,5+(t*40/(len trail$))
 
 next t
@@ -536,6 +579,11 @@ goto @new_level
 
 @new_record:
 
+# XXX TMP --
+let record=score:return
+
+# XXX TODO -- rewrite:
+
 for n=1 to 50
   border 1: border 2: border 3: border 4
 next n
@@ -571,7 +619,6 @@ for n=1 to 3
   for m=1 to 4: next m
 next n
 let record=score
-print at 21,0; paper 7; ink 0;"         muy bien  ";record_player$;"          "
 for n=1 to 12
   beep .0045,-10: border 1: border 2: border 6: border 4
 next n
@@ -586,42 +633,6 @@ beep .07,19: beep .08,17
 for n=1 to 3: next n
 beep .1,14: beep .1,12
 print at 10,7;"                  "
-return
-
-# ==============================================================
-# subroutine: damsel rescued
-
-@damsel_rescued:
-
-# XXX OLD
-#print at row,col;protagonist_with_damsel$
-#let protagonist$=protagonist_with_damsel$
-
-# XXX TODO -- simplify the sound effect:
-
-# XXX OLD:
-paper 7
-
-for u=25 to 50 step 5:\
-# XXX OLD
-#  print at row,col;"\g":\
-#  for n=1 to 8 step 2:\
-#   beep .002,n+u:\
-   beep .002,u:\
-    let score=score+5:\
-    gosub @update_status_bar:\
-#  next n:\
-# XXX OLD
-#  print at row,col;"\d":\
-#  for n=1 to 8 step 2
-#    beep .002,n+u
-#  next n
-next u
-let time=time+35
-
-# XXX OLD
-#paper paper_color
-
 return
 
 # ==============================================================
@@ -652,18 +663,16 @@ return
 
 # Graphics
 
-# There are two UDG banks, the first one for graphics and the second
-# one for the Spanish characters.
+# There are two UDG banks: for graphics (udg1) and 
+# for the Spanish characters (udg2).
 
 let udg1=65535-21*8*2:\
 let udg2=udg1+21*8:\
-load "UDG.BIN" code udg1 
-
-
+load "UDG.BIN" code udg1-8
 
 # Constants
 
-let first_level=6:rem XXX TMP -- change for debugging -- default=1
+let first_level=2:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 let message_row=0:\
@@ -681,6 +690,16 @@ let replay_controls$(1)="REPETICIÓN:  [P]ausa  [F]in":\
 let replay_controls$(2)="Una tecla para seguir"
 
 let blank_row$="                                "
+
+let dead_protagonist_udg$="\l":\
+let mine_udg$="\o":\
+let mine_char$="/":\
+let bill_udg$="\n":\
+let fence_char=38:\
+let bill_char=46:\
+let mine_char=47:\
+let key_char=48:\
+let flower_char=49
 
 let fence$="\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 
@@ -711,6 +730,28 @@ for n=top_safe_row to bottom_safe_row:\
 next n:\
 print at bottom_fence_row,0;fence$:\
 save!"fence.scr"code 16384,6144
+
+# ==============================================================
+# XXX TMP -- tests
+
+# rem --------------------------------
+# paper 2
+# ink 7
+# print at 15,15;mine_udg$;" (mine)=";
+# gosub @graphics_font
+# let tmp= code screen$(15,15)
+# gosub @default_font
+# print tmp
+
+# print at 16,15;"  (space)=";
+# gosub @graphics_font
+# let tmp= code screen$(16,15)
+# gosub @default_font
+# print tmp
+
+# stop
+
+
 
 # ==============================================================
 # menu
@@ -929,9 +970,9 @@ for n=2 to -1 step -1
     flash 1: bright 0
   gosub @the_nest
 next n
-print at 11,5+ss; ink paper_color; paper paper_color;"\o"
+print at 11,5+ss; ink paper_color; paper paper_color;mine_udg$
 flash 0
-print at 8,5+ss; flash 0;"\n"
+print at 8,5+ss; flash 0;bill_udg$
 return
 
 # vim: ft=sinclairbasic:fileencoding=latin1

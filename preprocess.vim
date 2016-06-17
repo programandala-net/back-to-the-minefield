@@ -38,12 +38,16 @@ set nomore
 
 " Shorten string variable names
 
+%substitute,\<mine_udg\$,a$,gIe
 %substitute,\<blank_row\$,b$,gIe
+%substitute,\<bill_udg\$,c$,gIe
+%substitute,\<mine_char\$,d$,gIe
 %substitute,\<fence\$,f$,gIe
+%substitute,\<flower\$,g$,gIe
 %substitute,\<record_player\$,h$,gIe
 %substitute,\<replay_controls\$,m$,gIe
 %substitute,\<protagonist\$,p$,gIe
-%substitute,\<protagonist_with_damsel\$,q$,gIe
+%substitute,\<dead_protagonist_udg\$,q$,gIe
 %substitute,\<safe_zone\$,s$,gIe
 %substitute,\<trail\$,t$,gIe
 %substitute,\<blank_field_row\$,u$,gIe
@@ -57,18 +61,24 @@ set nomore
 " Shorten numeric variable names
 
 %substitute,\<border_color\>,bc,gIe
+%substitute,\<bill_char\>,bh,gIe
 %substitute,\<bottom_fence_row\>,bfr,gIe
 %substitute,\<back_surrounding_mines\>,bsm,gIe
 %substitute,\<bottom_safe_row\>,bsr,gIe
 %substitute,\<door_closed\>,dcl,gIe
 %substitute,\<door_col\>,dco,gIe
-%substitute,\<damsel_1_col\>,d1c,gIe
-%substitute,\<damsel_2_col\>,d2c,gIe
-%substitute,\<damsels_row\>,dr,gIe
+" XXX OLD
+"%substitute,\<damsel_1_col\>,d1c,gIe
+"%substitute,\<damsel_2_col\>,d2c,gIe
+"%substitute,\<damsels_row\>,dr,gIe
+%substitute,\<fence_char\>,fc,gIe
+%substitute,\<flower_char\>,fh,gIe
 %substitute,\<first_level\>,fl,gIe
 %substitute,\<front_surrounding_mines\>,fsm,gIe
 %substitute,\<ink_color\>,ic,gIe
+%substitute,\<key_char\>,kc,gIe
 %substitute,\<last_level\>,ll,gIe
+%substitute,\<mine_char\>,mc,gIe
 %substitute,\<message_row\>,mr0,gIe
 %substitute,\<mine_row\>,mr1,gIe
 %substitute,\<mined_rows\>,mr2,gIe
@@ -76,6 +86,7 @@ set nomore
 %substitute,\<right_surrounding_mines\>,rsm,gIe
 %substitute,\<surrounding_mines\>,sm,gIe
 %substitute,\<paper_color\>,pc,gIe
+%substitute,\<protagonist_frame\>,pf,gIe
 %substitute,\<paused_replay\>,pr,gIe
 %substitute,\<record\>,r,gIe
 %substitute,\<score\>,s,gIe
@@ -119,3 +130,5 @@ let s:header.="# By Marcos Cruz (programandala.net)\r"
 
 write
 quit
+
+" vim: fileencoding=latin1

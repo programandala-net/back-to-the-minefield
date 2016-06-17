@@ -7,42 +7,86 @@
 ; User Defined Graphics
 ;
 ; 2016-06-09: Start, converted to Z80 from the BASIC source.
+; 2016-06-15: Add the graphic of the key.
+; 2016-06-16: Add the graphic of the flower.
+; 2016-06-17: Add fake space; add the graphic of the dead damsel.
 
 ; ==============================================================
 ; UDG bank 1: game graphics
 
   org 0
 
+; fake space, needed when the UDG set is used as font by `screen$()`:
+
+defs 8,0
+
 bank1 equ $
 
 ; A -- protagonist:
 defb 24,24,36,195,195,36,24,24
-; B -- protagonist carrying a damsel:
+
+; B -- protagonist carrying a damsel: XXX OLD
 defb 90,90,36,219,219,36,90,153
+
 ; C -- mine exploding:
 defb 165,165,66,90,40,189,126,129
+
 ; D -- damsel 1:
-defb 72,84,73,62,8,28,62,62
+;defb 72,84,73,62,8,28,62,62
+defb %01001000
+defb %01010100
+defb %01001001
+defb %00111110
+defb %00001000
+defb %00011100
+defb %00111110
+defb %00111110
+
 ; E -- damsel 2:
-defb 18,42,146,124,16,56,124,124
+;defb 18,42,146,124,16,56,124,124
+defb %00010010
+defb %00101010
+defb %10010010
+defb %01111100
+defb %00010000
+defb %00111000
+defb %01111100
+defb %01111100
+
 ; F -- fence:
 defb 8,16,8,186,93,16,8,16
-; G -- protagonist carrying a damsel:
+
+; G -- protagonist carrying a damsel: XXX OLD
 defb 90,90,36,195,195,36,90,153
-; H -- walking mine:
+
+; H -- walking mine: XXX OLD
 defb 0,0,0,0,60,126,165,165
-; I -- not used:
+
+; I -- not used: XXX OLD
 defs 8,0
-; J -- not used:
+
+; J -- not used: XXX OLD
 defs 8,0
-; K -- fence door?:
+
+; K -- fence door?: XXX OLD
 defb 0,0,0,0,0,0,85,170
-; L -- not used:
-defs 8,0
-; M -- miner:
+
+; L -- dead damsel
+defb %00010000
+defb %00101010
+defb %00010010
+defb %01111110
+defb %10010000
+defb %00111000
+defb %10100101
+defb %01100110
+
+; M -- miner: XXX OLD
 defb 192,32,18,13,63,16,32,192
+
 ; N -- Bill:
 defb 0,0,192,192,78,74,91,112
+
 ; O -- mine:
 defb 0,0,0,0,60,126,0,0
 
@@ -55,6 +99,16 @@ defb %00001100
 defb %01111110
 defb %10000001
 defb %01111110
+
+; Q -- flower:
+defb %00110110
+defb %01001001
+defb %00110110
+defb %01011100
+defb %00101000
+defb %00001010
+defb %00001100
+defb %00001000
 
 ; ==============================================================
 ; UDG bank 2: Spanish letters and symbols
