@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.48.0+201606171450":\
+let version$="0.49.0+201606181512":\
 
 goto @init
 
@@ -557,7 +557,7 @@ let time_score=time_score*level
 #restore @applause_sound:\
 #gosub @sound
 
-for i=15 to 30:\
+for i=1 to 8:\
   print at row,col;protagonist$(1):\
   if inkey$<>"" then goto @level_replay
 #  for j=1 to 100:next j
@@ -581,19 +581,18 @@ for i=4 to 22 step 6:\
   beep .005,i+24:\
 next i
 
-for i=1 to 80:\
+for i=1 to 8:\
   for j=1 to 6:\
     print at message_row,0;paper j;blank_row$;:\
     border j:\
   next j:\
-next i
+next i:\
+print at message_row,0;paper 0;blank_row$;:\
+border border_color
 
 # XXX TODO -- variable to flash the score
 let score=score+time_score+mines:\
 gosub @update_status_bar
-
-for n=1 to 120:\
-next n
 
 let level=level+1:\
 goto @new_level
