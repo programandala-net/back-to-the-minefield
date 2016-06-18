@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.47.0+201606171018":\
+let version$="0.48.0+201606171450":\
 
 goto @init
 
@@ -243,7 +243,6 @@ gosub @print_surrounding_mines:\
 beep .04*sgn surrounding_mines,surrounding_mines*10
 
 if row=top_fence_row then\
-  print at row,col; paper pa;" ":\
   goto @level_passed
 
 goto @l500
@@ -255,6 +254,7 @@ goto @l500
 
 let key_row=fn random_row():\
 let key_col=fn random_col():\
+# XXX FIXME -- key_udg$, not found:
 print at key_row,key_col;key_udg$\
 
 let message$=\
@@ -369,7 +369,10 @@ next i
 beep 1.6,-35
 print at row,col;mine_udg$:\
 gosub @replay:\
+
+# XXX FIXME -- only if the replay was completed:
 print at row,col;dead_protagonist_udg$
+
 beep 1,-35
 if score>record then\
   gosub @new_record
@@ -480,6 +483,8 @@ goto @l1200
 
 @replay:
 
+# XXX FIXME -- remove the surrounding mines
+
 # XXX TODO -- 
 # print at walking_mine_row,walking_mine_col;" ";\
 #       at row,col;" "
@@ -539,28 +544,49 @@ return
 
 @level_passed:
 
-# XXX TODO -- remove surrounding mines
+let surrounding_mines=0:\
+gosub @print_surrounding_mines
 
 # XXX TODO -- improve time score with the frames system variable
 
 let time_score=(int ((2000-time)/50))*5
-if time_score<50 then\
-  let time_score=50
+let time_score=time_score*(time_score>=50)+50*(time_score<50)
 let time_score=time_score*level
-for n=15 to 50:\
-  beep .001+((50-30)/2000),(50+n/2.8):\
-  border 2: border 7: border 0:\
-next n
-border border_color
+
+# XXX TODO --
+#restore @applause_sound:\
+#gosub @sound
+
+for i=15 to 30:\
+  print at row,col;protagonist$(1):\
+  if inkey$<>"" then goto @level_replay
+#  for j=1 to 100:next j
+  beep .1,0:\
+  print at row,col;protagonist$(2):\
+  beep .1,10:\
+  if inkey$<>"" then goto @level_replay
+next i
+
+@level_replay:
+
+# XXX TODO --
+#restore @no_sound:\
+#gosub @sound
+
+print at row,col;paper pa;" "
 
 gosub @replay
 
-for g=4 to 22 step 6:\
-  beep .005,g+24:\
-next g
-for n=1 to 80:\
-  border 1: border 2: border 3: border 4: border 5: border 6:\
-next n
+for i=4 to 22 step 6:\
+  beep .005,i+24:\
+next i
+
+for i=1 to 80:\
+  for j=1 to 6:\
+    print at message_row,0;paper j;blank_row$;:\
+    border j:\
+  next j:\
+next i
 
 # XXX TODO -- variable to flash the score
 let score=score+time_score+mines:\
@@ -734,6 +760,10 @@ save!"fence.scr"code 16384,6144
 
 # ==============================================================
 # XXX TMP -- tests
+
+# let time=100
+# let level=2
+# goto @level_passed
 
 # rem --------------------------------
 # paper 2
@@ -975,5 +1005,22 @@ print at 11,5+ss; ink paper_color; paper paper_color;mine_udg$
 flash 0
 print at 8,5+ss; flash 0;bill_udg$
 return
+
+# ==============================================================
+# Sounds
+
+# XXX TODO --
+
+@sound:
+for i=0 to 13:\
+  read d: out 65333,i: out 49149,d:\
+next i:\
+return
+
+@applause_sound:
+data 0,0,0,0,0,0,30,64,15,16,15,0,7,24
+
+@no_sound:
+data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 # vim: ft=sinclairbasic:fileencoding=latin1
