@@ -14,7 +14,7 @@ rem by Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.49.0+201606181512":\
+let version$="0.50.0+201606181937":\
 
 goto @init
 

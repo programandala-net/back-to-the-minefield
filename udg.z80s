@@ -10,6 +10,7 @@
 ; 2016-06-15: Add the graphic of the key.
 ; 2016-06-16: Add the graphic of the flower.
 ; 2016-06-17: Add fake space; add the graphic of the dead damsel.
+; 2016-06-18: Modify the dead damsel.
 
 ; ==============================================================
 ; UDG bank 1: game graphics
@@ -72,14 +73,30 @@ defs 8,0
 defb 0,0,0,0,0,0,85,170
 
 ; L -- dead damsel
+
+if 0
+
 defb %00010000
 defb %00101010
 defb %00010010
-defb %01111110
+defb %01111100
 defb %10010000
 defb %00111000
 defb %10100101
 defb %01100110
+
+else
+
+defb %01100110
+defb %10100101
+defb %00111000
+defb %10010000
+defb %01111100
+defb %00010010
+defb %00101010
+defb %00010000
+
+endif
 
 ; M -- miner: XXX OLD
 defb 192,32,18,13,63,16,32,192
@@ -91,6 +108,7 @@ defb 0,0,192,192,78,74,91,112
 defb 0,0,0,0,60,126,0,0
 
 ; P -- key:
+; XXX TODO -- improve
 defb %00111100
 defb %00011100
 defb %00111100
