@@ -1,42 +1,41 @@
 rem Regreso al campo de minas
-#
-#   "Campo de minas" was published by Indescomp. It was the Spanish
-#   version of "Minefield", written by Ian Andrew.
-#
-#   This is a fork under development
-rem by Marcos Cruz (programandala.net), 2016.
-#
-#   This source is in the zmakebas format of Sinclair BASIC, with
-#   extended features (e.g. long string variable names).
+//
+//  Written in Vimclair BASIC for ZX Spectrum 128.
+//
+//  Based on "Campo de minas" (published by Indescomp), the Spanish
+//  version of "Minefield", written by Ian Andrew.
+//
+rem By Marcos Cruz (programandala.net), 2016.
+//
 
-# ==============================================================
+// ==============================================================
 
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.50.0+201606181937":\
+let version$="0.51.0+201606191907":\
 
 goto @init
 
-# Note: version number after Semantic Versioning: http://semver.org
+// Note: version number after Semantic Versioning: http://semver.org
 
-# ==============================================================
-# Functions
+// ==============================================================
+// Functions
 
 deffn random_row()=int(rnd*mined_rows)+top_mined_row
 
 deffn random_col()=int(rnd*30)+1
 
-# ==============================================================
-# Start a new game
+// ==============================================================
+// Start a new game
 
 @new_game:
 
 let level=first_level:\
 let score=0
 
-# ==============================================================
-# Enter a new level
+// ==============================================================
+// Enter a new level
 
 @new_level:
 
@@ -45,16 +44,16 @@ gosub @select_graphics
 let surrounding_mines=0:\
 let door_closed=0
 
-# coordinates
+// coordinates
 let row=bottom_fence_row:\
 let col=start_col:\
 let old_row=row:\
 let old_col=col
 
-# list of coordinates, stored as chars
+// list of coordinates, stored as chars
 let trail$=chr$ row+chr$ col
 
-# counter
+// counter
 let time=0
 
 dim protagonist$(2):\
@@ -62,10 +61,10 @@ let protagonist$="\d\e":\
 let protagonist_frame=0:\
 let flower$="\q"
 
-# XXX OLD
-# let damsels_row=0:\
-# let damsel_1_col=0:\
-# let damsel_2_col=0
+// XXX OLD
+// let damsels_row=0:\
+// let damsel_1_col=0:\
+// let damsel_2_col=0
 
 let walking_mine_step=-1:\
 let walking_mine_row=row:\
@@ -92,7 +91,7 @@ print paper 8;bright 1;\
   at bottom_fence_row-1,1;safe_zone$
 
 for w=1 to mines:\
-  print\
+  print \
     at fn random_row(),fn random_col();\
     ink paper_color;mine_udg$:\
   beep .0015,35:\
@@ -105,28 +104,28 @@ print paper 8;\
 gosub @no_message:\
 gosub @new_status_bar
 
-if level=first_level then\
+if level=first_level then \
   goto @l480
-if level=last_level then\
+if level=last_level then \
   gosub @last_level: goto @l480
 
-# XXX REMARK -- levels second..last_but_one:
-# XXX TODO -- move to a subroutine
-# XXX TODO -- store the position of the flowers, in order
-# to restore them before the replay
+// XXX REMARK -- levels second..last_but_one:
+// XXX TODO -- move to a subroutine
+// XXX TODO -- store the position of the flowers, in order
+// to restore them before the replay
 let flowers=int(rnd*level)+1:\
 for i=1 to flowers:\
   print at fn random_row(),fn random_col();flower$:\
-next i:\
+next i
 
 @l480:
 
-if level=(last_level-1) then\
+if level=(last_level-1) then \
   gosub @close_the_door
 
 beep .0875,10
 
-# XXX OLD
+// XXX OLD
 # gosub @select_chars
 # print at 21,4; inverse 1;"¡Adelante!"
 # gosub @select_graphics
@@ -134,7 +133,7 @@ beep .0875,10
 for n=1 to 20
   beep .002,n+20
 next n
-#print at 21,4;"         ": beep .05,37
+# print at 21,4;"         ": beep .05,37
 goto @l535
 
 @l500:
@@ -148,16 +147,16 @@ let row=row+(i$=k$(4))-(i$=k$(3))
 let row=row-(row=(bottom_fence_row+1))
 let col=col+(i$=k$(2))-(i$=k$(1))
 
-# XXX TODO -- remove
+// XXX TODO -- remove
 let time=time+1
 
-# XXX TODO -- improve or remove
-# if level>=4 then\
-#   if time>(260*paper_color+70) then\
-#     if int (time/(3*paper_color+1))=(time/(3*paper_color+1)) then\
+// XXX TODO -- improve or remove
+# if level>=4 then \
+#   if time>(260*paper_color+70) then \
+#     if int (time/(3*paper_color+1))=(time/(3*paper_color+1)) then \
 #       gosub @walking_mine
 
-if old_row=row and old_col=col then\
+if old_row=row and old_col=col then \
   goto @l520
 
 beep .003,-4
@@ -167,17 +166,17 @@ beep .003,-4
 print at old_row,old_col; paper pa;" "
 let trail$=trail$+chr$ row+chr$ col
 
-# XXX TODO -- move down to save the print
-if door_closed then\
-    if row=key_row then\
-      if col=key_col then\
+// XXX TODO -- move down to save the print
+if door_closed then \
+    if row=key_row then \
+      if col=key_col then \
         print at row,col; paper pa;protagonist$(protagonist_frame+1):\
         let protagonist_frame=not protagonist_frame:\
         gosub @open_the_door:\
         goto @step_done
 
-# make the first UDG bank the current font, in order to detect
-# the graphics with `screen$()`:
+// make the first UDG bank the current font, in order to detect
+// the graphics with `screen$()`:
 poke 23606,udg1_font_low:poke 23607,udg1_font_high:\
 
 let found_char=code screen$(row,col):\
@@ -186,28 +185,28 @@ let back_surrounding_mines=screen$(row+1,col)=mine_char$:\
 let left_surrounding_mines=screen$(row,col-1)=mine_char$:\
 let right_surrounding_mines=screen$(row,col+1)=mine_char$:\
 
-# restore the default font:
+// restore the default font:
 poke 23606,0:poke 23607,60
 
-# mine?
-if found_char=mine_char then\
+// mine?
+if found_char=mine_char then \
   goto @explosion
 
-# fence?
-if found_char=fence_char then\
+// fence?
+if found_char=fence_char then \
   goto @explosion
 
-# flower?
-if found_char=flower_char then\
+// flower?
+if found_char=flower_char then \
   gosub @pick_flower
 
 print at row,col; paper pa;protagonist$(protagonist_frame+1):\
-let protagonist_frame=not protagonist_frame:\
+let protagonist_frame=not protagonist_frame
 
 @step_done:
 
-# XXX REMAK -- There's a bug in Sinclar BASIC: the following
-# calculation returns a wrong non-integer value:
+// XXX REMAK -- There's a bug in Sinclar BASIC: the following
+// calculation returns a wrong non-integer value:
 
 # let surrounding_mines=int(\
 #   (screen$ (row-1,col)<>" ")+\
@@ -215,14 +214,14 @@ let protagonist_frame=not protagonist_frame:\
 #   (screen$ (row,col-1)<>" ")+\
 #   (screen$ (row,col+1)<>" "))
 
-# XXX REMARK -- Also this doesn't work fine:
+// XXX REMARK -- Also this doesn't work fine:
 
 # let surrounding_mines=(screen$ (row-1,col)<>" ")
 # let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
 # let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
 # let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
 
-# XXX REMARK -- This slow method works fine:
+// XXX REMARK -- This slow method works fine:
 
 # let front_surrounding_mines=screen$ (row-1,col)<>" ":\
 # let back_surrounding_mines=screen$ (row+1,col)<>" ":\
@@ -242,19 +241,19 @@ let surrounding_mines=\
 gosub @print_surrounding_mines:\
 beep .04*sgn surrounding_mines,surrounding_mines*10
 
-if row=top_fence_row then\
+if row=top_fence_row then \
   goto @level_passed
 
 goto @l500
 
-# ==============================================================
-# subroutine: close the door
+// ==============================================================
+// subroutine: close the door
 
 @close_the_door:
 
 let key_row=fn random_row():\
 let key_col=fn random_col():\
-# XXX FIXME -- key_udg$, not found:
+// XXX FIXME -- key_udg$, not found:
 print at key_row,key_col;key_udg$\
 
 let message$=\
@@ -271,8 +270,8 @@ gosub @no_message:\
 let door_closed=1:\
 return
 
-# ==============================================================
-# subroutine: open the door
+// ==============================================================
+// subroutine: open the door
 
 @open_the_door:
 
@@ -290,8 +289,8 @@ gosub @no_message:\
 let door_closed=0:\
 return
  
-# ==============================================================
-# subroutine: status bar
+// ==============================================================
+// subroutine: status bar
 
 @new_status_bar:
 
@@ -319,14 +318,14 @@ print #1; ink 9; paper detector_color(surrounding_mines+1);\
   at 1,6;"      ";surrounding_mines;"      ":\
 return
 
-# ==============================================================
-# subroutine: walking mine
+// ==============================================================
+// subroutine: walking mine
 
-# XXX TODO -- improve or remove
+// XXX TODO -- improve or remove
 
 @walking_mine:
 
-# XXX TODO -- try, after the latest changes (2016-06-12)
+// XXX TODO -- try, after the latest changes (2016-06-12)
 
 print at walking_mine_row,walking_mine_col; paper pa;" "
 
@@ -334,32 +333,32 @@ let walking_mine_step=walking_mine_step+2:\
 beep .0018,60
 let walking_mine_row=code trail$(walking_mine_step):\
 let walking_mine_col=code trail$(walking_mine_step+1):\
-if screen$ (walking_mine_row,walking_mine_col)<>" " then\
+if screen$ (walking_mine_row,walking_mine_col)<>" " then \
   goto @explosion
 
-# XXX TODO -- improve:
+// XXX TODO -- improve:
 print at walking_mine_row,walking_mine_col; paper pa;"\h":\
 return
 
-# ==============================================================
-# subroutine: pick flower
+// ==============================================================
+// subroutine: pick flower
 
 @pick_flower:
 
-# XXX TODO --
+// XXX TODO --
 let score=score+10
 gosub @update_status_bar
 return
 
-# ==============================================================
-# explosion
+// ==============================================================
+// explosion
 
 @explosion:
 
-# XXX TODO -- remove mine count from the status bar
+// XXX TODO -- remove mine count from the status bar
 
-if level=last_level then\
-  if row=8 and col=5+ss then\
+if level=last_level then \
+  if row=8 and col=5+ss then \
     goto @l8444
 
 for i=20 to 1 step -1:\
@@ -370,20 +369,20 @@ beep 1.6,-35
 print at row,col;mine_udg$:\
 gosub @replay:\
 
-# XXX FIXME -- only if the replay was completed:
+// XXX FIXME -- only if the replay was completed:
 print at row,col;dead_protagonist_udg$
 
 beep 1,-35
-if score>record then\
+if score>record then \
   gosub @new_record
 gosub @update_status_bar
 let message$="¿Otra vez?":\
 gosub @message
 
-# XXX OLD
+// XXX OLD
 @l1200:
 
-# XXX OLD
+// XXX OLD
 # gosub @select_chars
 # print \
 #   at 21,29; paper border_color; ink 9;"   ";\
@@ -396,8 +395,8 @@ if i$="n" or i$="N" then cls:stop
 if i$="s" or i$="S" then goto @new_game
 goto @again
 
-# ==============================================================
-# subroutine: message
+// ==============================================================
+// subroutine: message
 
 @message:
 
@@ -413,7 +412,7 @@ return
 print at message_row,0;paper border_color;blank_row$;:\
 return
 
-# ==============================================================
+// ==============================================================
 
 @l8444:
 
@@ -469,23 +468,23 @@ print '\
 print ''''';\
   "Puntuación: ";score;"."
 #  <------------------------------>
-print\
+print \
   "¿Por qué no vuelves a jugar y"'
   "tratas de mejorarla?"
 #  <------------------------------>
-if score>record then\
+if score>record then \
   gosub @new_record
 
 goto @l1200
 
-# ==============================================================
-# subroutine: replay
+// ==============================================================
+// subroutine: replay
 
 @replay:
 
-# XXX FIXME -- remove the surrounding mines
+// XXX FIXME -- remove the surrounding mines
 
-# XXX TODO -- 
+// XXX TODO -- 
 # print at walking_mine_row,walking_mine_col;" ";\
 #       at row,col;" "
 
@@ -512,9 +511,9 @@ for t=1 to len trail$ step 2
     if paused_replay then \
       gosub @show_replay_bar:\
       goto @replay_control
-  if i$="f" or i$="F" then\
+  if i$="f" or i$="F" then \
     goto @replay_end
-  if i$="p" or i$="P" then\
+  if i$="p" or i$="P" then \
     let paused_replay=1:\
     beep .1,10:\
     gosub @show_replay_bar
@@ -539,23 +538,23 @@ let message$=replay_controls$(paused_replay+1):\
   gosub @message:\
 return
 
-# ==============================================================
-# subroutine: level passed
+// ==============================================================
+// subroutine: level passed
 
 @level_passed:
 
 let surrounding_mines=0:\
 gosub @print_surrounding_mines
 
-# XXX TODO -- improve time score with the frames system variable
+// XXX TODO -- improve time score with the frames system variable
 
 let time_score=(int ((2000-time)/50))*5
 let time_score=time_score*(time_score>=50)+50*(time_score<50)
 let time_score=time_score*level
 
-# XXX TODO --
-#restore @applause_sound:\
-#gosub @sound
+// XXX TODO --
+# restore @applause_sound:\
+# gosub @sound
 
 for i=1 to 8:\
   print at row,col;protagonist$(1):\
@@ -569,9 +568,9 @@ next i
 
 @level_replay:
 
-# XXX TODO --
-#restore @no_sound:\
-#gosub @sound
+// XXX TODO --
+# restore @no_sound:\
+# gosub @sound
 
 print at row,col;paper pa;" "
 
@@ -590,22 +589,22 @@ next i:\
 print at message_row,0;paper 0;blank_row$;:\
 border border_color
 
-# XXX TODO -- variable to flash the score
+// XXX TODO -- variable to flash the score
 let score=score+time_score+mines:\
 gosub @update_status_bar
 
 let level=level+1:\
 goto @new_level
 
-# ==============================================================
-# subroutine: new record
+// ==============================================================
+// subroutine: new record
 
 @new_record:
 
-# XXX TMP --
+// XXX TMP --
 let record=score:return
 
-# XXX TODO -- rewrite:
+// XXX TODO -- rewrite:
 
 for n=1 to 50
   border 1: border 2: border 3: border 4
@@ -623,7 +622,7 @@ next m
 print at 10,7; ink 9;"¡Un nuevo récor!"
 gosub @select_graphics
 
-# XXX TODO -- adapt
+// XXX TODO -- adapt
 
 print at 21,0;\
   flash 1; paper 1; ink 7;\
@@ -633,9 +632,9 @@ let record_player$="   "
 for n=1 to 3
   @l5088:
   let record_player$(n)=inkey$
-  if record_player$(n)=" " then\
+  if record_player$(n)=" " then \
     goto @l5088
-  if record_player$(n)>="a" and record_player$(n)<="z" then\
+  if record_player$(n)>="a" and record_player$(n)<="z" then \
     let record_player$(n)=chr$ ((code record_player$(n))-32)
   print at 21,24+n; ink 7; paper 1;record_player$(n)
   beep .12,(n*5)+20
@@ -658,12 +657,12 @@ beep .1,14: beep .1,12
 print at 10,7;"                  "
 return
 
-# ==============================================================
-# subroutine
+// ==============================================================
+// subroutine
 
 @l8450:
 
-# XXX TODO -- simpler
+// XXX TODO -- simpler
 
 for n=1 to 5
   print at row+n,col+n;"*"
@@ -679,15 +678,15 @@ for n=1 to 5
 next n
 return
 
-# ==============================================================
-# init
+// ==============================================================
+// init
 
 @init:
 
-# Graphics
+// Graphics
 
-# There are two UDG banks: for graphics (udg1) and 
-# for the Spanish characters (udg2).
+// There are two UDG banks: for graphics (udg1) and 
+// for the Spanish characters (udg2).
 
 let udg1=65535-21*8*2:\
 let udg2=udg1+21*8:\
@@ -696,7 +695,7 @@ let udg1_font=udg1-256-8:\
 let udg1_font_high=int(udg1_font/256):\
 let udg1_font_low=udg1_font-(udg1_font_high*256)
 
-# Constants
+// Constants
 
 let first_level=2:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
@@ -721,6 +720,7 @@ let dead_protagonist_udg$="\l":\
 let mine_udg$="\o":\
 let mine_char$="/":\
 let bill_udg$="\n":\
+let key_udg$="\p":\
 let fence_char=38:\
 let bill_char=46:\
 let mine_char=47:\
@@ -742,12 +742,12 @@ let detector_color(2)=5:\
 let detector_color(3)=6:\
 let detector_color(4)=2
 
-# Variables
+// Variables
 
 let record_player$="IAN":\
 let record=250
 
-# Files
+// Files
 
 gosub @select_graphics:\
 print at top_fence_row,0;fence$:\
@@ -757,8 +757,8 @@ next n:\
 print at bottom_fence_row,0;fence$:\
 save!"fence.scr"code 16384,6144
 
-# ==============================================================
-# XXX TMP -- tests
+// ==============================================================
+// XXX TMP -- tests
 
 # let time=100
 # let level=2
@@ -783,10 +783,10 @@ save!"fence.scr"code 16384,6144
 
 
 
-# ==============================================================
-# menu
+// ==============================================================
+// menu
 
-# XXX TODO -- complete
+// XXX TODO -- complete
 
 @menu:
 
@@ -802,29 +802,29 @@ print '\
   inverse 1;"I";inverse 0;"nstrucciones"''\
   inverse 1;"J";inverse 0;"ugar"''\
   inverse 1;"C";inverse 0;"réditos"''\
-  "________________________________"\
+  "________________________________"
 #  <------------------------------>
 
-@menu_key:
+@menu_key
 
 pause 0:let i$=inkey$
 
-if i$="i" or i$="I" then\
+if i$="i" or i$="I" then \
   gosub @instructions:\
   goto @menu
 
-if i$="j" or i$="J" then\
+if i$="j" or i$="J" then \
   goto @new_game
 
-if i$="c" or i$="C" then\
+if i$="c" or i$="C" then \
   gosub @credits:\
   goto @menu
 
 beep .1 ,23:\
 goto @menu_key
 
-# ==============================================================
-# subroutine: credits
+// ==============================================================
+// subroutine: credits
 
 @credits:
 
@@ -851,8 +851,8 @@ pause 0
 gosub @select_graphics
 return
 
-# ==============================================================
-# subroutine: instructions
+// ==============================================================
+// subroutine: instructions
 
 @instructions:
 
@@ -904,8 +904,8 @@ pause 0
 gosub @select_graphics
 return
 
-# ==============================================================
-# subroutine: title
+// ==============================================================
+// subroutine: title
 
 @title:
 
@@ -913,19 +913,19 @@ return
 print "   REGRESO AL CAMPO DE MINAS"
 return
 
-# ==============================================================
-# subroutine: icon
+// ==============================================================
+// subroutine: icon
 
-# Input:
-# i$ = UDG string
+// Input:
+// i$ = UDG string
 
 @icon:
 gosub @select_graphics:\
 print 'bright 1;i$;:\
 goto @select_chars
 
-# ==============================================================
-# subroutine: select user defined graphics
+// ==============================================================
+// subroutine: select user defined graphics
 
 @select_graphics:
 
@@ -934,8 +934,8 @@ poke 23675,peek 23670:poke 23676,peek 23671:\
 randomize:\
 return
 
-# ==============================================================
-# subroutine: select user defined characters
+// ==============================================================
+// subroutine: select user defined characters
 
 @select_chars:
 
@@ -944,8 +944,8 @@ poke 23675,peek 23670:poke 23676,peek 23671:\
 randomize:\
 return
 
-# ==============================================================
-# subroutine: the_nest
+// ==============================================================
+// subroutine: the_nest
 
 @the_nest:
 
@@ -967,11 +967,11 @@ print at 4,4+ss;"\ :";\
       at 12,6+ss;"\: ":\
 return
 
-# ==============================================================
-# subroutine: last level
+// ==============================================================
+// subroutine: last level
 
-# XXX TODO -- rewrite
-# XXX FIXME --
+// XXX TODO -- rewrite
+// XXX FIXME --
 
 @last_level:
 
@@ -994,9 +994,9 @@ flash 0
 
 for n=2 to -1 step -1
   beep .003,27-n: beep .003,19-n: beep .003,29-n
-  if n>=0 then\
+  if n>=0 then \
     ink n
-  if n=-1 then\
+  if n=-1 then \
     flash 1: bright 0
   gosub @the_nest
 next n
@@ -1005,10 +1005,10 @@ flash 0
 print at 8,5+ss; flash 0;bill_udg$
 return
 
-# ==============================================================
-# Sounds
+// ==============================================================
+// Sounds
 
-# XXX TODO --
+// XXX TODO --
 
 @sound:
 for i=0 to 13:\
@@ -1022,4 +1022,113 @@ data 0,0,0,0,0,0,30,64,15,16,15,0,7,24
 @no_sound:
 data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
-# vim: ft=sinclairbasic:fileencoding=latin1
+// ==============================================================
+// Vimclair BASIC directives
+
+#tapmaker zmakebas
+#filename DISK
+#run 1
+
+//  Convert Latin1 chars to UDG notation
+
+#vim %substitute,á,\\A,gIe
+#vim %substitute,Á,\\B,gIe
+#vim %substitute,é,\\C,gIe
+#vim %substitute,É,\\D,gIe
+#vim %substitute,í,\\E,gIe
+#vim %substitute,Í,\\F,gIe
+#vim %substitute,ó,\\G,gIe
+#vim %substitute,Ó,\\H,gIe
+#vim %substitute,ú,\\I,gI
+#vim %substitute,Ú,\\J,gIe
+#vim %substitute,ñ,\\K,gIe
+#vim %substitute,Ñ,\\L,gIe
+#vim %substitute,ü,\\M,gIe
+#vim %substitute,Ü,\\N,gIe
+#vim %substitute,¿,\\O,gIe
+#vim %substitute,¡,\\P,gIe
+# %substitute,º,\\Q,gIe
+#vim %substitute,«,\\R,gIe
+#vim %substitute,»,\\S,gIe
+
+//  Shorten string variable names
+
+#vim %substitute,\<mine_udg\$,a$,gIe
+#vim %substitute,\<blank_row\$,b$,gIe
+#vim %substitute,\<bill_udg\$,c$,gIe
+#vim %substitute,\<mine_char\$,d$,gIe
+#vim %substitute,\<fence\$,f$,gIe
+#vim %substitute,\<flower\$,g$,gIe
+#vim %substitute,\<record_player\$,h$,gIe
+#vim %substitute,\<key_udg\$,k$,gIe
+#vim %substitute,\<replay_controls\$,m$,gIe
+#vim %substitute,\<protagonist\$,p$,gIe
+#vim %substitute,\<dead_protagonist_udg\$,q$,gIe
+#vim %substitute,\<safe_zone\$,s$,gIe
+#vim %substitute,\<trail\$,t$,gIe
+#vim %substitute,\<blank_field_row\$,u$,gIe
+#vim %substitute,\<version\$,v$,gIe
+#vim %substitute,\<message\$,w$,gIe
+
+//  Shorten numeric array names
+
+#vim %substitute,\<detector_color\>,d,gIe
+
+//  Shorten numeric variable names
+
+#vim %substitute,\<border_color\>,bc,gIe
+#vim %substitute,\<bill_char\>,bh,gIe
+#vim %substitute,\<bottom_fence_row\>,bfr,gIe
+#vim %substitute,\<back_surrounding_mines\>,bsm,gIe
+#vim %substitute,\<bottom_safe_row\>,bsr,gIe
+#vim %substitute,\<door_closed\>,dcl,gIe
+#vim %substitute,\<door_col\>,dco,gIe
+//  XXX OLD
+# %substitute,\<damsel_1_col\>,d1c,gIe
+# %substitute,\<damsel_2_col\>,d2c,gIe
+# %substitute,\<damsels_row\>,dr,gIe
+#vim %substitute,\<fence_char\>,fec,gIe
+#vim %substitute,\<flower_char\>,fh,gIe
+#vim %substitute,\<first_level\>,fl,gIe
+#vim %substitute,\<found_char\>,foc,gIe
+#vim %substitute,\<front_surrounding_mines\>,fsm,gIe
+#vim %substitute,\<ink_color\>,ic,gIe
+#vim %substitute,\<key_char\>,kch,gIe
+#vim %substitute,\<key_col\>,kc,gIe
+#vim %substitute,\<key_row\>,kr,gIe
+#vim %substitute,\<last_level\>,ll,gIe
+#vim %substitute,\<mine_char\>,mc,gIe
+#vim %substitute,\<message_row\>,mr0,gIe
+#vim %substitute,\<mine_row\>,mr1,gIe
+#vim %substitute,\<mined_rows\>,mr2,gIe
+#vim %substitute,\<left_surrounding_mines\>,lsm,gIe
+#vim %substitute,\<old_row\>,orow,gIe
+#vim %substitute,\<old_col\>,ocol,gIe
+#vim %substitute,\<right_surrounding_mines\>,rsm,gIe
+#vim %substitute,\<surrounding_mines\>,sm,gIe
+#vim %substitute,\<paper_color\>,pc,gIe
+#vim %substitute,\<protagonist_frame\>,pf,gIe
+#vim %substitute,\<paused_replay\>,pr,gIe
+#vim %substitute,\<record\>,r,gIe
+#vim %substitute,\<score\>,s,gIe
+#vim %substitute,\<start_col\>,sc,gIe
+#vim %substitute,\<top_fence_row\>,tfr,gIe
+#vim %substitute,\<top_mined_row\>,tmr,gIe
+#vim %substitute,\<time_score\>,ts,gIe
+#vim %substitute,\<top_safe_row\>,tsr,gIe
+#vim %substitute,\<udg1\>,u1,gIe
+#vim %substitute,\<udg2\>,u2,gIe
+#vim %substitute,\<udg1_font\>,uf,gIe
+#vim %substitute,\<udg1_font_high\>,uh,gIe
+#vim %substitute,\<udg1_font_low\>,ul,gIe
+#vim %substitute,\<walking_mine_col\>,wmc,gIe
+#vim %substitute,\<walking_mine_row\>,wmr,gIe
+#vim %substitute,\<walking_mine_step\>,wms,gIe
+
+//  Shorten function names
+
+#vim %substitute,\<\(\(def\)\?\s*fn \)\+random_row\>,\1 r,gIe
+#vim %substitute,\<\(\(def\)\?\s*fn \)\+random_col\>,\1 c,gIe
+
+
+// vim: ft=vimclairbasic:fileencoding=latin1

@@ -1,5 +1,5 @@
 *.bas linguist-language=BASIC
-*.zmakebas linguist-language=BASIC
+*.vbas linguist-language=BASIC
 *.dsk binary
 *.tap binary
 *.szx binary

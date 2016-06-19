@@ -37,6 +37,8 @@
 # image for +3.
 #
 # 2016-06-13: Use start line 1 and increment 1.
+#
+# 2016-06-19: Update: the source has been converted to Vimclair BASIC.
 
 # ==============================================================
 
@@ -44,30 +46,25 @@
 all: tap dsk
 
 .PHONY: tap
-tap: regreso_al_campo_de_minas.tap
+tap: media/regreso_al_campo_de_minas.tap
 
 .PHONY: dsk
-tap: regreso_al_campo_de_minas.dsk
+tap: media/regreso_al_campo_de_minas.dsk
 
 clean:
-	rm -f regreso_al_campo_de_minas.tap
-	rm -f regreso_al_campo_de_minas.dsk
+	rm -f media/*
 	rm -f tmp/*
 
 tmp/udg.tap: udg.z80s
 	pasmo --name UDG.BIN --tap $< $@ 
 
-tmp/regreso_al_campo_de_minas.zmakebas: \
-	regreso_al_campo_de_minas.bas \
-	preprocess.vim
-	cp -f $< $@
-	vim --noplugin $@ -S preprocess.vim
+tmp/main.tap: regreso_al_campo_de_minas.vbas
+	vbas2tap $< ;\
+	mv regreso_al_campo_de_minas.bas tmp/main.bas;\
+	mv regreso_al_campo_de_minas.tap $@
 
-tmp/main.tap: tmp/regreso_al_campo_de_minas.zmakebas
-	zmakebas -n DISK -a 1 -l -i 1 -s 1 -o $@ $<
-
-regreso_al_campo_de_minas.tap: tmp/main.tap tmp/udg.tap
+media/regreso_al_campo_de_minas.tap: tmp/main.tap tmp/udg.tap
 	cat $^ > $@
 
-regreso_al_campo_de_minas.dsk: regreso_al_campo_de_minas.tap
+media/regreso_al_campo_de_minas.dsk: media/regreso_al_campo_de_minas.tap
 	tap2dsk -180 -label RACDM $< $@
