@@ -1,6 +1,6 @@
 _meta/
 tmp/
-vbas2tap_steps/
+src/vbas2tap_steps/
 screens/
 *.dsk
 *.tap

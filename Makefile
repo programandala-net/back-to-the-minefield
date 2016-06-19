@@ -46,25 +46,25 @@
 all: tap dsk
 
 .PHONY: tap
-tap: media/regreso_al_campo_de_minas.tap
+tap: regreso_al_campo_de_minas.tap
 
 .PHONY: dsk
-tap: media/regreso_al_campo_de_minas.dsk
+tap: regreso_al_campo_de_minas.dsk
 
 clean:
-	rm -f media/*
+	rm -f *.tap *.dsk
 	rm -f tmp/*
 
-tmp/udg.tap: udg.z80s
+tmp/udg.tap: src/udg.z80s
 	pasmo --name UDG.BIN --tap $< $@ 
 
-tmp/main.tap: regreso_al_campo_de_minas.vbas
+tmp/main.tap: src/regreso_al_campo_de_minas.vbas
 	vbas2tap $< ;\
-	mv regreso_al_campo_de_minas.bas tmp/main.bas;\
-	mv regreso_al_campo_de_minas.tap $@
+	mv src/regreso_al_campo_de_minas.bas tmp/main.bas;\
+	mv src/regreso_al_campo_de_minas.tap $@
 
-media/regreso_al_campo_de_minas.tap: tmp/main.tap tmp/udg.tap
+regreso_al_campo_de_minas.tap: tmp/main.tap tmp/udg.tap
 	cat $^ > $@
 
-media/regreso_al_campo_de_minas.dsk: media/regreso_al_campo_de_minas.tap
+regreso_al_campo_de_minas.dsk: regreso_al_campo_de_minas.tap
 	tap2dsk -180 -label RACDM $< $@

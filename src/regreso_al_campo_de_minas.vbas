@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.51.0+201606191907":\
+let version$="0.51.0+201606191919":\
 
 goto @init
 
@@ -60,11 +60,6 @@ dim protagonist$(2):\
 let protagonist$="\d\e":\
 let protagonist_frame=0:\
 let flower$="\q"
-
-// XXX OLD
-// let damsels_row=0:\
-// let damsel_1_col=0:\
-// let damsel_2_col=0
 
 let walking_mine_step=-1:\
 let walking_mine_row=row:\
@@ -153,7 +148,7 @@ let time=time+1
 // XXX TODO -- improve or remove
 # if level>=4 then \
 #   if time>(260*paper_color+70) then \
-#     if int (time/(3*paper_color+1))=(time/(3*paper_color+1)) then \
+#     if int(time/(3*paper_color+1))=(time/(3*paper_color+1)) then \
 #       gosub @walking_mine
 
 if old_row=row and old_col=col then \
@@ -178,6 +173,21 @@ if door_closed then \
 // make the first UDG bank the current font, in order to detect
 // the graphics with `screen$()`:
 poke 23606,udg1_font_low:poke 23607,udg1_font_high:\
+
+// XXX REMAK -- There's a bug in Sinclar BASIC: the following
+// calculations return a wrong non-integer value. That's way every
+// value is calculated apart.
+
+# let surrounding_mines=int(\
+#   (screen$(row-1,col)<>" ")+\
+#   (screen$(row+1,col)<>" ")+\
+#   (screen$(row,col-1)<>" ")+\
+#   (screen$(row,col+1)<>" "))
+
+# let surrounding_mines=(screen$(row-1,col)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$(row+1,col)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$(row,col-1)<>" ")
+# let surrounding_mines=surrounding_mines+(screen$(row,col+1)<>" ")
 
 let found_char=code screen$(row,col):\
 let front_surrounding_mines=screen$(row-1,col)=mine_char$:\
@@ -204,34 +214,6 @@ print at row,col; paper pa;protagonist$(protagonist_frame+1):\
 let protagonist_frame=not protagonist_frame
 
 @step_done:
-
-// XXX REMAK -- There's a bug in Sinclar BASIC: the following
-// calculation returns a wrong non-integer value:
-
-# let surrounding_mines=int(\
-#   (screen$ (row-1,col)<>" ")+\
-#   (screen$ (row+1,col)<>" ")+\
-#   (screen$ (row,col-1)<>" ")+\
-#   (screen$ (row,col+1)<>" "))
-
-// XXX REMARK -- Also this doesn't work fine:
-
-# let surrounding_mines=(screen$ (row-1,col)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row+1,col)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row,col-1)<>" ")
-# let surrounding_mines=surrounding_mines+(screen$ (row,col+1)<>" ")
-
-// XXX REMARK -- This slow method works fine:
-
-# let front_surrounding_mines=screen$ (row-1,col)<>" ":\
-# let back_surrounding_mines=screen$ (row+1,col)<>" ":\
-# let left_surrounding_mines=screen$ (row,col-1)<>" ":\
-# let right_surrounding_mines=screen$ (row,col+1)<>" ":\
-# let surrounding_mines=\
-#   front_surrounding_mines+\
-#   back_surrounding_mines+\
-#   left_surrounding_mines+\
-#   right_surrounding_mines:\
 
 let surrounding_mines=\
   front_surrounding_mines+\
@@ -333,7 +315,7 @@ let walking_mine_step=walking_mine_step+2:\
 beep .0018,60
 let walking_mine_row=code trail$(walking_mine_step):\
 let walking_mine_col=code trail$(walking_mine_step+1):\
-if screen$ (walking_mine_row,walking_mine_col)<>" " then \
+if screen$(walking_mine_row,walking_mine_col)<>" " then \
   goto @explosion
 
 // XXX TODO -- improve:
@@ -548,7 +530,7 @@ gosub @print_surrounding_mines
 
 // XXX TODO -- improve time score with the frames system variable
 
-let time_score=(int ((2000-time)/50))*5
+let time_score=(int((2000-time)/50))*5
 let time_score=time_score*(time_score>=50)+50*(time_score<50)
 let time_score=time_score*level
 
@@ -635,7 +617,7 @@ for n=1 to 3
   if record_player$(n)=" " then \
     goto @l5088
   if record_player$(n)>="a" and record_player$(n)<="z" then \
-    let record_player$(n)=chr$ ((code record_player$(n))-32)
+    let record_player$(n)=chr$((code record_player$(n))-32)
   print at 21,24+n; ink 7; paper 1;record_player$(n)
   beep .12,(n*5)+20
   for m=1 to 4: next m
@@ -975,7 +957,7 @@ return
 
 @last_level:
 
-let ss=int (rnd*11)+6
+let ss=int(rnd*11)+6
 beep .3,-12
 
 print at top_fence_row,door_col;"\f\f\f"
@@ -1083,10 +1065,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<bottom_safe_row\>,bsr,gIe
 #vim %substitute,\<door_closed\>,dcl,gIe
 #vim %substitute,\<door_col\>,dco,gIe
-//  XXX OLD
-# %substitute,\<damsel_1_col\>,d1c,gIe
-# %substitute,\<damsel_2_col\>,d2c,gIe
-# %substitute,\<damsels_row\>,dr,gIe
 #vim %substitute,\<fence_char\>,fec,gIe
 #vim %substitute,\<flower_char\>,fh,gIe
 #vim %substitute,\<first_level\>,fl,gIe
