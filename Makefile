@@ -12,17 +12,8 @@
 # Pasmo (by Julián Albo)
 # http://pasmo.speccy.org/
 
-# tap2dsk from Taptools (by John Elliott)
-# http://www.seasip.info/ZX/unix.html
-
-# zmakebas (by Russell Marks)
-# Version 1.2 is a package of Debian, Raspbian, Ubuntu and probably other distros.
-# Version 1.1 can be found here:
-# http://web.archive.org/web/20080525213938/http://rus.members.beeb.net/zmakebas.html
-# ftp://ftp.ibiblio.org/pub/Linux/system/emulators/zx/
-#
-# Version by Antonio Villena (with fixed DEF FN):
-# http://sourceforge.net/p/emuscriptoria/code/HEAD/tree/desprot/ZMakeBas.c
+# Vimclair BASIC
+# http://programandala.net/en.program.vimclair_basic.html
 
 # ==============================================================
 # History
@@ -43,16 +34,10 @@
 # ==============================================================
 
 .PHONY: all
-all: tap dsk
-
-.PHONY: tap
-tap: regreso_al_campo_de_minas.tap
-
-.PHONY: dsk
-tap: regreso_al_campo_de_minas.dsk
+all: regreso_al_campo_de_minas.tap
 
 clean:
-	rm -f *.tap *.dsk
+	rm -f *.tap
 	rm -f tmp/*
 
 tmp/udg.tap: src/udg.z80s
@@ -65,6 +50,3 @@ tmp/main.tap: src/regreso_al_campo_de_minas.vbas
 
 regreso_al_campo_de_minas.tap: tmp/main.tap tmp/udg.tap
 	cat $^ > $@
-
-regreso_al_campo_de_minas.dsk: regreso_al_campo_de_minas.tap
-	tap2dsk -180 -label RACDM $< $@

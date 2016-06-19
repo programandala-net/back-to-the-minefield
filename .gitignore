@@ -2,6 +2,5 @@ _meta/
 tmp/
 src/vbas2tap_steps/
 screens/
-*.dsk
 *.tap
 *.szx
