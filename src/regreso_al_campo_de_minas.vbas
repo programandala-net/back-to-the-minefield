@@ -2,18 +2,17 @@ rem Regreso al campo de minas
 //
 //  Written in Vimclair BASIC for ZX Spectrum 128.
 //
-//  Based on "Campo de minas" (published by Indescomp), the Spanish
-//  version of "Minefield", written by Ian Andrew.
-//
 rem By Marcos Cruz (programandala.net), 2016.
 //
+//  Based on "Campo de minas" (published by Indescomp), the Spanish
+//  version of "Minefield", written by Ian Andrew.
 
 // ==============================================================
 
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.51.0+201606191919":\
+let version$="0.52.0+201607111726":\
 
 goto @init
 
@@ -56,10 +55,7 @@ let trail$=chr$ row+chr$ col
 // counter
 let time=0
 
-dim protagonist$(2):\
-let protagonist$="\d\e":\
 let protagonist_frame=0:\
-let flower$="\q"
 
 let walking_mine_step=-1:\
 let walking_mine_row=row:\
@@ -110,7 +106,7 @@ if level=last_level then \
 // to restore them before the replay
 let flowers=int(rnd*level)+1:\
 for i=1 to flowers:\
-  print at fn random_row(),fn random_col();flower$:\
+  print at fn random_row(),fn random_col();flower_udg$:\
 next i
 
 @l480:
@@ -245,7 +241,7 @@ gosub @message
 for i=60 to 10 step -5:\
   print at top_fence_row,door_col;"   ":\
   beep .125,i:\
-  print at top_fence_row,door_col;"\f\f\f":\
+  print at top_fence_row,door_col;fence$(1 to 3):\
   for j=1 to 7: next j:\
 next i:\
 gosub @no_message:\
@@ -262,7 +258,7 @@ let message$=\
 #  <------------------------------->
 gosub @message:\
 for i=10 to 60 step 5:\
-  print at top_fence_row,door_col;"\f\f\f":\
+  print at top_fence_row,door_col;fence$(1 to 3):\
   beep .125,i:\
   print at top_fence_row,door_col;"   ":\
   for j=1 to 7: next j:\
@@ -465,6 +461,8 @@ goto @l1200
 @replay:
 
 // XXX FIXME -- remove the surrounding mines
+// XXX FIXME -- when the replay is ended, the explosion is show in the
+// current position!
 
 // XXX TODO -- 
 # print at walking_mine_row,walking_mine_col;" ";\
@@ -698,16 +696,21 @@ let replay_controls$(2)="Una tecla para seguir"
 
 let blank_row$="                                "
 
+dim protagonist$(2):\
+let protagonist$="\d\e":\
 let dead_protagonist_udg$="\l":\
-let mine_udg$="\o":\
-let mine_char$="/":\
-let bill_udg$="\n":\
-let key_udg$="\p":\
-let fence_char=38:\
+
 let bill_char=46:\
-let mine_char=47:\
+let bill_udg$="\n":\
+let fence_char=38:\
+let fence_udg$="\f":\
+let flower_char=49:\
+let flower_udg$="\q":\
 let key_char=48:\
-let flower_char=49
+let key_udg$="\p":\
+let mine_char$="/":\
+let mine_char=47:\
+let mine_udg$="\o"
 
 let fence$="\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 
@@ -734,7 +737,8 @@ let record=250
 gosub @select_graphics:\
 print at top_fence_row,0;fence$:\
 for n=top_safe_row to bottom_safe_row:\
-  print at n,0;"\f                              \f":\
+  print at n,0;\
+    fence_udg$+"                              "+fence_udg$:\
 next n:\
 print at bottom_fence_row,0;fence$:\
 save!"fence.scr"code 16384,6144
@@ -817,16 +821,22 @@ gosub @select_chars
 #      <------------------------------>
 print "Versión ";version$
 print
-print "Una reescritura de:"
+print "Autor:"
+print "  Marcos Cruz"
+print "  (programandala.net)."
 print
-print "  Minefield,"
-print "    escrito por Ian Andrew, 198x"
-print "  Campo de minas,"
-print "    traducido por Indescomp,"
-print "    198x"
+print "Jugador de pruebas:"
+print "  Irene Albert."
 print
-print "Por Marcos Cruz"
-print "(programandala.net), 2016"
+print "Un homenaje a y una reinterpre-"
+print "tación de:"
+print "  Minefield (Ian Andrew, 198x),"
+print "  publicado en español por"
+print "  Indescomp como Campo de minas."
+print
+print "Escrito en Vimclair BASIC para"
+print "ZX Spectrum 128. Basado en códi-"
+print "go y gráficos de Ian Andrew."
 #      <------------------------------>
 
 pause 0
@@ -840,47 +850,36 @@ return
 
 cls
 gosub @title
-let i$="\a":gosub @icon
-#     <------------------------------>
-print " Tú: Atraviesa los campos"
+let i$=protagonist$(1):gosub @icon
 #      <------------------------------>
-print "  de minas, usando el cursor."
+print  " Tú, la heroica damisela. Atra-";
+#      <------------------------------>
+print "  viesa los campos de minas,"
+#      <------------------------------>
+print "  usando el cursor."
 
-let i$="\n":gosub @icon
-#     <------------------------------>
-print " Bill el gusano: Está en el úl-"
+let i$=bill_udg$:gosub @icon
+#      <------------------------------>
+print  " Bill el gusano: Está en el úl-"
 #      <------------------------------>
 print "  timo campo. Rescátalo."
 
-let i$="\o":gosub @icon
-#     <------------------------------>
-print " Minas: En la parte superior"
+let i$=mine_udg$:gosub @icon
+#      <------------------------------>
+print  " Minas: En la parte inferior"
 #      <------------------------------>
 print "  verás cuántas te rodean."
 
-let i$="\d\e":gosub @icon
-#    <------------------------------>
-print " Damiselas: Cuentan como minas"
-#      <------------------------------>
-print "   pero dan puntos."
+# let i$="\h":gosub @icon
+# #      <------------------------------>
+# print  " La mina con patas:"
+# #      <------------------------------>
+# print "  Te perseguirá sin descanso."
 
-let i$="\h":gosub @icon
-#     <------------------------------>
-print " La mina con patas:"
+let i$=fence_udg$:gosub @icon
 #      <------------------------------>
-print "  Te perseguirá sin descanso."
-
-let i$="\f":gosub @icon
-#     <------------------------------>
-print " Verja: Está electrificada y"
+print  " Verja electrificada."
 #      <------------------------------>
-print "  cuenta como una mina."
-
-let i$="\m":gosub @icon
-#     <------------------------------>
-print " Minadores: ponen minas pero"
-#      <------------------------------>
-print "  también las quitan."
 
 pause 0
 gosub @select_graphics
@@ -960,7 +959,7 @@ return
 let ss=int(rnd*11)+6
 beep .3,-12
 
-print at top_fence_row,door_col;"\f\f\f"
+print at top_fence_row,door_col;fence$(1 to 3)
 
 beep .3,-12
 for n=0 to 1:\
@@ -1040,8 +1039,9 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<bill_udg\$,c$,gIe
 #vim %substitute,\<mine_char\$,d$,gIe
 #vim %substitute,\<fence\$,f$,gIe
-#vim %substitute,\<flower\$,g$,gIe
+#vim %substitute,\<flower_udg\$,g$,gIe
 #vim %substitute,\<record_player\$,h$,gIe
+#vim %substitute,\<fence_udg\$,i$,gIe
 #vim %substitute,\<key_udg\$,k$,gIe
 #vim %substitute,\<replay_controls\$,m$,gIe
 #vim %substitute,\<protagonist\$,p$,gIe
