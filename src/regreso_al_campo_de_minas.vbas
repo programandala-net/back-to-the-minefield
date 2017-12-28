@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.52.1+201712281943":\
+let version$="0.52.2+201712281957":\
 
 goto @init
 
@@ -171,7 +171,7 @@ if door_closed then \
 poke 23606,udg1_font_low:poke 23607,udg1_font_high:\
 
 // XXX REMAK -- There's a bug in Sinclar BASIC: the following
-// calculations return a wrong non-integer value. That's way every
+// calculations return a wrong non-integer value. That's why every
 // value is calculated apart.
 
 # let surrounding_mines=int(\
@@ -1041,7 +1041,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<fence\$,f$,gIe
 #vim %substitute,\<flower_udg\$,g$,gIe
 #vim %substitute,\<record_player\$,h$,gIe
-#vim %substitute,\<fence_udg\$,i$,gIe
+#vim %substitute,\<fence_udg\$,j$,gIe
 #vim %substitute,\<key_udg\$,k$,gIe
 #vim %substitute,\<replay_controls\$,m$,gIe
 #vim %substitute,\<protagonist\$,p$,gIe
