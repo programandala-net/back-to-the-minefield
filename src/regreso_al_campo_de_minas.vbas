@@ -2,7 +2,7 @@ rem Regreso al campo de minas
 //
 //  Written in Vimclair BASIC for ZX Spectrum 128.
 //
-rem By Marcos Cruz (programandala.net), 2016.
+rem By Marcos Cruz (programandala.net), 2016, 2017.
 //
 //  Based on "Campo de minas" (published by Indescomp), the Spanish
 //  version of "Minefield", written by Ian Andrew.
@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.52.0+201607111726":\
+let version$="0.52.1+201712281943":\
 
 goto @init
 
@@ -232,7 +232,7 @@ goto @l500
 let key_row=fn random_row():\
 let key_col=fn random_col():\
 // XXX FIXME -- key_udg$, not found:
-print at key_row,key_col;key_udg$\
+print at key_row,key_col;key_udg$:\
 
 let message$=\
   "Necesitas la llave para salir":\
