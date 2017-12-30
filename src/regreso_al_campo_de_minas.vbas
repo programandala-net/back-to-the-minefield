@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.52.2+201712281957":\
+let version$="0.52.2+201712301527":\
 
 goto @init
 
@@ -118,7 +118,7 @@ beep .0875,10
 
 // XXX OLD
 # gosub @select_chars
-# print at 21,4; inverse 1;"¡Adelante!"
+# print at 21,4; inverse 1;"Â¡Adelante!"
 # gosub @select_graphics
 
 for n=1 to 20
@@ -279,7 +279,7 @@ print #1;paper 8;ink 9;\
   at 0, 6;"Minas vecinas";\
   at 0,20;"Puntos";inverse 1;\
   at 1,20;" 0000 ";inverse 0;\
-  at 0,27;"Récor";inverse 1;\
+  at 0,27;"RÃ©cor";inverse 1;\
   at 1,27;" 0000":\
 gosub @select_graphics
 
@@ -354,7 +354,7 @@ beep 1,-35
 if score>record then \
   gosub @new_record
 gosub @update_status_bar
-let message$="¿Otra vez?":\
+let message$="Â¿Otra vez?":\
 gosub @message
 
 // XXX OLD
@@ -364,7 +364,7 @@ gosub @message
 # gosub @select_chars
 # print \
 #   at 21,29; paper border_color; ink 9;"   ";\
-#   at 21,0; paper border_color; ink 9;" Récor = ";record;" por ";record_player$
+#   at 21,0; paper border_color; ink 9;" RÃ©cor = ";record;" por ";record_player$
 # gosub @select_graphics
 
 @again:
@@ -417,7 +417,7 @@ for t=0 to 2
 next t
 ink 0
 gosub @the_nest
-print at 0,0; ink 7; paper 0;"   ¡Dos mil puntos extra!       "
+print at 0,0; ink 7; paper 0;"   Â¡Dos mil puntos extra!       "
 let score=score+2000
 for b=0 to 7
   paper b: ink 9
@@ -437,17 +437,17 @@ for n=0 to 30 step 6
 next n
 #  <------------------------------>
 print at 3,8;\
-  "¡Felicidades!"
+  "Â¡Felicidades!"
 #  <------------------------------>
 print '\
   "Has rescatado a Bill. El mundo"'
-  "te está agradecido."
+  "te estÃ¡ agradecido."
 #  <------------------------------>
 print ''''';\
-  "Puntuación: ";score;"."
+  "PuntuaciÃ³n: ";score;"."
 #  <------------------------------>
 print \
-  "¿Por qué no vuelves a jugar y"'
+  "Â¿Por quÃ© no vuelves a jugar y"'
   "tratas de mejorarla?"
 #  <------------------------------>
 if score>record then \
@@ -595,11 +595,11 @@ next n
 gosub @select_chars
 for m=1 to 4
   for n=7 to 0 step -1
-    print at 10,7; ink n;"¡Un nuevo récor!"
+    print at 10,7; ink n;"Â¡Un nuevo rÃ©cor!"
     beep .004,50-n
   next n
 next m
-print at 10,7; ink 9;"¡Un nuevo récor!"
+print at 10,7; ink 9;"Â¡Un nuevo rÃ©cor!"
 gosub @select_graphics
 
 // XXX TODO -- adapt
@@ -691,7 +691,7 @@ let door_col=14:\
 let start_col=15
 
 dim replay_controls$(2,27):\
-let replay_controls$(1)="REPETICIÓN:  [P]ausa  [F]in":\
+let replay_controls$(1)="REPETICIÃ“N:  [P]ausa  [F]in":\
 let replay_controls$(2)="Una tecla para seguir"
 
 let blank_row$="                                "
@@ -787,7 +787,7 @@ print '\
   "________________________________"''\
   inverse 1;"I";inverse 0;"nstrucciones"''\
   inverse 1;"J";inverse 0;"ugar"''\
-  inverse 1;"C";inverse 0;"réditos"''\
+  inverse 1;"C";inverse 0;"rÃ©ditos"''\
   "________________________________"
 #  <------------------------------>
 
@@ -819,7 +819,7 @@ gosub @title
 print
 gosub @select_chars
 #      <------------------------------>
-print "Versión ";version$
+print "VersiÃ³n ";version$
 print
 print "Autor:"
 print "  Marcos Cruz"
@@ -829,14 +829,14 @@ print "Jugador de pruebas:"
 print "  Irene Albert."
 print
 print "Un homenaje a y una reinterpre-"
-print "tación de:"
+print "taciÃ³n de:"
 print "  Minefield (Ian Andrew, 198x),"
-print "  publicado en español por"
+print "  publicado en espaÃ±ol por"
 print "  Indescomp como Campo de minas."
 print
 print "Escrito en Vimclair BASIC para"
-print "ZX Spectrum 128. Basado en códi-"
-print "go y gráficos de Ian Andrew."
+print "ZX Spectrum 128. Basado en cÃ³di-"
+print "go y grÃ¡ficos de Ian Andrew."
 #      <------------------------------>
 
 pause 0
@@ -852,7 +852,7 @@ cls
 gosub @title
 let i$=protagonist$(1):gosub @icon
 #      <------------------------------>
-print  " Tú, la heroica damisela. Atra-";
+print  " TÃº, la heroica damisela. Atra-";
 #      <------------------------------>
 print "  viesa los campos de minas,"
 #      <------------------------------>
@@ -860,21 +860,21 @@ print "  usando el cursor."
 
 let i$=bill_udg$:gosub @icon
 #      <------------------------------>
-print  " Bill el gusano: Está en el úl-"
+print  " Bill el gusano: EstÃ¡ en el Ãºl-"
 #      <------------------------------>
-print "  timo campo. Rescátalo."
+print "  timo campo. RescÃ¡talo."
 
 let i$=mine_udg$:gosub @icon
 #      <------------------------------>
 print  " Minas: En la parte inferior"
 #      <------------------------------>
-print "  verás cuántas te rodean."
+print "  verÃ¡s cuÃ¡ntas te rodean."
 
 # let i$="\h":gosub @icon
 # #      <------------------------------>
 # print  " La mina con patas:"
 # #      <------------------------------>
-# print "  Te perseguirá sin descanso."
+# print "  Te perseguirÃ¡ sin descanso."
 
 let i$=fence_udg$:gosub @icon
 #      <------------------------------>
@@ -1010,27 +1010,27 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #filename DISK
 #run 1
 
-//  Convert Latin1 chars to UDG notation
+//  Convert UTF-8 characters to UDG codes
 
-#vim %substitute,á,\\A,gIe
-#vim %substitute,Á,\\B,gIe
-#vim %substitute,é,\\C,gIe
-#vim %substitute,É,\\D,gIe
-#vim %substitute,í,\\E,gIe
-#vim %substitute,Í,\\F,gIe
-#vim %substitute,ó,\\G,gIe
-#vim %substitute,Ó,\\H,gIe
-#vim %substitute,ú,\\I,gI
-#vim %substitute,Ú,\\J,gIe
-#vim %substitute,ñ,\\K,gIe
-#vim %substitute,Ñ,\\L,gIe
-#vim %substitute,ü,\\M,gIe
-#vim %substitute,Ü,\\N,gIe
-#vim %substitute,¿,\\O,gIe
-#vim %substitute,¡,\\P,gIe
-# %substitute,º,\\Q,gIe
-#vim %substitute,«,\\R,gIe
-#vim %substitute,»,\\S,gIe
+#vim %substitute,Ã¡,\\A,gIe
+#vim %substitute,Ã,\\B,gIe
+#vim %substitute,Ã©,\\C,gIe
+#vim %substitute,Ã‰,\\D,gIe
+#vim %substitute,Ã­,\\E,gIe
+#vim %substitute,Ã,\\F,gIe
+#vim %substitute,Ã³,\\G,gIe
+#vim %substitute,Ã“,\\H,gIe
+#vim %substitute,Ãº,\\I,gI
+#vim %substitute,Ãš,\\J,gIe
+#vim %substitute,Ã±,\\K,gIe
+#vim %substitute,Ã‘,\\L,gIe
+#vim %substitute,Ã¼,\\M,gIe
+#vim %substitute,Ãœ,\\N,gIe
+#vim %substitute,Â¿,\\O,gIe
+#vim %substitute,Â¡,\\P,gIe
+# %substitute,Âº,\\Q,gIe
+#vim %substitute,Â«,\\R,gIe
+#vim %substitute,Â»,\\S,gIe
 
 //  Shorten string variable names
 
@@ -1109,4 +1109,4 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_col\>,\1 c,gIe
 
 
-// vim: ft=vimclairbasic:fileencoding=latin1
+// vim: filetype=vimclairbasic:fileencoding=utf8
