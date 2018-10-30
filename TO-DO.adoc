@@ -1,8 +1,3 @@
 = TO-DO of _Regreso al campo de minas_
 :revdate: 2018-10-30
 
-== 2018-10-30
-
-Fix: Message "REPETICIÓN:  [P]ausa  [F]in" is not restored after the
-pause.  Instead, message "Una tecla para seguir" remains on the
-screen.
