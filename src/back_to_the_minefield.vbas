@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.60.4+201903110024":\
+let version$="0.60.5+201903110026":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -1308,7 +1308,7 @@ data putting_mines_txt,"Metante minojn..."
 data replay_controls_1_txt,"RIPETO: [P]aŭzi [F]ini"
 data replay_controls_2_txt,"Premu klavon por plui"
 data you_need_key_txt,"Vi bezonas la ŝlosilon por eliri"
-data open_door_txt,"Malferma pordo"
+data open_door_txt,"Pordo malfermita"
 data new_record_txt,"Nova rikordo!"
 data enter_initials_txt,"Tajpu viajn inicialojn"
 data again_txt,"Plu?"
