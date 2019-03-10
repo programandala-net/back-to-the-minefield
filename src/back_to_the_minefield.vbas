@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.58.0+201903102229":\
+let version$="0.59.0+201903102259":\
 
 goto @init
 
@@ -880,7 +880,10 @@ save!"fence.scr"code 16384,6144
 
 border 1: paper 1: ink 7
 cls
-gosub @title
+
+@update_menu:
+
+print at 0,0;text$(lang,title_txt)
 
 randomize udg_chars:\
 gosub @select_udg_set
@@ -888,14 +891,14 @@ gosub @select_udg_set
 #  <------------------------------>
 print '\
   "________________________________"''\
-  inverse 1;fn txt$(instructions_txt)(1);\
-  inverse 0;fn txt$(instructions_txt)(2 to)''\
-  inverse 1;fn txt$(start_txt)(1);\
-  inverse 0;fn txt$(start_txt)(2 to)''\
-  inverse 1;fn txt$(credits_txt)(1);\
-  inverse 0;fn txt$(credits_txt)(2 to)''\
-  inverse 1;fn txt$(change_language_txt)(1);\
-  inverse 0;fn txt$(change_language_txt)(2 to)''\
+  inverse 1;text$(lang,instructions_txt,1);\
+  inverse 0;text$(lang,instructions_txt,2 to)''\
+  inverse 1;text$(lang,start_txt,1);\
+  inverse 0;text$(lang,start_txt,2 to)''\
+  inverse 1;text$(lang,credits_txt,1);\
+  inverse 0;text$(lang,credits_txt,2 to)''\
+  inverse 1;text$(lang,change_language_txt,1);\
+  inverse 0;text$(lang,change_language_txt,2 to)''\
   "________________________________"
 #  <------------------------------>
 
@@ -917,7 +920,6 @@ if i$=text$(lang,credits_txt,1) then \
   goto @menu
 
 if i$=text$(lang,change_language_txt,1) then
-  cls
   let lang=lang+1
   if lang>langs then \
     let lang=1
@@ -928,7 +930,7 @@ if i$=text$(lang,change_language_txt,1) then
   endif
   randomize udg_chars:\
   gosub @select_udg_set
-  goto @menu
+  goto @update_menu
 endif
 
 beep .1 ,23:\
@@ -942,8 +944,7 @@ goto @menu_key
 cls
 randomize udg_chars:\
 gosub @select_udg_set
-gosub @title
-print
+print text$(lang,title_txt)'
 
 if lang=spanish then
 
@@ -1050,8 +1051,9 @@ return
 
 @instructions:
 
-cls
-gosub @title
+cls:\
+print text$(lang,title_txt)
+
 let i$=protagonist$(1):gosub @icon
 
 if lang=spanish then
@@ -1194,15 +1196,6 @@ gosub @select_udg_set
 return
 
 // ==============================================================
-// subroutine: title
-
-@title:
-
-#      <------------------------------>
-print tab (32-text_len(lang,title_txt))/2;fn txt$(title_txt)
-return
-
-// ==============================================================
 // subrutine: texts
 
 // Set the text translations
@@ -1217,7 +1210,7 @@ let lang=spanish
 let yes$(lang)="S":\
 let no$(lang)="N"
 
-let t=title_txt:let t$="REGRESO AL CAMPO DE MINAS":gosub @text
+let t=title_txt:let t$="   REGRESO AL CAMPO DE MINAS":gosub @text
 
 # Menu
 let t=instructions_txt:let t$="Instrucciones":gosub @text:\
@@ -1252,7 +1245,7 @@ let lang=english
 let yes$(lang)="Y":\
 let no$(lang)="N"
 
-let t=title_txt:let t$="BACK TO THE MINEFIELD":gosub @text
+let t=title_txt:let t$="      BACK TO THE MINEFIELD":gosub @text
 
 # Menu
 let t=instructions_txt:let t$="Instructions":gosub @text:\
@@ -1287,7 +1280,7 @@ let lang=interlingue
 let yes$(lang)="Y":\
 let no$(lang)="N"
 
-let t=title_txt:let t$="REVENIDA AL CAMP DE MINES":gosub @text
+let t=title_txt:let t$="   REVENIDA AL CAMP DE MINES":gosub @text
 
 # Menu
 let t=instructions_txt:let t$="Instructiones":gosub @text:\
@@ -1322,7 +1315,7 @@ let lang=esperanto
 let yes$(lang)="J":\
 let no$(lang)="N"
 
-let t=title_txt:let t$="REVENO AL LA MIN-KAMPO":gosub @text
+let t=title_txt:let t$="     REVENO AL LA MIN-KAMPO":gosub @text
 
 # Menu
 let t=instructions_txt:let t$="Instrukcioj":gosub @text:\
