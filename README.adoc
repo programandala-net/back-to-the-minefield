@@ -1,11 +1,12 @@
-= Regreso al campo de minas
-:revdate: 2016-07-11
+= Back to the minefield
+:revdate: 2019-03-10
 
 == Español
 
-_Regreso al campo de minas_ es una reescritura, en desarrollo, de
-_Campo de minas_, la versión española (publicada por Indescomp) de
-_Minefield_ (de Ian Andrew), para ZX Spectrum.
+_Back to the minefield_ (Regreso al campo de minas) es una
+reescritura, en desarrollo, de _Campo de minas_, la versión española
+(publicada por Indescomp) de _Minefield_ (de Ian Andrew), para ZX
+Spectrum.
 
 El programa está escrito en
 http://programandala.net/es.programa.vimclair_basic.html[Vimclair
@@ -13,9 +14,9 @@ BASIC] para ZX Spectrum 128.
 
 == English
 
-_Regreso al campo de minas_ (Back to the minefield) is a a remake,
-under development, of _Campo de minas_, the Spanish version (published
-by Indescomp) of _Minefield_ (by Ian Andrew), for ZX Spectrum.
+_Back to the minefield_ is a a remake, under development, of _Campo de
+minas_, the Spanish version (published by Indescomp) of _Minefield_
+(by Ian Andrew), for ZX Spectrum.
 
 The program is written in
 http://programandala.net/en.program.vimclair_basic.html[Vimclair

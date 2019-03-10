@@ -1,8 +1,11 @@
 # Makefile
 #
 # This file is part of
-# Regreso al campo de minas
+# Back to the minefield
 # By Marcos Cruz (programandala.net)
+
+# Last modified 201903102019
+# See change log at the end of the file
 
 # ==============================================================
 # Requirements
@@ -18,7 +21,7 @@
 # ==============================================================
 
 .PHONY: all
-all: regreso_al_campo_de_minas.tap
+all: back_to_the_minefield.tap
 
 clean:
 	rm -f *.tap
@@ -27,12 +30,12 @@ clean:
 tmp/udg.tap: src/udg.z80s
 	pasmo --name UDG.BIN --tap $< $@ 
 
-tmp/main.tap: src/regreso_al_campo_de_minas.vbas
+tmp/main.tap: src/back_to_the_minefield.vbas
 	vbas2tap $< ;\
-	mv src/regreso_al_campo_de_minas.bas tmp/main.bas;\
-	mv src/regreso_al_campo_de_minas.tap $@
+	mv src/back_to_the_minefield.bas tmp/main.bas;\
+	mv src/back_to_the_minefield.tap $@
 
-regreso_al_campo_de_minas.tap: tmp/main.tap tmp/udg.tap
+back_to_the_minefield.tap: tmp/main.tap tmp/udg.tap
 	cat $^ > $@
 
 # ==============================================================
@@ -52,3 +55,5 @@ regreso_al_campo_de_minas.tap: tmp/main.tap tmp/udg.tap
 # 2016-06-19: Update: the source has been converted to Vimclair BASIC.
 #
 # 2017-12-30: Update layout.
+#
+# 2019-03-10: Update after the renaming of the project.

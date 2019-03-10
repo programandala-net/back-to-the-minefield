@@ -1,4 +1,4 @@
-rem Regreso al campo de minas
+rem Back to the minefield
 //
 //  Written in Vimclair BASIC for ZX Spectrum 128.
 //
@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.56.0+201903101956":\
+let version$="0.57.0+201903102013":\
 
 goto @init
 
