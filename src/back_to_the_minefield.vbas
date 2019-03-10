@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.60.0+201903102346":\
+let version$="0.60.1+201903102350":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -1071,7 +1071,7 @@ elseif lang=english then
 #      <------------------------------>
 print  " You, the heroic lady. Cross"
 #      <------------------------------>
-print "  the mine fields using the"
+print "  the minefields using the"
 #      <------------------------------>
 print "  the cursor keys."
 
@@ -1134,7 +1134,7 @@ if lang=spanish then
 #      <------------------------------>
 print  " Minas: En la parte inferior"
 #      <------------------------------>
-print "  verás cuántas te rodean."
+print "  verás cuántas tienes cerca."
 
 elseif lang=english then
 
@@ -1248,8 +1248,6 @@ data new_record_txt,"¡Un nuevo récord!"
 data enter_initials_txt,"Introduce tus iniciales"
 data again_txt,"¿Otra vez?"
 data 0 // end of data
-
-// English
 
 data english
 
