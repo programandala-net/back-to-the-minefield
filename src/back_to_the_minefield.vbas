@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.57.0+201903102013":\
+let version$="0.57.1+201903102021":\
 
 goto @init
 
@@ -368,8 +368,10 @@ gosub @message
 
 @again:
 pause 0:let i$=inkey$
-if i$="n" or i$="N" then cls:stop
-if i$="s" or i$="S" then goto @new_game
+if code(i$)>code("Z") then \
+  let i$=chr$(code(i$)-32)
+if i$=no$(lang) then cls:stop
+if i$=yes$(lang) then goto @new_game
 goto @again
 
 // ==============================================================
@@ -776,7 +778,9 @@ let lang=english
 // Multilingual text
 
 dim text$(langs,texts,32):\
-dim text_len(langs,texts)
+dim text_len(langs,texts):\
+dim yes$(langs):\
+dim no$(langs)
 
 gosub @texts
 
@@ -1096,6 +1100,9 @@ return
 
 let lang=spanish
 
+let yes$(lang)="S":\
+let no$(lang)="N"
+
 let t=title_txt:let t$="REGRESO AL CAMPO DE MINAS":gosub @text
 
 # Menu
@@ -1128,6 +1135,9 @@ let t=again_txt:let t$="¿Otra vez?":gosub @text
 
 let lang=english
 
+let yes$(lang)="Y":\
+let no$(lang)="N"
+
 let t=title_txt:let t$="BACK TO THE MINEFIELD":gosub @text
 
 # Menu
@@ -1159,6 +1169,9 @@ let t=again_txt:let t$="Again?":gosub @text
 // Interlingue
 
 let lang=interlingue
+
+let yes$(lang)="Y":\
+let no$(lang)="N"
 
 let t=title_txt:let t$="REVENIDA AL CAMP DE MINES":gosub @text
 
@@ -1357,12 +1370,14 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<key_udg\$,k$,gIe
 #vim %substitute,\<text\$,l$,gIe
 #vim %substitute,\<replay_controls\$,m$,gIe
+#vim %substitute,\<no\$,n$,gIe
 #vim %substitute,\<protagonist\$,p$,gIe
 #vim %substitute,\<dead_protagonist_udg\$,q$,gIe
 #vim %substitute,\<trail\$,t$,gIe
 #vim %substitute,\<blank_field_row\$,u$,gIe
 #vim %substitute,\<version\$,v$,gIe
 #vim %substitute,\<message\$,w$,gIe
+#vim %substitute,\<yes\$,y$,gIe
 
 //  Shorten numeric array names
 
