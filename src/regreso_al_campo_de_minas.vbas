@@ -2,7 +2,7 @@ rem Regreso al campo de minas
 //
 //  Written in Vimclair BASIC for ZX Spectrum 128.
 //
-rem By Marcos Cruz (programandala.net), 2016, 2017.
+rem By Marcos Cruz (programandala.net), 2016, 2017, 2019.
 //
 //  Based on "Campo de minas" (published by Indescomp), the Spanish
 //  version of "Minefield", written by Ian Andrew.
@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.52.3+201810302253":\
+let version$="0.53.0-dev.0+201903101549":\
 
 goto @init
 
@@ -275,11 +275,11 @@ return
 input ;:\
 gosub @select_chars:\
 print #1;paper 8;ink 9;\
-  at 0, 0;"Nivel";\
-  at 0, 6;"Minas vecinas";\
-  at 0,20;"Puntos";inverse 1;\
+  at 0, 0;level$;\
+  at 0, 6;near_mines$;\
+  at 0,20;points$;inverse 1;\
   at 1,20;" 0000 ";inverse 0;\
-  at 0,27;"Récor";inverse 1;\
+  at 0,27;record$;inverse 1;\
   at 1,27;" 0000":\
 gosub @select_graphics
 
@@ -733,6 +733,14 @@ let detector_color(4)=2
 let record_player$="IAN":\
 let record=250
 
+// Language and texts
+
+let english=1:\
+let spanish=2:\
+let langs=spanish:\
+let lang=english:\
+gosub @texts
+
 // Files
 
 gosub @select_graphics:\
@@ -768,8 +776,6 @@ save!"fence.scr"code 16384,6144
 
 # stop
 
-
-
 // ==============================================================
 // menu
 
@@ -786,26 +792,37 @@ gosub @select_chars
 #  <------------------------------>
 print '\
   "________________________________"''\
-  inverse 1;"I";inverse 0;"nstrucciones"''\
-  inverse 1;"J";inverse 0;"ugar"''\
-  inverse 1;"C";inverse 0;"réditos"''\
+  inverse 1;instructions$(1);inverse 0;instructions$(2 to)''\
+  inverse 1;start$(1);inverse 0;start$(2 to)''\
+  inverse 1;credits$(1);inverse 0;credits$(2 to)''\
+  inverse 1;change_language$(1);inverse 0;change_language$(2 to)''\
   "________________________________"
 #  <------------------------------>
 
 @menu_key
 
 pause 0:let i$=inkey$
+if code(i$)>code("Z") then \
+  let i$=chr$(code(i$)-32)
 
-if i$="i" or i$="I" then \
+if i$=instructions$(1) then \
   gosub @instructions:\
   goto @menu
 
-if i$="j" or i$="J" then \
+if i$=start$(1) then \
   goto @new_game
 
-if i$="c" or i$="C" then \
+if i$=credits$(1) then \
   gosub @credits:\
   goto @menu
+
+if i$=change_language$(1) then
+  let lang=lang+1
+  if lang>langs then \
+    let lang=1
+  gosub @texts:\
+  goto @menu
+endif
 
 beep .1 ,23:\
 goto @menu_key
@@ -892,8 +909,49 @@ return
 @title:
 
 #      <------------------------------>
-print "   REGRESO AL CAMPO DE MINAS"
+print tab (32-len(title$))/2;title$
 return
+
+// ==============================================================
+// subrutine: texts
+
+// Set the string constants after the current language
+
+@texts
+
+if lang=spanish then
+
+  let title$="REGRESO AL CAMPO DE MINAS"
+
+  # Menu
+  let instructions$="Instrucciones":\
+  let start$="Jugar":\
+  let credits$="Créditos":\
+  let change_language$="No en español"
+
+  # Status bar
+  let level$="Nivel":\
+  let near_mines$="Minas vecinas":\
+  let points$="Puntos":\
+  let record$="Récor"
+
+else 
+
+  let title$="BACK TO THE MINEFIELD"
+
+  # Menu
+  let instructions$="Instructions":\
+  let start$="Play":\
+  let credits$="Credits":\
+  let change_language$="Not in English"
+
+  # Status bar
+  let level$="Level":\
+  let near_mines$="Surrounding mines":\
+  let points$="Points":\
+  let record$="Record"
+
+endif
 
 // ==============================================================
 // subroutine: icon
@@ -1039,19 +1097,28 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<blank_row\$,b$,gIe
 #vim %substitute,\<bill_udg\$,c$,gIe
 #vim %substitute,\<mine_char\$,d$,gIe
+#vim %substitute,\<level\$,e$,gIe
 #vim %substitute,\<fence\$,f$,gIe
 #vim %substitute,\<flower_udg\$,g$,gIe
 #vim %substitute,\<record_player\$,h$,gIe
+#vim %substitute,\<near_mines\$,i$,gIe // XXX FIXME -- i$ is already used
 #vim %substitute,\<fence_udg\$,j$,gIe
 #vim %substitute,\<key_udg\$,k$,gIe
+#vim %substitute,\<points\$,l$,gIe
 #vim %substitute,\<replay_controls\$,m$,gIe
+#vim %substitute,\<record\$,n$,gIe
+#vim %substitute,\<instructions\$,o$,gIe
 #vim %substitute,\<protagonist\$,p$,gIe
 #vim %substitute,\<dead_protagonist_udg\$,q$,gIe
+#vim %substitute,\<title\$,r$,gIe
 #vim %substitute,\<safe_zone\$,s$,gIe
 #vim %substitute,\<trail\$,t$,gIe
 #vim %substitute,\<blank_field_row\$,u$,gIe
 #vim %substitute,\<version\$,v$,gIe
 #vim %substitute,\<message\$,w$,gIe
+#vim %substitute,\<start\$,x$,gIe
+#vim %substitute,\<credits\$,y$,gIe
+#vim %substitute,\<change_language\$,z$,gIe
 
 //  Shorten numeric array names
 
@@ -1108,6 +1175,5 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_row\>,\1 r,gIe
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_col\>,\1 c,gIe
-
 
 // vim: filetype=vimclairbasic:fileencoding=utf8

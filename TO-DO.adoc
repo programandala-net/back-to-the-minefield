@@ -1,3 +1,7 @@
 = TO-DO of _Regreso al campo de minas_
-:revdate: 2018-10-30
+:revdate: 2019-03-10
 
+- Store translation strings in an array.
+- English translation.
+- Esperanto translation.
+- Interlingue translation.
