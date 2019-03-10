@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.53.0+201903101841":\
+let version$="0.54.0+201903101916":\
 
 goto @init
 
@@ -768,7 +768,8 @@ let record=250
 // Languages
 
 let english=1:\
-let spanish=2:\
+let interlingue=2:\
+let spanish=3:\
 let langs=spanish:\
 let lang=english
 
@@ -925,7 +926,7 @@ print "en código y gráficos de Ian"
 print "Andrew."
 #      <------------------------------>
 
-else
+elseif lang=english then
 
 #      <------------------------------>
 print "Version ";version$
@@ -945,6 +946,30 @@ print
 print "Written in Vimclair BASIC for"
 print "ZX Spectrum 128. Partly based on"
 print "code and graphics by Ian Andrew."
+#      <------------------------------>
+
+else
+
+#      <------------------------------>
+print "Version ";version$
+print
+print "Autor:"
+print "  Marcos Cruz"
+print "  (programandala.net), 2016-2019"
+print
+print "Lusor de provas:"
+print "  Irene Albert."
+print
+print "Un tribute a, e un"
+print "reinterpretation de:"
+print "  Minefield (Ian Andrew, 198x),"
+print "  publicat in hispan de"
+print "  Indescomp quam 'Campo de"
+print "  minas'."
+print
+print "Scrit in Vimclair BASIC por ZX"
+print "Spectrum 128. Partimen basat sur";
+print "code e images de Ian Andrew."
 #      <------------------------------>
 
 endif
@@ -971,7 +996,7 @@ print "  viesa los campos de minas,"
 #      <------------------------------>
 print "  usando el cursor."
 
-else
+elseif lang=english then
 
 #      <------------------------------>
 print  " You, the heroic lady. Cross"
@@ -979,6 +1004,15 @@ print  " You, the heroic lady. Cross"
 print "  the mine fields using the"
 #      <------------------------------>
 print "  the cursor keys."
+
+else
+
+#      <------------------------------>
+print  " Tu, li heroic senioretta."
+#      <------------------------------>
+print "  Transea li campes de mines"
+#      <------------------------------>
+print "  per li fleche-claves."
 
 endif
 
@@ -991,12 +1025,19 @@ print  " Bill el gusano: Está en el úl-"
 #      <------------------------------>
 print "  timo campo. Rescátalo."
 
-else
+elseif lang=english then
 
 #      <------------------------------>
 print  " Bill the worm: It's on the"
 #      <------------------------------>
 print "  last field. Rescue it."
+
+else
+
+#      <------------------------------>
+print  " Bill li verme: It es in li"
+#      <------------------------------>
+print "  ultim camp. Salva it."
 
 endif
 
@@ -1009,7 +1050,7 @@ print  " Minas: En la parte inferior"
 #      <------------------------------>
 print "  verás cuántas te rodean."
 
-else
+elseif lang=english then
 
 #      <------------------------------>
 print  " Mines: On the status bar you"
@@ -1017,6 +1058,13 @@ print  " Mines: On the status bar you"
 print "  will see how many of them are"
 #      <------------------------------>
 print "  near you."
+
+else
+
+#      <------------------------------>
+print  " Mines: Sur li statu-barre tu"
+#      <------------------------------>
+print "  va vide quantes es apu te."
 
 endif
 
@@ -1032,13 +1080,16 @@ if lang=spanish then
 
 #      <------------------------------>
 print  " Verja electrificada."
+
+elseif lang=english then
+
 #      <------------------------------>
+print  " Electrified fence."
 
 else
 
 #      <------------------------------>
-print  " Electrified fence."
-#      <------------------------------>
+print  " Palissade electrificat."
 
 endif
 
@@ -1091,7 +1142,7 @@ if lang=spanish then
   let t=enter_initials_txt:let t$="Introduce tus iniciales":gosub @text:\
   let t=again_txt:let t$="¿Otra vez?":gosub @text
 
-else 
+elseif lang=english then
 
   let t=title_txt:let t$="BACK TO THE MINEFIELD":gosub @text
 
@@ -1119,6 +1170,35 @@ else
   let t=new_record_txt:let t$="A new record!":gosub @text:\
   let t=enter_initials_txt:let t$="Enter your initials":gosub @text:\
   let t=again_txt:let t$="Again?":gosub @text
+
+else
+
+  let t=title_txt:let t$="REVENIDA AL CAMP DE MINES":gosub @text
+
+  # Menu
+  let t=instructions_txt:let t$="Instructiones":gosub @text:\
+  let t=start_txt:let t$="Luder":gosub @text:\
+  let t=credits_txt:let t$="Credites":gosub @text:\
+  let t=change_language_txt:let t$="Ne en Interlingue":gosub @text
+
+  # Status bar
+  let t=level_txt:let t$="Nivelle":gosub @text:\
+  let t=near_mines_txt:let t$="Mines proxim":gosub @text:\
+  let t=points_txt:let t$="Puntes":gosub @text:\
+  let t=record_txt:let t$="Record":gosub @text
+
+  # Game
+  let t=safe_zone_txt:let t$="<<<<<<<< ZONA SECUR >>>>>>>>>>":gosub @text:\
+  let t=putting_mines_txt:let t$="Colocante mines...":gosub @text:\
+  let t=replay_controls_1_txt:let t$="REPETITION: [P]ause [F]ine":gosub @text:\
+  let t=replay_controls_2_txt:let t$="Clavea por continuar":gosub @text:\
+  let t=you_need_key_txt:let t$="Tu besona li clave por exear":gosub @text:\
+  let t=open_door_txt:let t$="Porta apert":gosub @text
+
+  # End
+  let t=new_record_txt:let t$="Un nov record!":gosub @text:\
+  let t=enter_initials_txt:let t$="Inscri vu initiales":gosub @text:\
+  let t=again_txt:let t$="Ancor?":gosub @text
 
 endif
 

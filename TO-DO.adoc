@@ -2,5 +2,9 @@
 :revdate: 2019-03-10
 
 - Add an Esperanto translation.
-- Add an Interlingue translation.
 - Make the replay control keys configurable.
+- Fix lenghts of the status bar texts.
+- Replace the text index with hardcoded numbers. This will be a bit
+  faster.
+- Replace `inkey$` with a system variable.
+- Rename the project with the English title.
