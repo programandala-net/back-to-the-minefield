@@ -6,5 +6,6 @@
 - Fix lenghts of the status bar texts.
 - Replace `inkey$` with a system variable.
 - Rename the project with the English title.
-- Store the texts of all languages in the array. The change of the
-  language in the menu will be faster.
+- Adapt Y/N keys to all languages.
+- Make some screen effect during the initialization of the text
+  translations array.
