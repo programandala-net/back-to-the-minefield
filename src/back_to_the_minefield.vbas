@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.60.1+201903102350":\
+let version$="0.60.3+201903110002":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -231,7 +231,7 @@ let key_col=fn random_col():\
 // XXX FIXME -- key_udg$, not found:
 print at key_row,key_col;key_udg$:\
 
-let message$=fn txt$(you_neek_key_txt):\
+let message$=fn txt$(you_need_key_txt):\
 gosub @message
 
 for i=60 to 10 step -5:\
@@ -945,7 +945,7 @@ goto @menu_key
 cls
 randomize udg_chars:\
 gosub @select_udg_set
-print text$(lang,title_txt)'
+print text$(lang,title_txt)''
 
 if lang=spanish then
 
