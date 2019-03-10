@@ -2,7 +2,7 @@ rem Regreso al campo de minas
 //
 //  Written in Vimclair BASIC for ZX Spectrum 128.
 //
-rem By Marcos Cruz (programandala.net), 2016, 2017, 2019.
+rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 //
 //  Based on "Campo de minas" (published by Indescomp), the Spanish
 //  version of "Minefield", written by Ian Andrew.
@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.53.0-dev.0+201903101549":\
+let version$="0.53.0-dev.1+201903101722":\
 
 goto @init
 
@@ -24,6 +24,8 @@ goto @init
 deffn random_row()=int(rnd*mined_rows)+top_mined_row
 
 deffn random_col()=int(rnd*30)+1
+
+deffn txt$(n)=text$(n,1 to text_len(n))
 
 // ==============================================================
 // Start a new game
@@ -275,11 +277,11 @@ return
 input ;:\
 gosub @select_chars:\
 print #1;paper 8;ink 9;\
-  at 0, 0;level$;\
-  at 0, 6;near_mines$;\
-  at 0,20;points$;inverse 1;\
+  at 0, 0;fn txt$(level_txt);\
+  at 0, 6;fn txt$(near_mines_txt);\
+  at 0,20;fn txt$(points_txt);inverse 1;\
   at 1,20;" 0000 ";inverse 0;\
-  at 0,27;record$;inverse 1;\
+  at 0,27;fn txt$(record_txt);inverse 1;\
   at 1,27;" 0000":\
 gosub @select_graphics
 
@@ -440,14 +442,14 @@ print at 3,8;\
   "¡Felicidades!"
 #  <------------------------------>
 print '\
-  "Has rescatado a Bill. El mundo"'
+  "Has rescatado a Bill. El mundo"'\
   "te está agradecido."
 #  <------------------------------>
 print ''''';\
   "Puntuación: ";score;"."
 #  <------------------------------>
 print \
-  "¿Por qué no vuelves a jugar y"'
+  "¿Por qué no vuelves a jugar y"'\
   "tratas de mejorarla?"
 #  <------------------------------>
 if score>record then \
@@ -733,12 +735,31 @@ let detector_color(4)=2
 let record_player$="IAN":\
 let record=250
 
-// Language and texts
+// Languages
 
 let english=1:\
 let spanish=2:\
 let langs=spanish:\
-let lang=english:\
+let lang=english
+
+// Multilingual text
+
+let change_language_txt=1:\
+let credits_txt=2:\
+let instructions_txt=3:\
+let level_txt=4:\
+let near_mines_txt=5:\
+let points_txt=6:\
+let record_txt=7:\
+let start_txt=8:\
+let safe_zone_txt=9:\
+let title_txt=10
+
+let texts=title_txt:\
+
+dim text$(texts,32):\
+dim text_len(texts)
+
 gosub @texts
 
 // Files
@@ -792,10 +813,14 @@ gosub @select_chars
 #  <------------------------------>
 print '\
   "________________________________"''\
-  inverse 1;instructions$(1);inverse 0;instructions$(2 to)''\
-  inverse 1;start$(1);inverse 0;start$(2 to)''\
-  inverse 1;credits$(1);inverse 0;credits$(2 to)''\
-  inverse 1;change_language$(1);inverse 0;change_language$(2 to)''\
+  inverse 1;fn txt$(instructions_txt)(1);\
+  inverse 0;fn txt$(instructions_txt)(2 to)''\
+  inverse 1;fn txt$(start_txt)(1);\
+  inverse 0;fn txt$(start_txt)(2 to)''\
+  inverse 1;fn txt$(credits_txt)(1);\
+  inverse 0;fn txt$(credits_txt)(2 to)''\
+  inverse 1;fn txt$(change_language_txt)(1);\
+  inverse 0;fn txt$(change_language_txt)(2 to)''\
   "________________________________"
 #  <------------------------------>
 
@@ -805,18 +830,19 @@ pause 0:let i$=inkey$
 if code(i$)>code("Z") then \
   let i$=chr$(code(i$)-32)
 
-if i$=instructions$(1) then \
+if i$=text$(instructions_txt,1) then \
   gosub @instructions:\
   goto @menu
 
-if i$=start$(1) then \
+if i$=text$(start_txt,1) then \
   goto @new_game
 
-if i$=credits$(1) then \
+if i$=text$(credits_txt,1) then \
   gosub @credits:\
   goto @menu
 
-if i$=change_language$(1) then
+if i$=text$(change_language_txt,1) then
+  cls
   let lang=lang+1
   if lang>langs then \
     let lang=1
@@ -841,7 +867,7 @@ print "Versión ";version$
 print
 print "Autor:"
 print "  Marcos Cruz"
-print "  (programandala.net)."
+print "  (programandala.net), 2016-2019"
 print
 print "Jugador de pruebas:"
 print "  Irene Albert."
@@ -909,7 +935,7 @@ return
 @title:
 
 #      <------------------------------>
-print tab (32-len(title$))/2;title$
+print tab (32-text_len(title_txt))/2;fn txt$(title_txt)
 return
 
 // ==============================================================
@@ -921,37 +947,50 @@ return
 
 if lang=spanish then
 
-  let title$="REGRESO AL CAMPO DE MINAS"
+  let t=title_txt:let t$="REGRESO AL CAMPO DE MINAS":gosub @text
 
   # Menu
-  let instructions$="Instrucciones":\
-  let start$="Jugar":\
-  let credits$="Créditos":\
-  let change_language$="No en español"
+  let t=instructions_txt:let t$="Instrucciones":gosub @text:\
+  let t=start_txt:let t$="Jugar":gosub @text:\
+  let t=credits_txt:let t$="Créditos":gosub @text:\
+  let t=change_language_txt:let t$="No en español":gosub @text
 
   # Status bar
-  let level$="Nivel":\
-  let near_mines$="Minas vecinas":\
-  let points$="Puntos":\
-  let record$="Récor"
+  let t=level_txt:let t$="Nivel":gosub @text:\
+  let t=near_mines_txt:let t$="Minas vecinas":gosub @text:\
+  let t=points_txt:let t$="Puntos":gosub @text:\
+  let t=record_txt:let t$="Récor":gosub @text
 
 else 
 
-  let title$="BACK TO THE MINEFIELD"
+  let t=title_txt:let t$="BACK TO THE MINEFIELD":gosub @text
 
   # Menu
-  let instructions$="Instructions":\
-  let start$="Play":\
-  let credits$="Credits":\
-  let change_language$="Not in English"
+  let t=instructions_txt:let t$="Instructions":gosub @text:\
+  let t=start_txt:let t$="Play":gosub @text:\
+  let t=credits_txt:let t$="Credits":gosub @text:\
+  let t=change_language_txt:let t$="Not in English":gosub @text
 
   # Status bar
-  let level$="Level":\
-  let near_mines$="Surrounding mines":\
-  let points$="Points":\
-  let record$="Record"
+  let t=level_txt:let t$="Level":gosub @text:\
+  let t=near_mines_txt:let t$="Near mines":gosub @text:\
+  let t=points_txt:let t$="Score":gosub @text:\
+  let t=record_txt:let t$="High":gosub @text
 
 endif
+
+// ==============================================================
+// subroutine: text
+
+// Input:
+// t$ = text
+// t = text index
+
+@text
+
+let text$(t)=t$:\
+let text_len(t)=len(t$):\
+return
 
 // ==============================================================
 // subroutine: icon
@@ -1065,7 +1104,9 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 // ==============================================================
 // Vimclair BASIC directives
 
-#tapmaker zmakebas
+# #tapmaker zmakebas
+#tapmaker bas2tap
+
 #filename DISK
 #run 1
 
@@ -1097,40 +1138,35 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<blank_row\$,b$,gIe
 #vim %substitute,\<bill_udg\$,c$,gIe
 #vim %substitute,\<mine_char\$,d$,gIe
-#vim %substitute,\<level\$,e$,gIe
 #vim %substitute,\<fence\$,f$,gIe
 #vim %substitute,\<flower_udg\$,g$,gIe
 #vim %substitute,\<record_player\$,h$,gIe
-#vim %substitute,\<near_mines\$,i$,gIe // XXX FIXME -- i$ is already used
 #vim %substitute,\<fence_udg\$,j$,gIe
 #vim %substitute,\<key_udg\$,k$,gIe
-#vim %substitute,\<points\$,l$,gIe
+#vim %substitute,\<text\$,l$,gIe
 #vim %substitute,\<replay_controls\$,m$,gIe
-#vim %substitute,\<record\$,n$,gIe
-#vim %substitute,\<instructions\$,o$,gIe
 #vim %substitute,\<protagonist\$,p$,gIe
 #vim %substitute,\<dead_protagonist_udg\$,q$,gIe
-#vim %substitute,\<title\$,r$,gIe
 #vim %substitute,\<safe_zone\$,s$,gIe
 #vim %substitute,\<trail\$,t$,gIe
 #vim %substitute,\<blank_field_row\$,u$,gIe
 #vim %substitute,\<version\$,v$,gIe
 #vim %substitute,\<message\$,w$,gIe
-#vim %substitute,\<start\$,x$,gIe
-#vim %substitute,\<credits\$,y$,gIe
-#vim %substitute,\<change_language\$,z$,gIe
 
 //  Shorten numeric array names
 
 #vim %substitute,\<detector_color\>,d,gIe
+#vim %substitute,\<text_len\>,l,gIe
 
 //  Shorten numeric variable names
 
 #vim %substitute,\<border_color\>,bc,gIe
-#vim %substitute,\<bill_char\>,bh,gIe
 #vim %substitute,\<bottom_fence_row\>,bfr,gIe
+#vim %substitute,\<bill_char\>,bh,gIe
 #vim %substitute,\<back_surrounding_mines\>,bsm,gIe
 #vim %substitute,\<bottom_safe_row\>,bsr,gIe
+#vim %substitute,\<change_language_txt\>,cltxt,gIe
+#vim %substitute,\<credits_txt\>,ctxt,gIe
 #vim %substitute,\<door_closed\>,dcl,gIe
 #vim %substitute,\<door_col\>,dco,gIe
 #vim %substitute,\<fence_char\>,fec,gIe
@@ -1139,29 +1175,39 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<found_char\>,foc,gIe
 #vim %substitute,\<front_surrounding_mines\>,fsm,gIe
 #vim %substitute,\<ink_color\>,ic,gIe
-#vim %substitute,\<key_char\>,kch,gIe
+#vim %substitute,\<instructions_txt\>,it,gIe
 #vim %substitute,\<key_col\>,kc,gIe
+#vim %substitute,\<key_char\>,kch,gIe
 #vim %substitute,\<key_row\>,kr,gIe
 #vim %substitute,\<last_level\>,ll,gIe
+#vim %substitute,\<left_surrounding_mines\>,lsm,gIe
+#vim %substitute,\<level_txt\>,lt,gIe
 #vim %substitute,\<mine_char\>,mc,gIe
 #vim %substitute,\<message_row\>,mr0,gIe
 #vim %substitute,\<mine_row\>,mr1,gIe
 #vim %substitute,\<mined_rows\>,mr2,gIe
-#vim %substitute,\<left_surrounding_mines\>,lsm,gIe
-#vim %substitute,\<old_row\>,orow,gIe
+#vim %substitute,\<near_mines_txt\>,nmt,gIe
+#vim %substitute,\<next_text\>,nt,gIe
 #vim %substitute,\<old_col\>,ocol,gIe
-#vim %substitute,\<right_surrounding_mines\>,rsm,gIe
-#vim %substitute,\<surrounding_mines\>,sm,gIe
+#vim %substitute,\<old_row\>,orow,gIe
 #vim %substitute,\<paper_color\>,pc,gIe
 #vim %substitute,\<protagonist_frame\>,pf,gIe
 #vim %substitute,\<paused_replay\>,pr,gIe
+#vim %substitute,\<points_txt\>,pt,gIe
 #vim %substitute,\<record\>,r,gIe
+#vim %substitute,\<right_surrounding_mines\>,rsm,gIe
+#vim %substitute,\<record_txt\>,rt,gIe
 #vim %substitute,\<score\>,s,gIe
 #vim %substitute,\<start_col\>,sc,gIe
+#vim %substitute,\<surrounding_mines\>,sm,gIe
+#vim %substitute,\<start_txt\>,st,gIe
+#vim %substitute,\<safe_zone_txt\>,szt,gIe
 #vim %substitute,\<top_fence_row\>,tfr,gIe
 #vim %substitute,\<top_mined_row\>,tmr,gIe
 #vim %substitute,\<time_score\>,ts,gIe
 #vim %substitute,\<top_safe_row\>,tsr,gIe
+#vim %substitute,\<title_txt\>,tt,gIe
+#vim %substitute,\<texts\>,tx,gIe
 #vim %substitute,\<udg1\>,u1,gIe
 #vim %substitute,\<udg2\>,u2,gIe
 #vim %substitute,\<udg1_font\>,uf,gIe
@@ -1175,5 +1221,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_row\>,\1 r,gIe
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_col\>,\1 c,gIe
+#vim %substitute,\<\(\(def\)\?\s*fn \)\+txt\$,\1 t$,gIe
 
 // vim: filetype=vimclairbasic:fileencoding=utf8
