@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.53.0-dev.3+201903101831":\
+let version$="0.53.0+201903101841":\
 
 goto @init
 
@@ -418,9 +418,13 @@ ink 0
 gosub @the_nest
 
 if lang=spanish then
-  print at 0,0; ink 7; paper 0;"   ¡Dos mil puntos extra!       "
+  print at 0,0; ink 7; paper 0;\
+#  <------------------------------>
+  "    ¡Dos mil puntos extra!      "
 else
-  print at 0,0; ink 7; paper 0;"     ¡Two thousand bonus!       "
+  print at 0,0; ink 7; paper 0;\
+#  <------------------------------>
+  "     ¡Two thousand bonus!       "
 endif
 
 let score=score+2000
@@ -893,9 +897,12 @@ goto @menu_key
 @credits:
 
 cls
+gosub @select_chars
 gosub @title
 print
-gosub @select_chars
+
+if lang=spanish then
+
 #      <------------------------------>
 print "Versión ";version$
 print
@@ -913,12 +920,37 @@ print "  publicado en español por"
 print "  Indescomp como Campo de minas."
 print
 print "Escrito en Vimclair BASIC para"
-print "ZX Spectrum 128. Basado en códi-"
-print "go y gráficos de Ian Andrew."
+print "ZX Spectrum 128. Basado en parte"
+print "en código y gráficos de Ian"
+print "Andrew."
 #      <------------------------------>
 
-pause 0
+else
+
+#      <------------------------------>
+print "Version ";version$
+print
+print "Author:"
+print "  Marcos Cruz"
+print "  (programandala.net), 2016-2019"
+print
+print "Test player:"
+print "  Irene Albert."
+print
+print "A tribute to and a remake of:"
+print "  Minefield (Ian Andrew, 198x),"
+print "  published in Spanisha by"
+print "  Indescomp as 'Campo de minas'."
+print
+print "Written in Vimclair BASIC for"
+print "ZX Spectrum 128. Partly based on"
+print "code and graphics by Ian Andrew."
+#      <------------------------------>
+
+endif
+
 gosub @select_graphics
+pause 0
 return
 
 // ==============================================================
