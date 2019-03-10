@@ -10,9 +10,9 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 // ==============================================================
 
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
-clear 65535-21*8*2-8:\
+clear 65535-21*8*3-8:\
 
-let version$="0.57.1+201903102021":\
+let version$="0.58.0-pre.0+201903102053":\
 
 goto @init
 
@@ -40,7 +40,8 @@ let score=0
 
 @new_level:
 
-gosub @select_graphics
+randomize udg1:\
+gosub @select_udg_set
 
 let surrounding_mines=0:\
 let door_closed=0
@@ -117,11 +118,6 @@ if level=(last_level-1) then \
   gosub @close_the_door
 
 beep .0875,10
-
-// XXX OLD
-# gosub @select_chars
-# print at 21,4; inverse 1;"¡Adelante!"
-# gosub @select_graphics
 
 for n=1 to 20
   beep .002,n+20
@@ -272,7 +268,8 @@ return
 @new_status_bar:
 
 input ;:\
-gosub @select_chars:\
+randomize udg2:\
+gosub @select_udg_set:\
 print #1;paper 8;ink 9;\
   at 0, 0;fn txt$(level_txt);\
   at 0, 6;fn txt$(near_mines_txt);\
@@ -280,7 +277,8 @@ print #1;paper 8;ink 9;\
   at 1,20;" 0000 ";inverse 0;\
   at 0,27;fn txt$(record_txt);inverse 1;\
   at 1,27;" 0000":\
-gosub @select_graphics
+randomize udg1:\
+gosub @select_udg_set
 
 @update_status_bar:
 
@@ -359,13 +357,6 @@ gosub @message
 // XXX OLD
 @l1200:
 
-// XXX OLD
-# gosub @select_chars
-# print \
-#   at 21,29; paper border_color; ink 9;"   ";\
-#   at 21,0; paper border_color; ink 9;" Récor = ";record;" por ";record_player$
-# gosub @select_graphics
-
 @again:
 pause 0:let i$=inkey$
 if code(i$)>code("Z") then \
@@ -380,10 +371,12 @@ goto @again
 @message:
 
 gosub @no_message:\
-gosub @select_chars:\
+randomize udg2:\
+gosub @select_udg_set:\
 print bright 1; ink 9; paper border_color;\
   at message_row,(32-len message$)/2;message$;:\
-gosub @select_graphics:\
+randomize udg1:\
+gosub @select_udg_set:\
 return
 
 @no_message:
@@ -506,11 +499,13 @@ goto @l1200
 for i=1 to 21:\
   print at i,0; over 1;paper paper_color;ink 9;blank_row$:\
 next i
-gosub @select_chars
+randomize udg2:\
+gosub @select_udg_set
 
 let paused_replay=0:\
 gosub @show_replay_bar
-gosub @select_graphics
+randomize udg1:\
+gosub @select_udg_set
 for n=1 to 100: next n
 
 let row=code trail$(1):\
@@ -632,7 +627,8 @@ next n
 for n=1 to 50
   border 6: border 2: beep .002,40+(n/10): border 6
 next n
-gosub @select_chars
+randomize udg2:\
+gosub @select_udg_set
 for m=1 to 4
   for n=7 to 0 step -1
     print at 10,7; ink n;fn txt$(new_record_txt)
@@ -640,7 +636,8 @@ for m=1 to 4
   next n
 next m
 print at 10,7; ink 9;fn txt$(new_record_txt)
-gosub @select_graphics
+randomize udg1:\
+gosub @select_udg_set
 
 // XXX TODO -- adapt
 
@@ -705,11 +702,15 @@ return
 
 // Graphics
 
-// There are two UDG banks: for graphics (udg1) and 
-// for the Spanish characters (udg2).
+// There are three UDG banks:
+//
+// udg1: graphics 
+// udg2: the Spanish and Interlingue characters
+// udg3: the Esperanto characters
 
 let udg1=65535-21*8*2:\
 let udg2=udg1+21*8:\
+let udg3=udg2+21*8:\
 load "UDG.BIN" code udg1-8
 let udg1_font=udg1-256-8:\
 let udg1_font_high=int(udg1_font/256):\
@@ -786,7 +787,8 @@ gosub @texts
 
 // Files
 
-gosub @select_graphics:\
+randomize udg1:\
+gosub @select_udg_set:\
 print at top_fence_row,0;fence$:\
 for n=top_safe_row to bottom_safe_row:\
   print at n,0;\
@@ -830,7 +832,8 @@ border 1: paper 1: ink 7
 cls
 gosub @title
 
-gosub @select_chars
+randomize udg2:\
+gosub @select_udg_set
 
 #  <------------------------------>
 print '\
@@ -880,7 +883,8 @@ goto @menu_key
 @credits:
 
 cls
-gosub @select_chars
+randomize udg2:\
+gosub @select_udg_set
 gosub @title
 print
 
@@ -956,7 +960,8 @@ print "code e images de Ian Andrew."
 
 endif
 
-gosub @select_graphics
+randomize udg1:\
+gosub @select_udg_set
 pause 0
 return
 
@@ -1076,7 +1081,8 @@ print  " Palissade electrificat."
 endif
 
 pause 0
-gosub @select_graphics
+randomize udg1:\
+gosub @select_udg_set
 return
 
 // ==============================================================
@@ -1224,26 +1230,19 @@ return
 // i$ = UDG string
 
 @icon:
-gosub @select_graphics:\
-print 'bright 1;i$;:\
-goto @select_chars
-
-// ==============================================================
-// subroutine: select user defined graphics
-
-@select_graphics:
-
 randomize udg1:\
-poke 23675,peek 23670:poke 23676,peek 23671:\
-randomize:\
-return
+gosub @select_udg_set:\
+print 'bright 1;i$;:\
+randomize udg2:\
+goto @select_udg_set
 
 // ==============================================================
 // subroutine: select user defined characters
 
-@select_chars:
+// Input: UDG set address stored in OS variable 23670.
 
-randomize udg2:\
+@select_udg_set:
+
 poke 23675,peek 23670:poke 23676,peek 23671:\
 randomize:\
 return
