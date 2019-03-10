@@ -12,11 +12,10 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.59.0+201903102259":\
+let version$="0.60.0+201903102346":\
+// Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
-
-// Note: version number after Semantic Versioning: http://semver.org
 
 // ==============================================================
 // Functions
@@ -841,8 +840,10 @@ randomize udg1:\
 gosub @select_udg_set:\
 print at top_fence_row,0;fence$:\
 for n=top_safe_row to bottom_safe_row:\
+  border 7:\
   print at n,0;\
     fence_udg$+"                              "+fence_udg$:\
+  border 0:\
 next n:\
 print at bottom_fence_row,0;fence$:\
 save!"fence.scr"code 16384,6144
@@ -1202,162 +1203,119 @@ return
 
 @texts
 
-// ---------------------------------------------
-// Spanish
+for i=1 to langs:\
+  read lang,yes$(lang),no$(lang):\
+next i
 
-let lang=spanish
-
-let yes$(lang)="S":\
-let no$(lang)="N"
-
-let t=title_txt:let t$="   REGRESO AL CAMPO DE MINAS":gosub @text
-
-# Menu
-let t=instructions_txt:let t$="Instrucciones":gosub @text:\
-let t=start_txt:let t$="Jugar":gosub @text:\
-let t=credits_txt:let t$="Créditos":gosub @text:\
-let t=change_language_txt:let t$="No en español":gosub @text
-
-# Status bar
-let t=level_txt:let t$="Nivel":gosub @text:\
-let t=near_mines_txt:let t$="Minas vecinas":gosub @text:\
-let t=points_txt:let t$="Puntos":gosub @text:\
-let t=record_txt:let t$="Récor":gosub @text
-
-# Game
-let t=safe_zone_txt:let t$="<<<<<<<< ZONA SEGURA >>>>>>>>>":gosub @text:\
-let t=putting_mines_txt:let t$="Poniendo minas...":gosub @text:\
-let t=replay_controls_1_txt:let t$="REPETICIÓN: [P]ausa [F]in":gosub @text:\
-let t=replay_controls_2_txt:let t$="Una tecla para seguir":gosub @text:\
-let t=you_need_key_txt:let t$="Necesitas la llave para salir":gosub @text:\
-let t=open_door_txt:let t$="Puerta abierta":gosub @text
-
-# End
-let t=new_record_txt:let t$="¡Un nuevo récord!":gosub @text:\
-let t=enter_initials_txt:let t$="Introduce tus iniciales":gosub @text:\
-let t=again_txt:let t$="¿Otra vez?":gosub @text
-
-// ---------------------------------------------
-// English
-
-let lang=english
-
-let yes$(lang)="Y":\
-let no$(lang)="N"
-
-let t=title_txt:let t$="      BACK TO THE MINEFIELD":gosub @text
-
-# Menu
-let t=instructions_txt:let t$="Instructions":gosub @text:\
-let t=start_txt:let t$="Play":gosub @text:\
-let t=credits_txt:let t$="Credits":gosub @text:\
-let t=change_language_txt:let t$="Not in English":gosub @text
-
-# Status bar
-let t=level_txt:let t$="Level":gosub @text:\
-let t=near_mines_txt:let t$="Near mines":gosub @text:\
-let t=points_txt:let t$="Score":gosub @text:\
-let t=record_txt:let t$="High":gosub @text
-
-# Game
-let t=safe_zone_txt:let t$="<<<<<<<<< SAFE ZONE >>>>>>>>>>":gosub @text
-let t=putting_mines_txt:let t$="Putting mines...":gosub @text
-let t=replay_controls_1_txt:let t$="REPETITION: [P]ause [F]inish":gosub @text:\
-let t=replay_controls_2_txt:let t$="Any key to continue":gosub @text:\
-let t=you_need_key_txt:let t$="Yo need the key to exit":gosub @text:\
-let t=open_door_txt:let t$="Open door":gosub @text
-
-# End
-let t=new_record_txt:let t$="A new record!":gosub @text:\
-let t=enter_initials_txt:let t$="Enter your initials":gosub @text:\
-let t=again_txt:let t$="Again?":gosub @text
-
-// ---------------------------------------------
-// Interlingue
-
-let lang=interlingue
-
-let yes$(lang)="Y":\
-let no$(lang)="N"
-
-let t=title_txt:let t$="   REVENIDA AL CAMP DE MINES":gosub @text
-
-# Menu
-let t=instructions_txt:let t$="Instructiones":gosub @text:\
-let t=start_txt:let t$="Luder":gosub @text:\
-let t=credits_txt:let t$="Credites":gosub @text:\
-let t=change_language_txt:let t$="Ne en Interlingue":gosub @text
-
-# Status bar
-let t=level_txt:let t$="Nivelle":gosub @text:\
-let t=near_mines_txt:let t$="Mines proxim":gosub @text:\
-let t=points_txt:let t$="Puntes":gosub @text:\
-let t=record_txt:let t$="Record":gosub @text
-
-# Game
-let t=safe_zone_txt:let t$="<<<<<<<< ZONA SECUR >>>>>>>>>>":gosub @text:\
-let t=putting_mines_txt:let t$="Colocante mines...":gosub @text:\
-let t=replay_controls_1_txt:let t$="REPETITION: [P]ause [F]ine":gosub @text:\
-let t=replay_controls_2_txt:let t$="Clavea por continuar":gosub @text:\
-let t=you_need_key_txt:let t$="Tu besona li clave por exear":gosub @text:\
-let t=open_door_txt:let t$="Porta apert":gosub @text
-
-# End
-let t=new_record_txt:let t$="Un nov record!":gosub @text:\
-let t=enter_initials_txt:let t$="Inscri vu initiales":gosub @text:\
-let t=again_txt:let t$="Ancor?":gosub @text
-
-// ---------------------------------------------
-// Esperanto 
-
-let lang=esperanto
-
-let yes$(lang)="J":\
-let no$(lang)="N"
-
-let t=title_txt:let t$="     REVENO AL LA MIN-KAMPO":gosub @text
-
-# Menu
-let t=instructions_txt:let t$="Instrukcioj":gosub @text:\
-let t=start_txt:let t$="Ludi":gosub @text:\
-let t=credits_txt:let t$="Kreditoj":gosub @text:\
-let t=change_language_txt:let t$="Ne en Esperanto":gosub @text
-
-# Status bar
-let t=level_txt:let t$="Nivelo":gosub @text:\
-let t=near_mines_txt:let t$="Apudaj minoj":gosub @text:\
-let t=points_txt:let t$="Poentoj":gosub @text:\
-let t=record_txt:let t$="Rikordo":gosub @text
-
-# Game
-let t=safe_zone_txt:let t$="<<<<<<<< SEKURA ZONO >>>>>>>>>":gosub @text:\
-let t=putting_mines_txt:let t$="Metante minojn...":gosub @text:\
-let t=replay_controls_1_txt:let t$="RIPETO: [P]aŭzi [F]ini":gosub @text:\
-let t=replay_controls_2_txt:let t$="Premu klavon por plui":gosub @text:\
-let t=you_need_key_txt:let t$="Vi bezonas la ŝlosilon por eliri":gosub @text:\
-let t=open_door_txt:let t$="Malferma pordo":gosub @text
-
-# End
-let t=new_record_txt:let t$="Nova rikordo!":gosub @text:\
-let t=enter_initials_txt:let t$="Tajpu viajn inicialojn":gosub @text:\
-let t=again_txt:let t$="Plu?":gosub @text
-
-// ==============================================================
-// subroutine: text
-
-// Store a translated text
-
-// Input:
-// lang = current lang, and lang of the text
-// t$ = text to store
-// t = text index
-
-@text
-
-let text$(lang,t)=t$:\
-let text_len(lang,t)=len(t$):\
+for i=1 to langs
+  read lang
+  do
+    border 0
+    read t
+    if not t then exit do
+    read t$:\
+    let text$(lang,t)=t$:\
+    let text_len(lang,t)=len(t$):\
+    border 7
+  loop
+next i
 
 return
+
+data spanish,"S","N"
+data english,"Y","N"
+data interlingue,"Y","N"
+data esperanto,"J","N"
+
+data spanish
+
+data title_txt,"   REGRESO AL CAMPO DE MINAS"
+data instructions_txt,"Instrucciones"
+data start_txt,"Jugar"
+data credits_txt,"Créditos"
+data change_language_txt,"No en español"
+data level_txt,"Nivel"
+data near_mines_txt,"Minas vecinas"
+data points_txt,"Puntos"
+data record_txt,"Récor"
+data safe_zone_txt,"<<<<<<<< ZONA SEGURA >>>>>>>>>"
+data putting_mines_txt,"Poniendo minas..."
+data replay_controls_1_txt,"REPETICIÓN: [P]ausa [F]in"
+data replay_controls_2_txt,"Una tecla para seguir"
+data you_need_key_txt,"Necesitas la llave para salir"
+data open_door_txt,"Puerta abierta"
+data new_record_txt,"¡Un nuevo récord!"
+data enter_initials_txt,"Introduce tus iniciales"
+data again_txt,"¿Otra vez?"
+data 0 // end of data
+
+// English
+
+data english
+
+data title_txt,"      BACK TO THE MINEFIELD"
+data instructions_txt,"Instructions"
+data start_txt,"Play"
+data credits_txt,"Credits"
+data change_language_txt,"Not in English"
+data level_txt,"Level"
+data near_mines_txt,"Near mines"
+data points_txt,"Score"
+data record_txt,"High"
+data safe_zone_txt,"<<<<<<<<< SAFE ZONE >>>>>>>>>>"
+data putting_mines_txt,"Putting mines..."
+data replay_controls_1_txt,"REPETITION: [P]ause [F]inish"
+data replay_controls_2_txt,"Any key to continue"
+data you_need_key_txt,"Yo need the key to exit"
+data open_door_txt,"Open door"
+data new_record_txt,"A new record!"
+data enter_initials_txt,"Enter your initials"
+data again_txt,"Again?"
+data 0 // end of data
+
+data interlingue
+
+data title_txt,"   REVENIDA AL CAMP DE MINES"
+data instructions_txt,"Instructiones"
+data start_txt,"Luder"
+data credits_txt,"Credites"
+data change_language_txt,"Ne en Interlingue"
+data level_txt,"Nivelle"
+data near_mines_txt,"Mines proxim"
+data points_txt,"Puntes"
+data record_txt,"Record"
+data safe_zone_txt,"<<<<<<<< ZONA SECUR >>>>>>>>>>"
+data putting_mines_txt,"Colocante mines..."
+data replay_controls_1_txt,"REPETITION: [P]ause [F]ine"
+data replay_controls_2_txt,"Clavea por continuar"
+data you_need_key_txt,"Tu besona li clave por exear"
+data open_door_txt,"Porta apert"
+data new_record_txt,"Un nov record!"
+data enter_initials_txt,"Inscri vu initiales"
+data again_txt,"Ancor?"
+data 0 // end of data
+
+data esperanto
+
+data title_txt,"     REVENO AL LA MIN-KAMPO"
+data instructions_txt,"Instrukcioj"
+data start_txt,"Ludi"
+data credits_txt,"Kreditoj"
+data change_language_txt,"Ne en Esperanto"
+data level_txt,"Nivelo"
+data near_mines_txt,"Apudaj minoj"
+data points_txt,"Poentoj"
+data record_txt,"Rikordo"
+data safe_zone_txt,"<<<<<<<< SEKURA ZONO >>>>>>>>>"
+data putting_mines_txt,"Metante minojn..."
+data replay_controls_1_txt,"RIPETO: [P]aŭzi [F]ini"
+data replay_controls_2_txt,"Premu klavon por plui"
+data you_need_key_txt,"Vi bezonas la ŝlosilon por eliri"
+data open_door_txt,"Malferma pordo"
+data new_record_txt,"Nova rikordo!"
+data enter_initials_txt,"Tajpu viajn inicialojn"
+data again_txt,"Plu?"
+data 0 // end of data
 
 // ==============================================================
 // subroutine: icon
