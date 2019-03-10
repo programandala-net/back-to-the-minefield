@@ -1,7 +1,7 @@
 = TO-DO of _Regreso al campo de minas_
 :revdate: 2019-03-10
 
-- Finish the English translation (credits, instructions...).
+- Finish the English translation (credits).
 - Add an Esperanto translation.
 - Add an Interlingue translation.
 - Make the replay control keys configurable.

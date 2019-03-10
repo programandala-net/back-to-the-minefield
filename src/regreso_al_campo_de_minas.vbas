@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.53.0-dev.2+201903101816":\
+let version$="0.53.0-dev.3+201903101831":\
 
 goto @init
 
@@ -929,6 +929,9 @@ return
 cls
 gosub @title
 let i$=protagonist$(1):gosub @icon
+
+if lang=spanish then
+
 #      <------------------------------>
 print  " Tú, la heroica damisela. Atra-";
 #      <------------------------------>
@@ -936,17 +939,54 @@ print "  viesa los campos de minas,"
 #      <------------------------------>
 print "  usando el cursor."
 
+else
+
+#      <------------------------------>
+print  " You, the heroic lady. Cross"
+#      <------------------------------>
+print "  the mine fields using the"
+#      <------------------------------>
+print "  the cursor keys."
+
+endif
+
 let i$=bill_udg$:gosub @icon
+
+if lang=spanish then
+
 #      <------------------------------>
 print  " Bill el gusano: Está en el úl-"
 #      <------------------------------>
 print "  timo campo. Rescátalo."
 
+else
+
+#      <------------------------------>
+print  " Bill the worm: It's on the"
+#      <------------------------------>
+print "  last field. Rescue it."
+
+endif
+
 let i$=mine_udg$:gosub @icon
+
+if lang=spanish then
+
 #      <------------------------------>
 print  " Minas: En la parte inferior"
 #      <------------------------------>
 print "  verás cuántas te rodean."
+
+else
+
+#      <------------------------------>
+print  " Mines: On the status bar you"
+#      <------------------------------>
+print "  will see how many of them are"
+#      <------------------------------>
+print "  near you."
+
+endif
 
 # let i$="\h":gosub @icon
 # #      <------------------------------>
@@ -955,9 +995,20 @@ print "  verás cuántas te rodean."
 # print "  Te perseguirá sin descanso."
 
 let i$=fence_udg$:gosub @icon
+
+if lang=spanish then
+
 #      <------------------------------>
 print  " Verja electrificada."
 #      <------------------------------>
+
+else
+
+#      <------------------------------>
+print  " Electrified fence."
+#      <------------------------------>
+
+endif
 
 pause 0
 gosub @select_graphics
