@@ -7,3 +7,9 @@
 - Replace `inkey$` with a system variable.
 - Fix/Improve the action after "Again?". Go to the menu.
 - Reduce number of loop index variables.
+- Add a direct language menu next to the main menu.
+- Preserve the flowers in the repetition.
+- Fix the repetion: dont't explode if it's quited.
+- Fix the graphic of the key.
+- Fix: The nest of the worm is not visible.
+
