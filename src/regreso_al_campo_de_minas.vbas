@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.54.0+201903101916":\
+let version$="0.55.0+201903101943":\
 
 goto @init
 
@@ -775,27 +775,6 @@ let lang=english
 
 // Multilingual text
 
-let again_txt=1:\
-let change_language_txt=2:\
-let credits_txt=3:\
-let enter_initials_txt=4:\
-let instructions_txt=5:\
-let level_txt=6:\
-let near_mines_txt=7:\
-let new_record_txt=8:\
-let open_door_txt=9:\
-let points_txt=10:\
-let putting_mines_txt=11:\
-let record_txt=12:\
-let replay_controls_1_txt=13:\
-let replay_controls_2_txt=14:\
-let start_txt=15:\
-let safe_zone_txt=16:\
-let title_txt=17:\
-let you_need_key_txt=18:\
-
-let texts=you_need_key_txt:\
-
 dim text$(texts,32):\
 dim text_len(texts)
 
@@ -1380,62 +1359,68 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<detector_color\>,d,gIe
 #vim %substitute,\<text_len\>,l,gIe
 
+// Replace text identifiers and its count
+
+#vim %substitute,\<again_txt\>,1,gIe
+#vim %substitute,\<change_language_txt\>,2,gIe
+#vim %substitute,\<credits_txt\>,3,gIe
+#vim %substitute,\<enter_initials_txt\>,4,gIe
+#vim %substitute,\<instructions_txt\>,5,gIe
+#vim %substitute,\<level_txt\>,6,gIe
+#vim %substitute,\<near_mines_txt\>,7,gIe
+#vim %substitute,\<new_record_txt\>,8,gIe
+#vim %substitute,\<open_door_txt\>,9,gIe
+#vim %substitute,\<points_txt\>,10,gIe
+#vim %substitute,\<putting_mines_txt\>,11,gIe
+#vim %substitute,\<record_txt\>,12,gIe
+#vim %substitute,\<replay_controls_1_txt\>,13,gIe
+#vim %substitute,\<replay_controls_2_txt\>,14,gIe
+#vim %substitute,\<safe_zone_txt\>,15,gIe
+#vim %substitute,\<start_txt\>,16,gIe
+#vim %substitute,\<title_txt\>,17,gIe
+#vim %substitute,\<you_need_key_txt\>,18,gIe
+
+#vim %substitute,\<texts\>,18,gIe
+
 //  Shorten numeric variable names
 
-#vim %substitute,\<again_txt\>,agt,gIe
 #vim %substitute,\<border_color\>,bc,gIe
 #vim %substitute,\<bottom_fence_row\>,bfr,gIe
 #vim %substitute,\<bill_char\>,bh,gIe
 #vim %substitute,\<back_surrounding_mines\>,bsm,gIe
 #vim %substitute,\<bottom_safe_row\>,bsr,gIe
-#vim %substitute,\<change_language_txt\>,cltxt,gIe
-#vim %substitute,\<credits_txt\>,ctxt,gIe
 #vim %substitute,\<door_closed\>,dcl,gIe
 #vim %substitute,\<door_col\>,dco,gIe
-#vim %substitute,\<enter_initials_txt\>,eit,gIe
 #vim %substitute,\<fence_char\>,fec,gIe
 #vim %substitute,\<flower_char\>,fh,gIe
 #vim %substitute,\<first_level\>,fl,gIe
 #vim %substitute,\<found_char\>,foc,gIe
 #vim %substitute,\<front_surrounding_mines\>,fsm,gIe
 #vim %substitute,\<ink_color\>,ic,gIe
-#vim %substitute,\<instructions_txt\>,it,gIe
 #vim %substitute,\<key_col\>,kc,gIe
 #vim %substitute,\<key_char\>,kch,gIe
 #vim %substitute,\<key_row\>,kr,gIe
 #vim %substitute,\<last_level\>,ll,gIe
 #vim %substitute,\<left_surrounding_mines\>,lsm,gIe
-#vim %substitute,\<level_txt\>,lt,gIe
 #vim %substitute,\<mine_char\>,mc,gIe
 #vim %substitute,\<message_row\>,mr0,gIe
 #vim %substitute,\<mine_row\>,mr1,gIe
 #vim %substitute,\<mined_rows\>,mr2,gIe
-#vim %substitute,\<near_mines_txt\>,nmt,gIe
-#vim %substitute,\<new_record_txt\>,nrt,gIe
 #vim %substitute,\<next_text\>,nt,gIe
 #vim %substitute,\<old_col\>,ocol,gIe
-#vim %substitute,\<open_door_txt\>,odt,gIe
 #vim %substitute,\<old_row\>,orow,gIe
 #vim %substitute,\<paper_color\>,pc,gIe
 #vim %substitute,\<protagonist_frame\>,pf,gIe
-#vim %substitute,\<putting_mines_txt\>,pmt,gIe
 #vim %substitute,\<paused_replay\>,pr,gIe
-#vim %substitute,\<points_txt\>,pt,gIe
 #vim %substitute,\<record\>,r,gIe
-#vim %substitute,\<replay_controls_1_txt\>,rct1,gIe
-#vim %substitute,\<replay_controls_2_txt\>,rct2,gIe
 #vim %substitute,\<right_surrounding_mines\>,rsm,gIe
-#vim %substitute,\<record_txt\>,rt,gIe
 #vim %substitute,\<score\>,s,gIe
 #vim %substitute,\<start_col\>,sc,gIe
 #vim %substitute,\<surrounding_mines\>,sm,gIe
-#vim %substitute,\<start_txt\>,st,gIe
-#vim %substitute,\<safe_zone_txt\>,szt,gIe
 #vim %substitute,\<top_fence_row\>,tfr,gIe
 #vim %substitute,\<top_mined_row\>,tmr,gIe
 #vim %substitute,\<time_score\>,ts,gIe
 #vim %substitute,\<top_safe_row\>,tsr,gIe
-#vim %substitute,\<title_txt\>,tt,gIe
 #vim %substitute,\<texts\>,tx,gIe
 #vim %substitute,\<udg1\>,u1,gIe
 #vim %substitute,\<udg2\>,u2,gIe
@@ -1445,7 +1430,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<walking_mine_col\>,wmc,gIe
 #vim %substitute,\<walking_mine_row\>,wmr,gIe
 #vim %substitute,\<walking_mine_step\>,wms,gIe
-#vim %substitute,\<you_need_key_txt\>,ynkt,gIe
 
 //  Shorten function names
 

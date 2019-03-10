@@ -4,7 +4,7 @@
 - Add an Esperanto translation.
 - Make the replay control keys configurable.
 - Fix lenghts of the status bar texts.
-- Replace the text index with hardcoded numbers. This will be a bit
-  faster.
 - Replace `inkey$` with a system variable.
 - Rename the project with the English title.
+- Store the texts of all languages in the array. The change of the
+  language in the menu will be faster.
