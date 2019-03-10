@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*2-8:\
 
-let version$="0.53.0-dev.1+201903101722":\
+let version$="0.53.0-dev.2+201903101816":\
 
 goto @init
 
@@ -76,12 +76,12 @@ cls:\
 gosub @no_message:\
 load!"fence.scr"code
 
-let message$="Poniendo minas...":\
+let message$=fn txt$(putting_mines_txt):\
 gosub @message
 
 print paper 8;bright 1;\
-  at top_fence_row+1,1;safe_zone$;\
-  at bottom_fence_row-1,1;safe_zone$
+  at top_fence_row+1,1;fn txt$(safe_zone_txt);\
+  at bottom_fence_row-1,1;fn txt$(safe_zone_txt)
 
 for w=1 to mines:\
   print \
@@ -236,10 +236,9 @@ let key_col=fn random_col():\
 // XXX FIXME -- key_udg$, not found:
 print at key_row,key_col;key_udg$:\
 
-let message$=\
-  "Necesitas la llave para salir":\
-#  <------------------------------->
+let message$=fn txt$(you_neek_key_txt):\
 gosub @message
+
 for i=60 to 10 step -5:\
   print at top_fence_row,door_col;"   ":\
   beep .125,i:\
@@ -255,9 +254,7 @@ return
 
 @open_the_door:
 
-let message$=\
-  "Puerta abierta":\
-#  <------------------------------->
+let message$=fn txt$(open_door_txt):\
 gosub @message:\
 for i=10 to 60 step 5:\
   print at top_fence_row,door_col;fence$(1 to 3):\
@@ -356,7 +353,7 @@ beep 1,-35
 if score>record then \
   gosub @new_record
 gosub @update_status_bar
-let message$="¿Otra vez?":\
+let message$=fn txt$(again_txt):\
 gosub @message
 
 // XXX OLD
@@ -419,7 +416,13 @@ for t=0 to 2
 next t
 ink 0
 gosub @the_nest
-print at 0,0; ink 7; paper 0;"   ¡Dos mil puntos extra!       "
+
+if lang=spanish then
+  print at 0,0; ink 7; paper 0;"   ¡Dos mil puntos extra!       "
+else
+  print at 0,0; ink 7; paper 0;"     ¡Two thousand bonus!       "
+endif
+
 let score=score+2000
 for b=0 to 7
   paper b: ink 9
@@ -437,6 +440,9 @@ for n=0 to 30 step 6
     beep .008,n+m
   next m
 next n
+
+if lang=spanish then
+
 #  <------------------------------>
 print at 3,8;\
   "¡Felicidades!"
@@ -452,6 +458,27 @@ print \
   "¿Por qué no vuelves a jugar y"'\
   "tratas de mejorarla?"
 #  <------------------------------>
+
+else
+
+#  <------------------------------>
+print at 3,6;\
+  "Congratulations!"
+#  <------------------------------>
+print '\
+  "Yo have rescue Bill. The world"'\
+  "thanks you."
+#  <------------------------------>
+print ''''';\
+  "Score: ";score;"."
+#  <------------------------------>
+print \
+  "Why don't you play again and"'\
+  "try to do it even better?"
+#  <------------------------------>
+
+endif
+
 if score>record then \
   gosub @new_record
 
@@ -486,6 +513,10 @@ let col=code trail$(2)
 for t=1 to len trail$ step 2
 
 @replay_control:
+
+  // XXX REMARK -- At the moment the control keys must be the same in
+  // all languages (P to pause and F to finish).
+
   let i$=inkey$
   if paused_replay then
     let paused_replay=(i$=""):\
@@ -517,7 +548,7 @@ return
 
 @show_replay_bar:
 
-let message$=replay_controls$(paused_replay+1):\
+let message$=fn txt$(replay_controls_1_txt+paused_replay):\
   gosub @message:\
 return
 
@@ -598,18 +629,18 @@ next n
 gosub @select_chars
 for m=1 to 4
   for n=7 to 0 step -1
-    print at 10,7; ink n;"¡Un nuevo récor!"
+    print at 10,7; ink n;fn txt$(new_record_txt)
     beep .004,50-n
   next n
 next m
-print at 10,7; ink 9;"¡Un nuevo récor!"
+print at 10,7; ink 9;fn txt$(new_record_txt)
 gosub @select_graphics
 
 // XXX TODO -- adapt
 
 print at 21,0;\
   flash 1; paper 1; ink 7;\
-  "Introduce tus iniciales"; flash 0;"         "
+  fn txt$(enter_initials_txt); flash 0;"         "
 
 let record_player$="   "
 for n=1 to 3
@@ -693,10 +724,6 @@ let mined_rows=bottom_safe_row-top_safe_row-1:\
 let door_col=14:\
 let start_col=15
 
-dim replay_controls$(2,27):\
-let replay_controls$(1)="REPETICIÓN:  [P]ausa  [F]in":\
-let replay_controls$(2)="Una tecla para seguir"
-
 let blank_row$="                                "
 
 dim protagonist$(2):\
@@ -717,7 +744,6 @@ let mine_udg$="\o"
 
 let fence$="\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 
-let safe_zone$      ="<<<<<<<< ZONA SEGURA >>>>>>>>>":\
 let blank_field_row$="                              "
 
 let ink_color=9
@@ -744,18 +770,26 @@ let lang=english
 
 // Multilingual text
 
-let change_language_txt=1:\
-let credits_txt=2:\
-let instructions_txt=3:\
-let level_txt=4:\
-let near_mines_txt=5:\
-let points_txt=6:\
-let record_txt=7:\
-let start_txt=8:\
-let safe_zone_txt=9:\
-let title_txt=10
+let again_txt=1:\
+let change_language_txt=2:\
+let credits_txt=3:\
+let enter_initials_txt=4:\
+let instructions_txt=5:\
+let level_txt=6:\
+let near_mines_txt=7:\
+let new_record_txt=8:\
+let open_door_txt=9:\
+let points_txt=10:\
+let putting_mines_txt=11:\
+let record_txt=12:\
+let replay_controls_1_txt=13:\
+let replay_controls_2_txt=14:\
+let start_txt=15:\
+let safe_zone_txt=16:\
+let title_txt=17:\
+let you_need_key_txt=18:\
 
-let texts=title_txt:\
+let texts=you_need_key_txt:\
 
 dim text$(texts,32):\
 dim text_len(texts)
@@ -961,6 +995,19 @@ if lang=spanish then
   let t=points_txt:let t$="Puntos":gosub @text:\
   let t=record_txt:let t$="Récor":gosub @text
 
+  # Game
+  let t=safe_zone_txt:let t$="<<<<<<<< ZONA SEGURA >>>>>>>>>":gosub @text:\
+  let t=putting_mines_txt:let t$="Poniendo minas...":gosub @text:\
+  let t=replay_controls_1_txt:let t$="REPETICIÓN: [P]ausa [F]in":gosub @text:\
+  let t=replay_controls_2_txt:let t$="Una tecla para seguir":gosub @text:\
+  let t=you_need_key_txt:let t$="Necesitas la llave para salir":gosub @text:\
+  let t=open_door_txt:let t$="Puerta abierta":gosub @text
+
+  # End
+  let t=new_record_txt:let t$="¡Un nuevo récord!":gosub @text:\
+  let t=enter_initials_txt:let t$="Introduce tus iniciales":gosub @text:\
+  let t=again_txt:let t$="¿Otra vez?":gosub @text
+
 else 
 
   let t=title_txt:let t$="BACK TO THE MINEFIELD":gosub @text
@@ -976,6 +1023,19 @@ else
   let t=near_mines_txt:let t$="Near mines":gosub @text:\
   let t=points_txt:let t$="Score":gosub @text:\
   let t=record_txt:let t$="High":gosub @text
+
+  # Game
+  let t=safe_zone_txt:let t$="<<<<<<<<< SAFE ZONE >>>>>>>>>>":gosub @text
+  let t=putting_mines_txt:let t$="Putting mines...":gosub @text
+  let t=replay_controls_1_txt:let t$="REPETITION: [P]ause [F]inish":gosub @text:\
+  let t=replay_controls_2_txt:let t$="Any key to continue":gosub @text:\
+  let t=you_need_key_txt:let t$="Yo need the key to exit":gosub @text:\
+  let t=open_door_txt:let t$="Open door":gosub @text
+
+  # End
+  let t=new_record_txt:let t$="A new record!":gosub @text:\
+  let t=enter_initials_txt:let t$="Enter your initials":gosub @text:\
+  let t=again_txt:let t$="Again?":gosub @text
 
 endif
 
@@ -1147,7 +1207,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<replay_controls\$,m$,gIe
 #vim %substitute,\<protagonist\$,p$,gIe
 #vim %substitute,\<dead_protagonist_udg\$,q$,gIe
-#vim %substitute,\<safe_zone\$,s$,gIe
 #vim %substitute,\<trail\$,t$,gIe
 #vim %substitute,\<blank_field_row\$,u$,gIe
 #vim %substitute,\<version\$,v$,gIe
@@ -1160,6 +1219,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 //  Shorten numeric variable names
 
+#vim %substitute,\<again_txt\>,agt,gIe
 #vim %substitute,\<border_color\>,bc,gIe
 #vim %substitute,\<bottom_fence_row\>,bfr,gIe
 #vim %substitute,\<bill_char\>,bh,gIe
@@ -1169,6 +1229,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<credits_txt\>,ctxt,gIe
 #vim %substitute,\<door_closed\>,dcl,gIe
 #vim %substitute,\<door_col\>,dco,gIe
+#vim %substitute,\<enter_initials_txt\>,eit,gIe
 #vim %substitute,\<fence_char\>,fec,gIe
 #vim %substitute,\<flower_char\>,fh,gIe
 #vim %substitute,\<first_level\>,fl,gIe
@@ -1187,14 +1248,19 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<mine_row\>,mr1,gIe
 #vim %substitute,\<mined_rows\>,mr2,gIe
 #vim %substitute,\<near_mines_txt\>,nmt,gIe
+#vim %substitute,\<new_record_txt\>,nrt,gIe
 #vim %substitute,\<next_text\>,nt,gIe
 #vim %substitute,\<old_col\>,ocol,gIe
+#vim %substitute,\<open_door_txt\>,odt,gIe
 #vim %substitute,\<old_row\>,orow,gIe
 #vim %substitute,\<paper_color\>,pc,gIe
 #vim %substitute,\<protagonist_frame\>,pf,gIe
+#vim %substitute,\<putting_mines_txt\>,pmt,gIe
 #vim %substitute,\<paused_replay\>,pr,gIe
 #vim %substitute,\<points_txt\>,pt,gIe
 #vim %substitute,\<record\>,r,gIe
+#vim %substitute,\<replay_controls_1_txt\>,rct1,gIe
+#vim %substitute,\<replay_controls_2_txt\>,rct2,gIe
 #vim %substitute,\<right_surrounding_mines\>,rsm,gIe
 #vim %substitute,\<record_txt\>,rt,gIe
 #vim %substitute,\<score\>,s,gIe
@@ -1216,6 +1282,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<walking_mine_col\>,wmc,gIe
 #vim %substitute,\<walking_mine_row\>,wmr,gIe
 #vim %substitute,\<walking_mine_step\>,wms,gIe
+#vim %substitute,\<you_need_key_txt\>,ynkt,gIe
 
 //  Shorten function names
 
