@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.60.3+201903110002":\
+let version$="0.60.4+201903110024":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -131,9 +131,9 @@ let old_row=row: let old_col=col
 @l520:
 
 let i$=inkey$
-let row=row+(i$=k$(4))-(i$=k$(3))
+let row=row+(i$=cursor_keys$(4))-(i$=cursor_keys$(3))
 let row=row-(row=(bottom_fence_row+1))
-let col=col+(i$=k$(2))-(i$=k$(1))
+let col=col+(i$=cursor_keys$(2))-(i$=cursor_keys$(1))
 
 // XXX TODO -- remove
 let time=time+1
@@ -228,7 +228,6 @@ goto @l500
 
 let key_row=fn random_row():\
 let key_col=fn random_col():\
-// XXX FIXME -- key_udg$, not found:
 print at key_row,key_col;key_udg$:\
 
 let message$=fn txt$(you_need_key_txt):\
@@ -765,7 +764,7 @@ let udg1_font_low=udg1_font-(udg1_font_high*256)
 
 // Constants
 
-let first_level=2:rem XXX TMP -- change for debugging -- default=1
+let first_level=1:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 let message_row=0:\
@@ -802,7 +801,7 @@ let blank_field_row$="                              "
 
 let ink_color=9
 
-let k$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
+let cursor_keys$=chr$ 8+chr$ 9+chr$ 11+chr$ 10:rem cursor keys
 
 dim detector_color(4):\
 let detector_color(1)=4:\
@@ -1475,10 +1474,11 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<flower_udg\$,g$,gIe
 #vim %substitute,\<record_player\$,h$,gIe
 #vim %substitute,\<fence_udg\$,j$,gIe
-#vim %substitute,\<key_udg\$,k$,gIe
+#vim %substitute,\<cursor_keys\$,k$,gIe
 #vim %substitute,\<text\$,l$,gIe
 #vim %substitute,\<replay_controls\$,m$,gIe
 #vim %substitute,\<no\$,n$,gIe
+#vim %substitute,\<key_udg\$,o$,gIe
 #vim %substitute,\<protagonist\$,p$,gIe
 #vim %substitute,\<dead_protagonist_udg\$,q$,gIe
 #vim %substitute,\<trail\$,t$,gIe
