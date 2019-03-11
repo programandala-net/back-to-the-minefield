@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.61.0+201903110111":\
+let version$="0.62.0+201903110130":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -349,18 +349,23 @@ beep 1,-35
 if score>record then \
   gosub @new_record
 gosub @update_status_bar
+
+// ==============================================================
+// Again?
+
 let message$=fn txt$(again_txt):\
 gosub @message
 
-// XXX OLD
-@l1200:
-
 @again:
+
 pause 0:let i$=inkey$
+
 if code(i$)>code("Z") then \
   let i$=chr$(code(i$)-32)
-if i$=no$(lang) then cls:stop
+
+if i$=no$(lang) then goto @menu
 if i$=yes$(lang) then goto @new_game
+
 goto @again
 
 // ==============================================================
@@ -524,7 +529,7 @@ endif
 if score>record then \
   gosub @new_record
 
-goto @l1200
+goto @again
 
 // ==============================================================
 // subroutine: replay
