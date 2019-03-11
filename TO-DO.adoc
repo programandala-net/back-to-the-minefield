@@ -6,5 +6,4 @@
 - Replace `inkey$` with a system variable.
 - Reduce number of loop index variables.
 - Add a direct language menu next to the main menu.
-- Fix the repetion: dont't explode if it's quited.
 - Remove the "Again?" check. Return to the menu.

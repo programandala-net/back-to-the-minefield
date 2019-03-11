@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.63.0+201903110216":\
+let version$="0.63.1+201903110225":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -344,13 +344,17 @@ for i=20 to 1 step -1:\
   beep .002,10: print at row,col;dead_protagonist_udg$:\
 next i
 beep 1.6,-35
-print at row,col;mine_udg$:\
-gosub @replay:\
+if found_char=mine_char then
+  print at row,col;mine_udg$
+else
+  print at row,col;fence_udg$
+endif
+gosub @replay
 
-// XXX FIXME -- only if the replay was completed:
-print at row,col;dead_protagonist_udg$
+if not quit_replay then:\
+  print at row,col;dead_protagonist_udg$:\
+  beep 1,-35
 
-beep 1,-35
 if score>record then \
   gosub @new_record
 gosub @update_status_bar
@@ -541,6 +545,8 @@ goto @again
 
 @replay:
 
+let quit_replay=0 // exit flag
+
 // XXX FIXME -- remove the surrounding mines
 // XXX FIXME -- when the replay is ended, the explosion is shown in the
 // current position!
@@ -589,7 +595,8 @@ for t=1 to len trail$ step 2
     gosub @show_replay_bar
   endif
   if i$="f" or i$="F" then \
-    goto @replay_end
+    let quit_replay=1:\
+    goto @quit_replay
   if i$="p" or i$="P" then \
     let paused_replay=1:\
     beep .1,10:\
@@ -604,7 +611,7 @@ for t=1 to len trail$ step 2
 
 next t
 
-@replay_end:
+@quit_replay:
 
 gosub @no_message:\
 return
@@ -1553,6 +1560,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<paper_color\>,pc,gIe
 #vim %substitute,\<protagonist_frame\>,pf,gIe
 #vim %substitute,\<paused_replay\>,pr,gIe
+#vim %substitute,\<quit_replay\>,qr,gIe
 #vim %substitute,\<record\>,r,gIe
 #vim %substitute,\<right_surrounding_mines\>,rsm,gIe
 #vim %substitute,\<score\>,s,gIe
