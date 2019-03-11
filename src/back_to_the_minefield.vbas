@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.62.0+201903110130":\
+let version$="0.63.0+201903110216":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -97,21 +97,26 @@ print paper 8;\
 gosub @no_message:\
 gosub @new_status_bar
 
-if level=first_level then \
-  goto @l480
-if level=last_level then \
-  gosub @last_level: goto @l480
+let flowers=0
 
-// XXX REMARK -- levels second..last_but_one:
-// XXX TODO -- move to a subroutine
-// XXX TODO -- store the position of the flowers, in order
-// to restore them before the replay
-let flowers=int(rnd*level)+1:\
-for i=1 to flowers:\
-  print at fn random_row(),fn random_col();flower_udg$:\
-next i
+if level=last_level then
 
-@l480:
+  gosub @last_level
+
+else
+
+  let flowers=int(rnd*(level+2))
+  if flowers then
+    dim flower_row(flowers):\
+    dim flower_col(flowers)
+    for i=1 to flowers:\
+      let flower_row(i)=fn random_row():\
+      let flower_col(i)=fn random_col():\
+      print at flower_row(i),flower_col(i);flower_udg$:\
+    next i
+  endif
+
+endif
 
 if level=(last_level-1) then \
   gosub @close_the_door
@@ -537,23 +542,32 @@ goto @again
 @replay:
 
 // XXX FIXME -- remove the surrounding mines
-// XXX FIXME -- when the replay is ended, the explosion is show in the
+// XXX FIXME -- when the replay is ended, the explosion is shown in the
 // current position!
 
 // XXX TODO -- 
 # print at walking_mine_row,walking_mine_col;" ";\
 #       at row,col;" "
 
+for i=1 to flowers:\
+  print at flower_row(i),flower_col(i);\
+    paper 9;ink 9;\
+    flower_udg$:\
+next i
+
 for i=1 to 21:\
   print at i,0; over 1;paper paper_color;ink 9;blank_row$:\
 next i
+
 randomize udg_chars:\
 gosub @select_udg_set
 
 let paused_replay=0:\
 gosub @show_replay_bar
+
 randomize udg1:\
 gosub @select_udg_set
+
 for n=1 to 100: next n
 
 let row=code trail$(1):\
@@ -746,7 +760,7 @@ let udg1_font_low=udg1_font-(udg1_font_high*256)
 
 // Constants
 
-let first_level=6:rem XXX TMP -- change for debugging -- default=1
+let first_level=1:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 let message_row=0:\
@@ -1478,6 +1492,8 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 //  Shorten numeric array names
 
 #vim %substitute,\<detector_color\>,d,gIe
+#vim %substitute,\<flower_col\>,c,gIe
+#vim %substitute,\<flower_row\>,r,gIe
 #vim %substitute,\<text_len\>,l,gIe
 
 // ---------------------------------------------
@@ -1518,6 +1534,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<fence_char\>,fec,gIe
 #vim %substitute,\<flower_char\>,fh,gIe
 #vim %substitute,\<first_level\>,fl,gIe
+#vim %substitute,\<flowers\>,flo,gIe
 #vim %substitute,\<found_char\>,foc,gIe
 #vim %substitute,\<front_surrounding_mines\>,fsm,gIe
 #vim %substitute,\<ink_color\>,ic,gIe
