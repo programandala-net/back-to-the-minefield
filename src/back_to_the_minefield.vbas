@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.60.5+201903110026":\
+let version$="0.60.6+201903110058":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -203,6 +203,10 @@ if found_char=fence_char then \
 if found_char=flower_char then \
   gosub @pick_flower
 
+// bill?
+if found_char=bill_char then \
+  gosub @rescue
+
 print at row,col; paper pa;protagonist$(protagonist_frame+1):\
 let protagonist_frame=not protagonist_frame
 
@@ -330,10 +334,6 @@ return
 
 // XXX TODO -- remove mine count from the status bar
 
-if level=last_level then \
-  if row=8 and col=5+ss then \
-    goto @l8444
-
 for i=20 to 1 step -1:\
   beep .003,i: print at row,col;"\c":\
   beep .002,10: print at row,col;dead_protagonist_udg$:\
@@ -383,8 +383,9 @@ print at message_row,0;paper border_color;blank_row$;:\
 return
 
 // ==============================================================
+// Rescue
 
-@l8444:
+@rescue:
 
 gosub @the_nest
 let dx=30
@@ -404,7 +405,20 @@ next n
 print at 0,0; paper 7;" "
 for t=0 to 2
   for l=0 to 7 step 7
-    ink l: gosub @l8450
+    ink l
+    // XXX TODO -- simpler
+    for n=1 to 5:\
+      print at row+n,col+n;"*":\
+      print at row-n,col+n;"*":\
+      print at row+n,col-n;"*":\
+      print at row-n,col-n;"*":\
+    next n
+    for n=1 to 5:\
+      print at row,col+n;">":\
+      print at row,col-n;"<":\
+      print at row+n,col;"#":\
+      print at row-n,col;"#":\
+    next n
   next l
 next t
 ink 0
@@ -720,27 +734,6 @@ print at 10,7;"                  "
 return
 
 // ==============================================================
-// subroutine
-
-@l8450:
-
-// XXX TODO -- simpler
-
-for n=1 to 5
-  print at row+n,col+n;"*"
-  print at row-n,col+n;"*"
-  print at row+n,col-n;"*"
-  print at row-n,col-n;"*"
-next n
-for n=1 to 5
-  print at row,col+n;">"
-  print at row,col-n;"<"
-  print at row+n,col;"#"
-  print at row-n,col;"#"
-next n
-return
-
-// ==============================================================
 // init
 
 @init:
@@ -764,7 +757,7 @@ let udg1_font_low=udg1_font-(udg1_font_high*256)
 
 // Constants
 
-let first_level=1:rem XXX TMP -- change for debugging -- default=1
+let first_level=6:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 let message_row=0:\
@@ -789,7 +782,7 @@ let fence_char=38:\
 let fence_udg$="\f":\
 let flower_char=49:\
 let flower_udg$="\q":\
-let key_char=48:\
+let key_char=48:\ // XXX TODO -- Not used.
 let key_udg$="\p":\
 let mine_char$="/":\
 let mine_char=47:\
@@ -1388,7 +1381,7 @@ flash 0
 
 for n=2 to -1 step -1
   beep .003,27-n: beep .003,19-n: beep .003,29-n
-  if n>=0 then \
+  if n>0 then \
     ink n
   if n=-1 then \
     flash 1: bright 0
@@ -1397,6 +1390,7 @@ next n
 print at 11,5+ss; ink paper_color; paper paper_color;mine_udg$
 flash 0
 print at 8,5+ss; flash 0;bill_udg$
+ink 0
 return
 
 // ==============================================================

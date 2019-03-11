@@ -10,5 +10,3 @@
 - Add a direct language menu next to the main menu.
 - Preserve the flowers in the repetition.
 - Fix the repetion: dont't explode if it's quited.
-- Fix: The nest of the worm is not visible.
-
