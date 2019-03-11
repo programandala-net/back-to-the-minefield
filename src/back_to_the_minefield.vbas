@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.60.6+201903110058":\
+let version$="0.61.0+201903110111":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -424,24 +424,8 @@ next t
 ink 0
 gosub @the_nest
 
-// XXX TODO -- Move this string to the array.
-if lang=spanish then
-  print at 0,0; ink 7; paper 0;\
-#  <------------------------------>
-  "    ¡Dos mil puntos extra!      "
-elseif lang=english then
-  print at 0,0; ink 7; paper 0;\
-#  <------------------------------>
-  "   Two thousand extra points!   "
-elseif lang=interlingue then
-  print at 0,0; ink 7; paper 0;\
-#  <------------------------------>
-  "     Du mil extra puntes!       "
-else // Esperanto
-  print at 0,0; ink 7; paper 0;\
-#  <------------------------------>
-  "    Du mil kromaj poentoj!      "
-endif
+print at 0,0; ink 7; paper 0;\
+text$(lang,two_thousand_txt);
 
 let score=score+2000
 for b=0 to 7
@@ -1239,6 +1223,7 @@ data open_door_txt,"Puerta abierta"
 data new_record_txt,"¡Un nuevo récord!"
 data enter_initials_txt,"Introduce tus iniciales"
 data again_txt,"¿Otra vez?"
+data two_thousand_txt,"    ¡Dos mil puntos extra!"
 data 0 // end of data
 
 data english
@@ -1261,6 +1246,7 @@ data open_door_txt,"Open door"
 data new_record_txt,"A new record!"
 data enter_initials_txt,"Enter your initials"
 data again_txt,"Again?"
+data two_thousand_txt,"   Two thousand extra points!"
 data 0 // end of data
 
 data interlingue
@@ -1283,6 +1269,7 @@ data open_door_txt,"Porta apert"
 data new_record_txt,"Un nov record!"
 data enter_initials_txt,"Inscri vu initiales"
 data again_txt,"Ancor?"
+data two_thousand_txt,"     Du mil extra puntes!"
 data 0 // end of data
 
 data esperanto
@@ -1305,6 +1292,7 @@ data open_door_txt,"Pordo malfermita"
 data new_record_txt,"Nova rikordo!"
 data enter_initials_txt,"Tajpu viajn inicialojn"
 data again_txt,"Plu?"
+data two_thousand_txt,"    Du mil kromaj poentoj!"
 data 0 // end of data
 
 // ==============================================================
@@ -1508,8 +1496,9 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<start_txt\>,16,gIe
 #vim %substitute,\<title_txt\>,17,gIe
 #vim %substitute,\<you_need_key_txt\>,18,gIe
+#vim %substitute,\<two_thousand_txt\>,19,gIe
 
-#vim %substitute,\<texts\>,18,gIe
+#vim %substitute,\<texts\>,19,gIe
 
 // ---------------------------------------------
 //  Shorten numeric variable names
