@@ -4,7 +4,7 @@
 # Back to the minefield
 # By Marcos Cruz (programandala.net)
 
-# Last modified 201903102019
+# Last modified 201903120139
 # See change log at the end of the file
 
 # ==============================================================
@@ -21,11 +21,10 @@
 # ==============================================================
 
 .PHONY: all
-all: back_to_the_minefield.tap
+all: target/back_to_the_minefield.tap
 
 clean:
-	rm -f *.tap
-	rm -f tmp/*
+	rm -f target/* tmp/*
 
 tmp/udg.tap: src/udg.z80s
 	pasmo --name UDG.BIN --tap $< $@ 
@@ -35,7 +34,7 @@ tmp/main.tap: src/back_to_the_minefield.vbas
 	mv src/back_to_the_minefield.bas tmp/main.bas;\
 	mv src/back_to_the_minefield.tap $@
 
-back_to_the_minefield.tap: tmp/main.tap tmp/udg.tap
+target/back_to_the_minefield.tap: tmp/main.tap tmp/udg.tap
 	cat $^ > $@
 
 # ==============================================================
@@ -57,3 +56,5 @@ back_to_the_minefield.tap: tmp/main.tap tmp/udg.tap
 # 2017-12-30: Update layout.
 #
 # 2019-03-10: Update after the renaming of the project.
+#
+# 2019-03-12: Make the TAP in the target directory.

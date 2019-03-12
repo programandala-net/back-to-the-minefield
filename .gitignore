@@ -1,6 +1,3 @@
 _meta/
-tmp/
-src/vbas2tap_steps/
-screens/
 *.tap
 *.szx
