@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.76.0+201903130000":\
+let version$="0.77.0+201903130022":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -375,23 +375,11 @@ if score>record then \
   gosub @new_record
 gosub @update_status_bar
 
-// ==============================================================
-// Again? {{{1
+let message$=fn txt$(press_key_text):\
+gosub @message:\
 
-let message$=fn txt$(again_txt):\
-gosub @message
-
-@again:
-
-pause 0:let i$=inkey$
-
-if code(i$)>code("Z") then \
-  let i$=chr$(code(i$)-32)
-
-if i$=no$(lang) then goto @menu
-if i$=yes$(lang) then goto @new_game
-
-goto @again
+pause 0:\
+goto @menu
 
 // ==============================================================
 // subroutine: message {{{1
@@ -551,10 +539,13 @@ print \
 
 endif
 
+// XXX FIXME -- This is not the best place for this, given the
+// previous messages:
 if score>record then \
   gosub @new_record
 
-goto @again
+pause 0:\
+goto @menu
 
 // ==============================================================
 // subroutine: replay {{{1
@@ -898,7 +889,7 @@ next n
 
 @menu:
 
-border 1: paper 1: ink 7
+border 1: paper 1: ink 7:\
 cls
 
 @update_menu:
@@ -1256,7 +1247,7 @@ data you_need_key_txt,"Necesitas la llave para salir"
 data open_door_txt,"Puerta abierta"
 data new_record_txt,"¡Un nuevo récord!"
 data enter_initials_txt,"Introduce tus iniciales"
-data again_txt,"¿Otra vez?"
+data press_key_text,"Pulsa una tecla para ir al menú"
 data two_thousand_txt,"    ¡Dos mil puntos extra!"
 data 0 // end of data
 
@@ -1279,7 +1270,7 @@ data you_need_key_txt,"Yo need the key to exit"
 data open_door_txt,"Open door"
 data new_record_txt,"A new record!"
 data enter_initials_txt,"Enter your initials"
-data again_txt,"Again?"
+data press_key_text,"Press any key to go to the menu"
 data two_thousand_txt,"   Two thousand extra points!"
 data 0 // end of data
 
@@ -1302,7 +1293,7 @@ data you_need_key_txt,"Tu besona li clave por exear"
 data open_door_txt,"Porta apert"
 data new_record_txt,"Un nov record!"
 data enter_initials_txt,"Inscri vu initiales"
-data again_txt,"Ancor?"
+data press_key_text,"Presse un clave por ear li menú"
 data two_thousand_txt,"     Du mil extra puntes!"
 data 0 // end of data
 
@@ -1325,7 +1316,7 @@ data you_need_key_txt,"Vi bezonas la ŝlosilon por eliri"
 data open_door_txt,"Pordo malfermita"
 data new_record_txt,"Nova rikordo!"
 data enter_initials_txt,"Tajpu viajn inicialojn"
-data again_txt,"Plu?"
+data press_key_text,"Premu klavon por iri al la menuo"
 data two_thousand_txt,"    Du mil kromaj poentoj!"
 data 0 // end of data
 
@@ -1537,7 +1528,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<border_color\>,0,gIe
 
 // Text identifiers
-#vim %substitute,\<again_txt\>,1,gIe
+#vim %substitute,\<press_key_text\>,1,gIe
 #vim %substitute,\<change_language_txt\>,2,gIe
 #vim %substitute,\<credits_txt\>,3,gIe
 #vim %substitute,\<enter_initials_txt\>,4,gIe
