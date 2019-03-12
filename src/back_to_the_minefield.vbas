@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.69.0+201903122025":\
+let version$="0.70.0+201903122105":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -31,6 +31,9 @@ deffn txt$(n)=text$(lang,n,1 to text_len(lang,n))
 
 // Current count of the system frames counter, in seconds:
 deffn seconds()=(peek 23672+256*peek 23637+65536*peek 23674)/50
+
+// Score in a 5-character string, with zeros at the left:
+deffn score$(n)="00000"(to 5-len str$ n)+str$ n
 
 // ==============================================================
 // Start a new game
@@ -294,10 +297,24 @@ gosub @select_udg_set
 
 @update_status_bar:
 
-print #1;paper 8;ink 9; inverse 1;\
+// XXX FIXME -- A system or emulator bug?: only the first item is
+// affected by `paper` and `ink`, the rest is printed with the current
+// colors. The problem is solved by removing `str$` in the expression.
+// In fact, using `str$` to calculate the column of the first
+// expression, makes this one be printed with default colors too.
+
+# print #1;paper 2;ink 0;\
+#   at 1,2;level;\
+#   at 1,22-len str$ score;score;\
+#   at 1,31-len str$ record;record
+
+// XXX FIXME -- This alternative prints score and record with inverse
+// colors! `str$` is used in the function that calculates the string.
+
+print #1;paper 7;ink 0;\
   at 1,2;level;\
-  at 1,22-len str$ score;score;\
-  at 1,31-len str$ record;record
+  at 1,17;fn score$(score);\
+  at 1,26;fn score$(record)
 
 @print_surrounding_mines:
 
@@ -1578,6 +1595,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_row\>,\1 r,gIe
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_col\>,\1 c,gIe
+#vim %substitute,\<\(\(def\)\?\s*fn \)\+score\$\>,\1 z$,gIe
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+seconds\>,\1 s,gIe
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+txt\$,\1 t$,gIe
 

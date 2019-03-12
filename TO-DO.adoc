@@ -9,3 +9,6 @@
 - Save attributes zones in the RAM disc and use them to reveal the
   mines before the replay.
 - Restore flowers only after restoring the background color.
+- Rewrite all about the worm nest.
+- Reorganize the code for speed: move the main game loop to the top.
+- Set REPDEL OS variable to zero for speed.
