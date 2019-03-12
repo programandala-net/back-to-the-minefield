@@ -1,9 +1,11 @@
 = TO-DO of _Back to the minefield_
-:revdate: 2019-03-10
+:revdate: 2019-03-12
 
 - Make the replay control keys configurable.
-- Replace `inkey$` with a system variable.
 - Reduce number of loop index variables.
 - Add a direct language menu next to the main menu.
 - Remove the "Again?" check. Return to the menu.
 - Fix color of the status bar texts.
+- Replace the `time` variable with the `FRAMES` system varible.
+- Save attributes zones in the RAM disc and use them to reveal the
+  mines before the replay.
