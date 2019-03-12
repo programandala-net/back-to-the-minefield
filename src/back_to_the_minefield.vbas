@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.74.0+201903122319":\
+let version$="0.75.0+201903122339":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -577,9 +577,7 @@ for i=1 to flowers:\
     flower_udg$:\
 next i
 
-for i=1 to 21:\
-  print at i,0; over 1;paper paper_color;ink 9;blank_row$:\
-next i
+load!str$ paper_color code
 
 randomize udg_chars:\
 gosub @select_udg_set
@@ -879,6 +877,17 @@ for n=top_safe_row to bottom_safe_row:\
 next n:\
 print at bottom_fence_row,0;fence$:\
 save!"fence.scr"code 16384,6144
+
+// Save the attributes of the field background (rows from 1 to 21), in
+// all colors.  File are named with the digit of the color. They are
+// used to restore the field before the replay.
+
+ink 0:\
+for n=7 to 0 step -1:\
+  paper n:\
+  cls:\
+  save!str$ n code 22561,672:\
+next n
 
 // ==============================================================
 // menu {{{1
@@ -1523,7 +1532,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 // Replace numeric constants {{{2
 
 // Generic
-#vim %substitute,\<border_color\>,bc,gIe
+#vim %substitute,\<border_color\>,0,gIe
 
 // Text identifiers
 #vim %substitute,\<again_txt\>,1,gIe
