@@ -6,7 +6,6 @@
 - Add a direct language menu next to the main menu.
 - Remove the "Again?" check. Return to the menu.
 - Fix color of the status bar texts.
-- Restore flowers only after restoring the background color.
 - Rewrite all about the worm nest.
 - Reorganize the code for speed: move the main game loop to the top.
 - Replace the border effect of `@level_replay` with something better.
