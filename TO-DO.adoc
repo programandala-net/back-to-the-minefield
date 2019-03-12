@@ -11,4 +11,3 @@
 - Restore flowers only after restoring the background color.
 - Rewrite all about the worm nest.
 - Reorganize the code for speed: move the main game loop to the top.
-- Set REPDEL OS variable to zero for speed.

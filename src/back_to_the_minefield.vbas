@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.70.0+201903122105":\
+let version$="0.71.0+201903122110":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -42,6 +42,14 @@ deffn score$(n)="00000"(to 5-len str$ n)+str$ n
 
 let level=first_level:\
 let score=0
+
+// Set the REPDEL OS variable (at memory address 23561) to zero, for
+// speed.
+//
+// REPDEL contains the time (in 50ths of a second) that a key must be
+// held down before it repeats.  Its default value is 35.
+
+poke 23561,0
 
 // ==============================================================
 // Enter a new level
