@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.65.0+201903121911":\
+let version$="0.66.0+201903121957":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -20,11 +20,17 @@ goto @init
 // ==============================================================
 // Functions
 
+// A random row of the field:
 deffn random_row()=int(rnd*mined_rows)+top_mined_row
 
+// A random column of the field:
 deffn random_col()=int(rnd*30)+1
 
+// Text number n in the current language:
 deffn txt$(n)=text$(lang,n,1 to text_len(lang,n))
+
+// Current count of the system frames counter, in seconds:
+deffn seconds()=(peek 23672+256*peek 23637+65536*peek 23674)/50
 
 // ==============================================================
 // Start a new game
@@ -55,7 +61,7 @@ let old_col=col
 let trail$=chr$ row+chr$ col
 
 // counter
-let time=0
+let enter_time=fn seconds()
 
 let protagonist_frame=0:\
 
@@ -141,10 +147,7 @@ let row=row+(i=10)-(i=11):\
 let row=row-(row=(bottom_fence_row+1)):\
 let col=col+(i=9)-(i=8)
 
-// XXX TODO -- remove
-let time=time+1
-
-// XXX TODO -- improve or remove
+// XXX OLD -- improve or remove
 # if level>=4 then \
 #   if time>(260*paper_color+70) then \
 #     if int(time/(3*paper_color+1))=(time/(3*paper_color+1)) then \
@@ -634,9 +637,9 @@ gosub @print_surrounding_mines
 
 // XXX TODO -- improve time score with the frames system variable
 
-let time_score=(int((2000-time)/50))*5
-let time_score=time_score*(time_score>=50)+50*(time_score<50)
-let time_score=time_score*level
+let exit_time=fn seconds():\
+let time_score=600-(exit_time-enter_time):\
+let time_score=time_score*(time_score>0)*level
 
 // XXX TODO --
 # restore @applause_sound:\
@@ -852,10 +855,6 @@ save!"fence.scr"code 16384,6144
 
 // ==============================================================
 // XXX TMP -- tests
-
-# let time=100
-# let level=2
-# goto @level_passed
 
 # rem --------------------------------
 # paper 2
@@ -1537,6 +1536,8 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<bottom_safe_row\>,bsr,gIe
 #vim %substitute,\<door_closed\>,dcl,gIe
 #vim %substitute,\<door_col\>,dco,gIe
+#vim %substitute,\<enter_time\>,ent,gIe
+#vim %substitute,\<exit_time\>,ext,gIe
 #vim %substitute,\<fence_char\>,fec,gIe
 #vim %substitute,\<flower_char\>,fh,gIe
 #vim %substitute,\<first_level\>,fl,gIe
@@ -1586,6 +1587,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_row\>,\1 r,gIe
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_col\>,\1 c,gIe
+#vim %substitute,\<\(\(def\)\?\s*fn \)\+seconds\>,\1 s,gIe
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+txt\$,\1 t$,gIe
 
 // vim: filetype=vimclairbasic:fileencoding=utf8
