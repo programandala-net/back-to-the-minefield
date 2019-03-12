@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.72.0+201903122301":\
+let version$="0.73.0+201903122304":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -204,21 +204,18 @@ let right_surrounding_mines=screen$(row,col+1)=mine_char$:\
 // restore the default font:
 poke 23606,0:poke 23607,60
 
-// mine?
 if found_char=mine_char then \
   goto @explosion
 
-// fence?
 if found_char=fence_char then \
   goto @explosion
 
-// flower?
-if found_char=flower_char then \
-  gosub @pick_flower
-
-// bill?
-if found_char=bill_char then \
+if found_char=flower_char then
+  let score=score+10:\
+  gosub @update_status_bar
+elseif found_char=bill_char then
   gosub @rescue
+endif
 
 print at row,col; paper pa;protagonist$(protagonist_frame+1):\
 let protagonist_frame=not protagonist_frame
@@ -343,16 +340,6 @@ if screen$(walking_mine_row,walking_mine_col)<>" " then \
 
 // XXX TODO -- improve:
 print at walking_mine_row,walking_mine_col; paper pa;"\h":\
-return
-
-// ==============================================================
-// subroutine: pick flower {{{1
-
-@pick_flower:
-
-// XXX TODO --
-let score=score+10
-gosub @update_status_bar
 return
 
 // ==============================================================
