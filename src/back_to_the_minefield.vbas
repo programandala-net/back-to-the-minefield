@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.73.0+201903122304":\
+let version$="0.74.0+201903122319":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -76,7 +76,6 @@ let pa=7:\
 let ss=0
 
 let paper_color=7-level:\
-let border_color=0:\
 let mines=32+level*4
 
 border border_color:\
@@ -313,6 +312,13 @@ print #1;paper 7;ink 0;\
   at 1,2;level;\
   at 1,17;fn score$(score);\
   at 1,26;fn score$(record)
+
+# XXX FIXME -- This makes no difference:
+
+# print #1;paper 7;ink 0;\
+#   at 1,2;level;\
+#   at 1,17;paper 7;ink 0;fn score$(score);\
+#   at 1,26;paper 7;ink 0;fn score$(record)
 
 @print_surrounding_mines:
 
@@ -1445,7 +1451,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #run 1
 
 // ---------------------------------------------
-//  Convert UTF-8 characters to UDG codes
+// Convert UTF-8 characters to UDG codes {{{2
 
 # UDG set 2: Spanish:
 #vim %substitute,á,\\A,gIe
@@ -1483,7 +1489,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,ŭ,\\L,gIe
 
 // ---------------------------------------------
-//  Shorten string variable names
+// Shorten string variable names {{{2
 
 #vim %substitute,\<mine_udg\$,a$,gIe
 #vim %substitute,\<blank_row\$,b$,gIe
@@ -1506,7 +1512,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<yes\$,y$,gIe
 
 // ---------------------------------------------
-//  Shorten numeric array names
+// Shorten numeric array names {{{2
 
 #vim %substitute,\<detector_color\>,d,gIe
 #vim %substitute,\<flower_col\>,c,gIe
@@ -1514,8 +1520,12 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<text_len\>,l,gIe
 
 // ---------------------------------------------
-// Replace text identifiers and its count
+// Replace numeric constants {{{2
 
+// Generic
+#vim %substitute,\<border_color\>,bc,gIe
+
+// Text identifiers
 #vim %substitute,\<again_txt\>,1,gIe
 #vim %substitute,\<change_language_txt\>,2,gIe
 #vim %substitute,\<credits_txt\>,3,gIe
@@ -1536,12 +1546,12 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<you_need_key_txt\>,18,gIe
 #vim %substitute,\<two_thousand_txt\>,19,gIe
 
+// Number of texts
 #vim %substitute,\<texts\>,19,gIe
 
 // ---------------------------------------------
-//  Shorten numeric variable names
+// Shorten numeric variable names {{{2
 
-#vim %substitute,\<border_color\>,bc,gIe
 #vim %substitute,\<bottom_fence_row\>,bfr,gIe
 #vim %substitute,\<bill_char\>,bh,gIe
 #vim %substitute,\<back_surrounding_mines\>,bsm,gIe
@@ -1595,7 +1605,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<walking_mine_step\>,wms,gIe
 
 // ---------------------------------------------
-//  Shorten function names
+// Shorten function names {{{2
 
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_row\>,\1 r,gIe
 #vim %substitute,\<\(\(def\)\?\s*fn \)\+random_col\>,\1 c,gIe
