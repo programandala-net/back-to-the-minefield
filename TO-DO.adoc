@@ -2,8 +2,8 @@
 :revdate: 2019-03-10
 
 - Make the replay control keys configurable.
-- Fix lenghts of the status bar texts.
 - Replace `inkey$` with a system variable.
 - Reduce number of loop index variables.
 - Add a direct language menu next to the main menu.
 - Remove the "Again?" check. Return to the menu.
+- Fix color of the status bar texts.

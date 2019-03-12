@@ -12,7 +12,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.64.0+201903120142":\
+let version$="0.64.1+201903120232":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -277,27 +277,28 @@ return
 input ;:\
 randomize udg_chars:\
 gosub @select_udg_set:\
-print #1;paper 8;ink 9;\
-  at 0, 0;fn txt$(level_txt);\
-  at 0, 6;fn txt$(near_mines_txt);\
-  at 0,20;fn txt$(points_txt);inverse 1;\
-  at 1,20;" 0000 ";inverse 0;\
-  at 0,27;fn txt$(record_txt);inverse 1;\
-  at 1,27;" 0000":\
+print #1;paper 0;ink 7;\
+  at 0, 0;fn txt$(level_txt);inverse 1;\
+  at 1, 0;"     ";inverse 0;\
+  at 0, 8;fn txt$(near_mines_txt);\
+  at 0,16;fn txt$(points_txt);inverse 1;\
+  at 1,16;" 00000 ";inverse 0;\
+  at 0,25;fn txt$(record_txt);inverse 1;\
+  at 1,25;" 00000 ";:\
 randomize udg1:\
 gosub @select_udg_set
 
 @update_status_bar:
 
-print #1;ink 9;paper 8;inverse 1; \
-  at 1,0;"  ";level;"  ";\
-  at 1,24-(score>9)-(score>99)-(score>999);score;\
-  at 1,31-(record>9)-(record>99)-(record>999);record
+print #1;paper 8;ink 9; inverse 1;\
+  at 1,2;level;\
+  at 1,22-len str$ score;score;\
+  at 1,31-len str$ record;record
 
 @print_surrounding_mines:
 
-print #1; ink 9; paper detector_color(surrounding_mines+1);\
-  at 1,6;"      ";surrounding_mines;"      ":\
+print #1; paper detector_color(surrounding_mines+1);ink 9;\
+  at 1,8;"  ";surrounding_mines;"  ":\
 return
 
 // ==============================================================
@@ -1236,8 +1237,8 @@ data instructions_txt,"Instrucciones"
 data start_txt,"Jugar"
 data credits_txt,"Créditos"
 data change_language_txt,"No en español"
-data level_txt,"Nivel"
-data near_mines_txt,"Minas vecinas"
+data level_txt,"Campo"
+data near_mines_txt,"Minas"
 data points_txt,"Puntos"
 data record_txt,"Récor"
 data safe_zone_txt,"<<<<<<<< ZONA SEGURA >>>>>>>>>"
@@ -1259,8 +1260,8 @@ data instructions_txt,"Instructions"
 data start_txt,"Play"
 data credits_txt,"Credits"
 data change_language_txt,"Not in English"
-data level_txt,"Level"
-data near_mines_txt,"Near mines"
+data level_txt,"Field"
+data near_mines_txt,"Mines"
 data points_txt,"Score"
 data record_txt,"High"
 data safe_zone_txt,"<<<<<<<<< SAFE ZONE >>>>>>>>>>"
@@ -1282,8 +1283,8 @@ data instructions_txt,"Instructiones"
 data start_txt,"Luder"
 data credits_txt,"Credites"
 data change_language_txt,"Ne en Interlingue"
-data level_txt,"Nivelle"
-data near_mines_txt,"Mines proxim"
+data level_txt,"Campo"
+data near_mines_txt,"Mines"
 data points_txt,"Puntes"
 data record_txt,"Record"
 data safe_zone_txt,"<<<<<<<< ZONA SECUR >>>>>>>>>>"
@@ -1305,8 +1306,8 @@ data instructions_txt,"Instrukcioj"
 data start_txt,"Ludi"
 data credits_txt,"Kreditoj"
 data change_language_txt,"Ne en Esperanto"
-data level_txt,"Nivelo"
-data near_mines_txt,"Apudaj minoj"
+data level_txt,"Kampo"
+data near_mines_txt,"Minoj"
 data points_txt,"Poentoj"
 data record_txt,"Rikordo"
 data safe_zone_txt,"<<<<<<<< SEKURA ZONO >>>>>>>>>"
