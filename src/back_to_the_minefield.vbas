@@ -8,17 +8,18 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 //  version of "Minefield", written by Ian Andrew.
 
 // ==============================================================
+// Start {{{1
 
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.71.0+201903122110":\
+let version$="0.72.0+201903122301":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
 
 // ==============================================================
-// Functions
+// Functions {{{1
 
 // A random row of the field:
 deffn random_row()=int(rnd*mined_rows)+top_mined_row
@@ -36,23 +37,15 @@ deffn seconds()=(peek 23672+256*peek 23637+65536*peek 23674)/50
 deffn score$(n)="00000"(to 5-len str$ n)+str$ n
 
 // ==============================================================
-// Start a new game
+// Start a new game {{{1
 
 @new_game:
 
 let level=first_level:\
 let score=0
 
-// Set the REPDEL OS variable (at memory address 23561) to zero, for
-// speed.
-//
-// REPDEL contains the time (in 50ths of a second) that a key must be
-// held down before it repeats.  Its default value is 35.
-
-poke 23561,0
-
 // ==============================================================
-// Enter a new level
+// Enter a new level {{{1
 
 @new_level:
 
@@ -148,24 +141,24 @@ goto @l535
 
 @l500:
 
-let old_row=row: let old_col=col
+let old_row=row:\
+let old_col=col
 
-@l520:
+do
 
-let i=peek 23560:\
-poke 23560,0:\
-let row=row+(i=10)-(i=11):\
-let row=row-(row=(bottom_fence_row+1)):\
-let col=col+(i=9)-(i=8)
+  let i=peek 23560:\
+  poke 23560,0:\
+  let row=row+(i=10)-(i=11):\
+  let row=row-(row=(bottom_fence_row+1)):\
+  let col=col+(i=9)-(i=8)
 
-// XXX OLD -- improve or remove
-# if level>=4 then \
-#   if time>(260*paper_color+70) then \
-#     if int(time/(3*paper_color+1))=(time/(3*paper_color+1)) then \
-#       gosub @walking_mine
+  // XXX OLD -- improve or remove
+  # if level>=4 then \
+  #   if time>(260*paper_color+70) then \
+  #     if int(time/(3*paper_color+1))=(time/(3*paper_color+1)) then \
+  #       gosub @walking_mine
 
-if old_row=row and old_col=col then \
-  goto @l520
+loop while old_row=row and old_col=col
 
 beep .003,-4
 
@@ -246,7 +239,7 @@ if row=top_fence_row then \
 goto @l500
 
 // ==============================================================
-// subroutine: close the door
+// subroutine: close the door {{{1
 
 @close_the_door:
 
@@ -268,7 +261,7 @@ let door_closed=1:\
 return
 
 // ==============================================================
-// subroutine: open the door
+// subroutine: open the door {{{1
 
 @open_the_door:
 
@@ -283,9 +276,9 @@ next i:\
 gosub @no_message:\
 let door_closed=0:\
 return
- 
+
 // ==============================================================
-// subroutine: status bar
+// subroutine: status bar {{{1
 
 @new_status_bar:
 
@@ -331,7 +324,7 @@ print #1; paper detector_color(surrounding_mines+1);ink 9;\
 return
 
 // ==============================================================
-// subroutine: walking mine
+// subroutine: walking mine {{{1
 
 // XXX TODO -- improve or remove
 
@@ -353,7 +346,7 @@ print at walking_mine_row,walking_mine_col; paper pa;"\h":\
 return
 
 // ==============================================================
-// subroutine: pick flower
+// subroutine: pick flower {{{1
 
 @pick_flower:
 
@@ -363,7 +356,7 @@ gosub @update_status_bar
 return
 
 // ==============================================================
-// explosion
+// explosion {{{1
 
 @explosion:
 
@@ -390,7 +383,7 @@ if score>record then \
 gosub @update_status_bar
 
 // ==============================================================
-// Again?
+// Again? {{{1
 
 let message$=fn txt$(again_txt):\
 gosub @message
@@ -408,7 +401,7 @@ if i$=yes$(lang) then goto @new_game
 goto @again
 
 // ==============================================================
-// subroutine: message
+// subroutine: message {{{1
 
 @message:
 
@@ -427,7 +420,7 @@ print at message_row,0;paper border_color;blank_row$;:\
 return
 
 // ==============================================================
-// Rescue
+// Rescue {{{1
 
 @rescue:
 
@@ -571,7 +564,7 @@ if score>record then \
 goto @again
 
 // ==============================================================
-// subroutine: replay
+// subroutine: replay {{{1
 
 @replay:
 
@@ -581,7 +574,7 @@ let quit_replay=0 // exit flag
 // XXX FIXME -- when the replay is ended, the explosion is shown in the
 // current position!
 
-// XXX TODO -- 
+// XXX TODO --
 # print at walking_mine_row,walking_mine_col;" ";\
 #       at row,col;" "
 
@@ -653,7 +646,7 @@ let message$=fn txt$(replay_controls_1_txt+paused_replay):\
 return
 
 // ==============================================================
-// subroutine: level passed
+// subroutine: level passed {{{1
 
 @level_passed:
 
@@ -711,7 +704,7 @@ let level=level+1:\
 goto @new_level
 
 // ==============================================================
-// subroutine: new record
+// subroutine: new record {{{1
 
 @new_record:
 
@@ -746,10 +739,9 @@ print at 21,0;\
 
 let record_player$="   "
 for n=1 to 3
-  @l5088:
-  let record_player$(n)=inkey$
-  if record_player$(n)=" " then \
-    goto @l5088
+  do
+    let record_player$(n)=inkey$
+  loop while record_player$(n)=" "
   if record_player$(n)>="a" and record_player$(n)<="z" then \
     let record_player$(n)=chr$((code record_player$(n))-32)
   print at 21,24+n; ink 7; paper 1;record_player$(n)
@@ -774,15 +766,27 @@ print at 10,7;"                  "
 return
 
 // ==============================================================
-// init
+// init {{{1
 
 @init:
 
-// Graphics
+// ---------------------------------------------
+// OS variables {{{2
+
+// Set the REPDEL OS variable (at memory address 23561) to zero, for
+// speed.
+//
+// REPDEL contains the time (in 50ths of a second) that a key must be
+// held down before it repeats.  Its default value is 35.
+
+poke 23561,0
+
+// ---------------------------------------------
+// Graphics {{{2
 
 // There are three UDG banks:
 //
-// udg1: graphics 
+// udg1: graphics
 // udg2: the Spanish and Interlingue characters
 // udg3: the Esperanto characters
 
@@ -795,7 +799,8 @@ let udg1_font=udg1-256-8:\
 let udg1_font_high=int(udg1_font/256):\
 let udg1_font_low=udg1_font-(udg1_font_high*256)
 
-// Constants
+// ---------------------------------------------
+// Constants {{{2
 
 let first_level=1:rem XXX TMP -- change for debugging -- default=1
 let last_level=7
@@ -840,12 +845,14 @@ let detector_color(2)=5:\
 let detector_color(3)=6:\
 let detector_color(4)=2
 
-// Variables
+// ---------------------------------------------
+// Variables {{{2
 
 let record_player$="IAN":\
 let record=250
 
-// Languages
+// ---------------------------------------------
+// Languages {{{2
 
 let english=1:\
 let esperanto=2:\
@@ -854,7 +861,8 @@ let spanish=4:\
 
 let langs=4
 
-// Multilingual text
+// ---------------------------------------------
+// Multilingual texts {{{2
 
 dim text$(langs,texts,32):\
 dim text_len(langs,texts):\
@@ -864,7 +872,8 @@ dim no$(langs)
 gosub @texts:\
 let lang=english
 
-// Files
+// ---------------------------------------------
+// Files {{{2
 
 randomize udg1:\
 gosub @select_udg_set:\
@@ -879,27 +888,7 @@ print at bottom_fence_row,0;fence$:\
 save!"fence.scr"code 16384,6144
 
 // ==============================================================
-// XXX TMP -- tests
-
-# rem --------------------------------
-# paper 2
-# ink 7
-# print at 15,15;mine_udg$;" (mine)=";
-# gosub @graphics_font
-# let tmp= code screen$(15,15)
-# gosub @default_font
-# print tmp
-
-# print at 16,15;"  (space)=";
-# gosub @graphics_font
-# let tmp= code screen$(16,15)
-# gosub @default_font
-# print tmp
-
-# stop
-
-// ==============================================================
-// menu
+// menu {{{1
 
 // XXX TODO -- complete
 
@@ -964,7 +953,7 @@ beep .1 ,23:\
 goto @menu_key
 
 // ==============================================================
-// subroutine: credits
+// subroutine: credits {{{1
 
 @credits:
 
@@ -1065,7 +1054,7 @@ pause 0
 return
 
 // ==============================================================
-// subroutine: instructions
+// subroutine: instructions {{{1
 
 @instructions:
 
@@ -1214,7 +1203,7 @@ gosub @select_udg_set
 return
 
 // ==============================================================
-// subrutine: texts
+// subrutine: texts {{{1
 
 // Set the text translations
 
@@ -1337,7 +1326,7 @@ data two_thousand_txt,"    Du mil kromaj poentoj!"
 data 0 // end of data
 
 // ==============================================================
-// subroutine: icon
+// subroutine: icon {{{1
 
 // Input:
 // i$ = UDG string
@@ -1350,7 +1339,7 @@ randomize udg_chars:\
 goto @select_udg_set
 
 // ==============================================================
-// subroutine: select user defined characters
+// subroutine: select user defined characters {{{1
 
 // Input: UDG set address stored in OS variable 23670.
 
@@ -1361,7 +1350,7 @@ randomize:\
 return
 
 // ==============================================================
-// subroutine: the_nest
+// subroutine: the_nest {{{1
 
 @the_nest:
 
@@ -1384,7 +1373,7 @@ print at 4,4+ss;"\ :";\
 return
 
 // ==============================================================
-// subroutine: last level
+// subroutine: last level {{{1
 
 // XXX TODO -- rewrite
 // XXX FIXME --
@@ -1423,7 +1412,7 @@ ink 0
 return
 
 // ==============================================================
-// Sounds
+// Sounds {{{1
 
 // XXX TODO --
 
@@ -1440,7 +1429,27 @@ data 0,0,0,0,0,0,30,64,15,16,15,0,7,24
 data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 // ==============================================================
-// Vimclair BASIC directives
+// Debugging tests {{{1
+
+# rem --------------------------------
+# paper 2
+# ink 7
+# print at 15,15;mine_udg$;" (mine)=";
+# gosub @graphics_font
+# let tmp= code screen$(15,15)
+# gosub @default_font
+# print tmp
+
+# print at 16,15;"  (space)=";
+# gosub @graphics_font
+# let tmp= code screen$(16,15)
+# gosub @default_font
+# print tmp
+
+# stop
+
+// ==============================================================
+// Vimclair BASIC directives {{{1
 
 # #tapmaker zmakebas
 #tapmaker bas2tap
