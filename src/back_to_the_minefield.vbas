@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.80.0+201903131729":\
+let version$="0.81.0+201903131755":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -404,63 +404,70 @@ return
 
 @rescue:
 
-gosub @the_nest
-let dx=30
-for u=.155 to .005 step -.01
-  print at 0,dx; ink 0; paper 7;"\n "
-  let dx=dx-1
-  beep u,8: beep u,12: beep u,16
-  border rnd*7
-next u
-for n=1 to 16
-  print at 0,dx; ink 0; paper 7;"\n "
-  let dx=dx-1+(dx=0)
-  beep u+.005,8
-  border rnd*7
-  beep u+.005,12: beep u,16
-next n
-print at 0,0; paper 7;" "
-for t=0 to 2
-  for l=0 to 7 step 7
-    ink l
-    // XXX TODO -- simpler
-    for n=1 to 5:\
-      print at row+n,col+n;"*":\
-      print at row-n,col+n;"*":\
-      print at row+n,col-n;"*":\
-      print at row-n,col-n;"*":\
-    next n
-    for n=1 to 5:\
-      print at row,col+n;">":\
-      print at row,col-n;"<":\
-      print at row+n,col;"#":\
-      print at row-n,col;"#":\
-    next n
-  next l
-next t
-ink 0
-gosub @the_nest
+# XXX OLD
+# gosub @the_nest
+# let dx=30
+# for u=.155 to .005 step -.01
+#   print at 0,dx; ink 0; paper 7;"\n "
+#   let dx=dx-1
+#   beep u,8: beep u,12: beep u,16
+#   border rnd*7
+# next u
+# for n=1 to 16
+#   print at 0,dx; ink 0; paper 7;"\n "
+#   let dx=dx-1+(dx=0)
+#   beep u+.005,8
+#   border rnd*7
+#   beep u+.005,12: beep u,16
+# next n
+# print at 0,0; paper 7;" "
+# for t=0 to 2
+#   for l=0 to 7 step 7
+#     ink l
+#     // XXX TODO -- simpler
+#     for n=1 to 5:\
+#       print at row+n,col+n;"*":\
+#       print at row-n,col+n;"*":\
+#       print at row+n,col-n;"*":\
+#       print at row-n,col-n;"*":\
+#     next n
+#     for n=1 to 5:\
+#       print at row,col+n;">":\
+#       print at row,col-n;"<":\
+#       print at row+n,col;"#":\
+#       print at row-n,col;"#":\
+#     next n
+#   next l
+# next t
+# ink 0
+# gosub @the_nest
 
 print at 0,0; ink 7; paper 0;\
 text$(lang,two_thousand_txt);
 
-let score=score+2000
-for b=0 to 7
-  paper b: ink 9
-  print at row,col;protagonist$(protagonist_frame+1):\
-  let protagonist_frame=not protagonist_frame
-  for n=1 to 14
-    beep .002,50-n+b
-    border 1: border 2: border 3: border 4
-    border 5: border 6: border 7: border b
-  next n
-next b
+let score=score+2000:\
+gosub @update_status_bar
+
+# XXX OLD
+# for b=0 to 7
+#   paper b: ink 9
+#   print at row,col;protagonist$(protagonist_frame+1):\
+#   let protagonist_frame=not protagonist_frame
+#   for n=1 to 14
+#     beep .002,50-n+b
+#     border 1: border 2: border 3: border 4
+#     border 5: border 6: border 7: border b
+#   next n
+# next b
+
 border 0: paper 0: cls
-for n=0 to 30 step 6
-  for m=1 to 10
-    beep .008,n+m
-  next m
-next n
+
+# XXX OLD
+# for n=0 to 30 step 6
+#   for m=1 to 10
+#     beep .008,n+m
+#   next m
+# next n
 
 if lang=spanish then
 
@@ -472,10 +479,10 @@ print '\
   "Has rescatado a Bill. El mundo"'\
   "te está agradecido."
 #  <------------------------------>
-print ''''';\
+print '\
   "Puntuación: ";score;"."
 #  <------------------------------>
-print \
+print '\
   "¿Por qué no vuelves a jugar y"'\
   "tratas de mejorarla?"
 #  <------------------------------>
@@ -487,13 +494,13 @@ print at 3,6;\
   "Congratulations!"
 #  <------------------------------>
 print '\
-  "Yo have rescue Bill. The world"'\
-  "thanks you."
+  "You have rescued Bill. The"'\
+  "world thanks you."
 #  <------------------------------>
-print ''''';\
+print '\
   "Score: ";score;"."
 #  <------------------------------>
-print \
+print '\
   "Why don't you play again and"'\
   "try to do it even better?"
 #  <------------------------------>
@@ -504,18 +511,18 @@ elseif lang=interlingue then
 
 #  <------------------------------>
 print at 3,6;\
-  "Congratulations!"
+  "Gratulationes!"
 #  <------------------------------>
 print '\
-  "Yo have rescue Bill. The world"'\
-  "thanks you."
+  "Tu hat salvat Bill. Li munde"'\
+  "mersia te."
 #  <------------------------------>
-print ''''';\
-  "Score: ";score;"."
+print '\
+  "Pontes: ";score;"."
 #  <------------------------------>
-print \
-  "Why don't you play again and"'\
-  "try to do it even better?"
+print '\
+  "Mey tu luder ancor e provar far"'\
+  "it mem plu bon?"
 #  <------------------------------>
 
 else // Esperanto
@@ -528,10 +535,10 @@ print '\
   "Vi savis Bill. La mondo dankas"'\
   "vin."
 #  <------------------------------>
-print ''''';\
+print '\
   "Poentoj: ";score;"."
 #  <------------------------------>
-print \
+print '\
   "Kial ne ludi plian fojon kaj"'\
   "klopodi fari eĉ pli bone?"
 #  <------------------------------>
@@ -1460,6 +1467,13 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 # let tmp= code screen$(16,15)
 # gosub @default_font
 # print tmp
+
+# gosub @last_level
+# for n=1 to langs
+#   let lang=n
+#   gosub @rescue
+#   pause 0
+# next n
 
 # stop
 

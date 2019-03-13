@@ -6,7 +6,6 @@
 - Fix color of the status bar texts.
 - Reorganize the code for speed: move the main game loop to the top.
 - Replace the border effect of `@level_replay` with something better.
-- Fix "have recue".
 - Fix: the color of the top left corner of the fence is wrong at the
   start of the last level.
 - Put two mines at two random entries of the nest. The original game
