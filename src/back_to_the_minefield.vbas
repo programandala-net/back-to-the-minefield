@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.77.0+201903130022":\
+let version$="0.78.0+201903130124":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -838,10 +838,12 @@ let record=250
 // ---------------------------------------------
 // Languages {{{2
 
-let english=1:\
-let esperanto=2:\
-let interlingue=3:\
-let spanish=4:\
+// Defined in alphabetical order of their original names:
+
+let english=1:\     // English
+let spanish=2:\     // Español
+let esperanto=3:\   // Esperanto
+let interlingue=4:\ // Interlingue
 
 let langs=4
 
@@ -892,58 +894,79 @@ next n
 border 1: paper 1: ink 7:\
 cls
 
-@update_menu:
+@update_languages:
 
-print at 0,0;text$(lang,title_txt)
+// Select the UDG set containing the Spanish chars,
+// no matter the current language, because only
+// that set is needed to print the list of languages:
+randomize udg2:\
+gosub @select_udg_set
 
+print at 2,0'\
+  "_____________";''\
+  inverse lang<>english;english;inverse 0;" ";\
+  bright lang=english;"English";bright 0;''\
+  inverse lang<>spanish;spanish;inverse 0;" ";\
+  bright lang=spanish;"Español";bright 0;''\
+  inverse lang<>esperanto;esperanto;inverse 0;" ";\
+  bright lang=esperanto;"Esperanto";bright 0;''\
+  inverse lang<>interlingue;interlingue;inverse 0;" ";\
+  bright lang=interlingue;"Interlingue";bright 0''\
+  "________________________________";
+
+@update_options:
+
+// Select the UDG set needed by the current language:
 randomize udg_chars:\
 gosub @select_udg_set
 
-#  <------------------------------>
-print '\
-  "________________________________"''\
-  inverse 1;text$(lang,instructions_txt,1);\
-  inverse 0;text$(lang,instructions_txt,2 to)''\
-  inverse 1;text$(lang,start_txt,1);\
-  inverse 0;text$(lang,start_txt,2 to)''\
-  inverse 1;text$(lang,credits_txt,1);\
-  inverse 0;text$(lang,credits_txt,2 to)''\
-  inverse 1;text$(lang,change_language_txt,1);\
-  inverse 0;text$(lang,change_language_txt,2 to)''\
-  "________________________________"
-#  <------------------------------>
+print at 0,0;text$(lang,title_txt)
+
+print \
+at 15,19;inverse 1;text$(lang,instructions_txt,1);\
+  inverse 0;text$(lang,instructions_txt,2 to);\
+at 17,19;inverse 1;text$(lang,start_txt,1);\
+  inverse 0;text$(lang,start_txt,2 to);\
+at 19,19;inverse 1;text$(lang,credits_txt,1);\
+  inverse 0;text$(lang,credits_txt,2 to);\
+at 20,19;"_____________";
 
 @menu_key
 
-pause 0:let i$=inkey$
-if code(i$)>code("Z") then \
+// Wait for a key and convert it to uppercase
+// if needed:
+pause 0:let i$=inkey$:\
+if i$>"Z" then \
   let i$=chr$(code(i$)-32)
 
+// Instructions?
 if i$=text$(lang,instructions_txt,1) then \
   gosub @instructions:\
   goto @menu
 
+// Play?
 if i$=text$(lang,start_txt,1) then \
   goto @new_game
 
+// Credits?
 if i$=text$(lang,credits_txt,1) then \
   gosub @credits:\
   goto @menu
 
-if i$=text$(lang,change_language_txt,1) then
-  let lang=lang+1
-  if lang>langs then \
-    let lang=1
+// Language number?
+if i$>="1" and i$<=chr$(code "0"+langs) then
+  if lang=val i$ then \
+    goto @invalid_key
+  let lang=val i$
   if lang=esperanto then
     let udg_chars=udg3
   else
     let udg_chars=udg2
   endif
-  randomize udg_chars:\
-  gosub @select_udg_set
-  goto @update_menu
+  goto @update_languages
 endif
 
+@invalid_key:
 beep .1 ,23:\
 goto @menu_key
 

@@ -3,7 +3,6 @@
 
 - Make the replay control keys configurable.
 - Reduce number of loop index variables.
-- Add a direct language menu next to the main menu.
 - Fix color of the status bar texts.
 - Rewrite all about the worm nest.
 - Reorganize the code for speed: move the main game loop to the top.
