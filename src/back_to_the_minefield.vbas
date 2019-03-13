@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.79.1+201903130204":\
+let version$="0.80.0+201903131729":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -72,8 +72,7 @@ let protagonist_frame=0:\
 let walking_mine_step=-1:\
 let walking_mine_row=row:\
 let walking_mine_col=col:\
-let pa=7:\
-let ss=0
+let pa=7
 
 let paper_color=7-level:\
 let mines=32+level*4
@@ -786,7 +785,7 @@ let udg1_font_low=udg1_font-(udg1_font_high*256)
 // ---------------------------------------------
 // Constants {{{2
 
-let first_level=1:rem XXX TMP -- change for debugging -- default=1
+let first_level=1 // XXX TMP -- change for debugging -- default=1
 let last_level=7
 
 let message_row=0:\
@@ -1384,61 +1383,47 @@ return
 
 @the_nest:
 
-print at 4,4+ss;"\ :";\
-      at 4,6+ss;"\: ";\
-      at 5,4+ss;"\ :";\
-      at 5,6+ss;"\: ";\
-      at 6,4+ss;"\ :";\
-      at 6,6+ss;"\: ";\
-      at 7,1+ss;"\..\..\..\..";\
-      at 7,6+ss;"\..\..\..\..";\
-      at 9,1+ss;"\''\''\''\''";\
-      at 9,6+ss;"\''\''\''\''";\
-      at 10,4+ss;"\ :";\
-      at 10,6+ss;"\: ";\
-      at 11,4+ss;"\ :";\
-      at 11,6+ss;"\: ";\
-      at 12,4+ss;"\ :";\
-      at 12,6+ss;"\: ":\
+print at nest_row,nest_col+3;fence_udg$;\
+      at nest_row,nest_col+5;fence_udg$;\
+      at nest_row+1,nest_col+3;fence_udg$;\
+      at nest_row+1,nest_col+5;fence_udg$;\
+      at nest_row+2,nest_col+3;fence_udg$;\
+      at nest_row+2,nest_col+5;fence_udg$;\
+      at nest_row+3,nest_col;fence$(1 to 4);\
+      at nest_row+3,nest_col+5;fence$(1 to 4);\
+      at nest_row+5,nest_col;fence$(1 to 4);\
+      at nest_row+5,nest_col+5;fence$(1 to 4);\
+      at nest_row+6,nest_col+3;fence_udg$;\
+      at nest_row+6,nest_col+5;fence_udg$;\
+      at nest_row+7,nest_col+3;fence_udg$;\
+      at nest_row+7,nest_col+5;fence_udg$;\
+      at nest_row+8,nest_col+3;fence_udg$;\
+      at nest_row+8,nest_col+5;fence_udg$:\
 return
 
 // ==============================================================
 // subroutine: last level {{{1
 
-// XXX TODO -- rewrite
-// XXX FIXME --
-
 @last_level:
 
-let ss=int(rnd*11)+6
+let nest_width=9:\
+let nest_height=9:\ // XXX TODO -- Not used.
+let nest_row=int(rnd*7)+3:\
+let nest_col=int(rnd*20)+2
+
 beep .3,-12
 
 print at top_fence_row,door_col;fence$(1 to 3)
 
-beep .3,-12
-for n=0 to 1:\
-  for m=0 to 6:\
-    border n: beep .003,n*m: border m: beep .002,30+n+m*2:\
-  next m:\
-next n
-border 2: flash 1
-for n=0 to 9:\
-  print at n+3,ss+1; paper paper_color; ink paper_color;"         ":\
-next n
-flash 0
+gosub @the_nest
 
-for n=2 to -1 step -1
-  beep .003,27-n: beep .003,19-n: beep .003,29-n
-  if n>0 then \
-    ink n
-  if n=-1 then \
-    flash 1: bright 0
-  gosub @the_nest
-next n
-print at 11,5+ss; ink paper_color; paper paper_color;mine_udg$
-flash 0
-print at 8,5+ss; flash 0;bill_udg$
-ink 0
+// XXX TODO --
+# print at 11,nest_col+5; ink paper_color; paper paper_color;mine_udg$
+
+print \
+  at nest_row+int(nest_width/2),nest_col+int(nest_width/2);\
+  bill_udg$
+
 return
 
 // ==============================================================
@@ -1613,6 +1598,10 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<message_row\>,mr0,gIe
 #vim %substitute,\<mine_row\>,mr1,gIe
 #vim %substitute,\<mined_rows\>,mr2,gIe
+#vim %substitute,\<nest_col\>,nc,gIe
+#vim %substitute,\<nest_height\>,nh,gIe
+#vim %substitute,\<nest_row\>,nr,gIe
+#vim %substitute,\<nest_width\>,nw,gIe
 #vim %substitute,\<next_text\>,nt,gIe
 #vim %substitute,\<old_col\>,ocol,gIe
 #vim %substitute,\<old_row\>,orow,gIe
