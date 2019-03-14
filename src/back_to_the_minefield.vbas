@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.81.0+201903131755":\
+let version$="0.82.0+201903150046":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -1090,6 +1090,19 @@ pause 0
 return
 
 // ==============================================================
+// subroutine: icon {{{1
+
+// Input:
+// i$ = UDG string
+
+@icon:
+randomize udg1:\
+gosub @select_udg_set:\
+print 'bright 1;i$;:\
+randomize udg_chars:\
+goto @select_udg_set
+
+// ==============================================================
 // subroutine: instructions {{{1
 
 @instructions:
@@ -1097,137 +1110,80 @@ return
 cls:\
 print text$(lang,title_txt)
 
-let i$=protagonist$(1):gosub @icon
-
 if lang=spanish then
 
+let i$=protagonist$(1):gosub @icon
 #      <------------------------------>
 print  " Tú, la heroica damisela. Atra-";
-#      <------------------------------>
 print "  viesa los campos de minas,"
-#      <------------------------------>
 print "  usando el cursor."
-
-elseif lang=english then
-
-#      <------------------------------>
-print  " You, the heroic damsel. Cross"
-#      <------------------------------>
-print "  the minefields using the"
-#      <------------------------------>
-print "  the cursor keys."
-
-elseif lang=interlingue then
-
-#      <------------------------------>
-print  " Tu, li heroic senioretta."
-#      <------------------------------>
-print "  Transea li campes de mines"
-#      <------------------------------>
-print "  usante li fleche-claves."
-
-else // Esperanto
-
-#      <------------------------------>
-print  " Vi, la heroa fraŭlino."
-#      <------------------------------>
-print "  Trairu la min-kampojn"
-#      <------------------------------>
-print "  uzante la sago-klavojn."
-
-endif
-
 let i$=bill_udg$:gosub @icon
-
-if lang=spanish then
-
 #      <------------------------------>
 print  " Bill el gusano: Está en el úl-"
-#      <------------------------------>
 print "  timo campo. Rescátalo."
-
-elseif lang=english then
-
-#      <------------------------------>
-print  " Bill the worm: It's on the"
-#      <------------------------------>
-print "  last field. Rescue it."
-
-elseif lang=interlingue then
-
-#      <------------------------------>
-print  " Bill li verme: It es in li"
-#      <------------------------------>
-print "  ultim camp. Salva it."
-
-else // Esperanto
-
-#      <------------------------------>
-print  " Bill la vermo: Ĝi estas en la";
-#      <------------------------------>
-print "  lasta kampo. Savu ĝin."
-
-endif
-
 let i$=mine_udg$:gosub @icon
-
-if lang=spanish then
-
 #      <------------------------------>
 print  " Minas: En la parte inferior"
-#      <------------------------------>
 print "  verás cuántas tienes cerca."
-
-elseif lang=english then
-
-#      <------------------------------>
-print  " Mines: On the status bar you"
-#      <------------------------------>
-print "  will see how many of them are"
-#      <------------------------------>
-print "  near you."
-
-elseif lang=interlingue then
-
-#      <------------------------------>
-print  " Mines: Sur li statu-barre tu"
-#      <------------------------------>
-print "  va vide quantes es apu te."
-
-else // Esperanto
-
-#      <------------------------------>
-print  " Minoj: Sube de la ekrano vi"
-#      <------------------------------>
-print "  vidos kiomaj estas apud vi."
-
-endif
-
-# let i$="\h":gosub @icon
-# #      <------------------------------>
-# print  " La mina con patas:"
-# #      <------------------------------>
-# print "  Te perseguirá sin descanso."
-
 let i$=fence_udg$:gosub @icon
-
-if lang=spanish then
-
 #      <------------------------------>
 print  " Verja electrificada."
 
 elseif lang=english then
 
+let i$=protagonist$(1):gosub @icon
+#      <------------------------------>
+print  " You, the heroic damsel. Cross"
+print "  the minefields using the"
+print "  the cursor keys."
+let i$=bill_udg$:gosub @icon
+#      <------------------------------>
+print  " Bill the worm: It's on the"
+print "  last field. Rescue it."
+let i$=mine_udg$:gosub @icon
+#      <------------------------------>
+print  " Mines: On the status bar you"
+print "  will see how many of them are"
+print "  near you."
+let i$=fence_udg$:gosub @icon
 #      <------------------------------>
 print  " Electrified fence."
 
 elseif lang=interlingue then
 
+let i$=protagonist$(1):gosub @icon
+#      <------------------------------>
+print  " Tu, li heroic senioretta."
+print "  Transea li campes de mines"
+print "  usante li fleche-claves."
+let i$=bill_udg$:gosub @icon
+#      <------------------------------>
+print  " Bill li verme: It es in li"
+print "  ultim camp. Salva it."
+let i$=mine_udg$:gosub @icon
+#      <------------------------------>
+print  " Mines: Sur li statu-barre tu"
+print "  va vide quantes es apu te."
+let i$=fence_udg$:gosub @icon
 #      <------------------------------>
 print  " Palissade electrificat."
 
 else // Esperanto
 
+let i$=protagonist$(1):gosub @icon
+#      <------------------------------>
+print  " Vi, la heroa fraŭlino."
+print "  Trairu la min-kampojn"
+print "  uzante la sago-klavojn."
+let i$=bill_udg$:gosub @icon
+#      <------------------------------>
+print  " Bill la vermo: Ĝi estas en la";
+print "  lasta kampo. Savu ĝin."
+let i$=mine_udg$:gosub @icon
+#      <------------------------------>
+print  " Minoj: Sube de la ekrano vi"
+print "  vidos kiomaj estas apud vi."
+let i$=fence_udg$:gosub @icon
 #      <------------------------------>
 print  " Elektrigita barilo."
 
@@ -1360,19 +1316,6 @@ data enter_initials_txt,"Tajpu viajn inicialojn"
 data press_key_text,"Premu klavon por iri al la menuo"
 data two_thousand_txt,"    Du mil kromaj poentoj!"
 data 0 // end of data
-
-// ==============================================================
-// subroutine: icon {{{1
-
-// Input:
-// i$ = UDG string
-
-@icon:
-randomize udg1:\
-gosub @select_udg_set:\
-print 'bright 1;i$;:\
-randomize udg_chars:\
-goto @select_udg_set
 
 // ==============================================================
 // subroutine: select user defined characters {{{1
