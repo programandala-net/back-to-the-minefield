@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.82.0+201903150046":\
+let version$="0.83.0+201903150057":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -673,18 +673,19 @@ print at row,col;paper pa;" "
 
 gosub @replay
 
-for i=4 to 22 step 6:\
-  beep .005,i+24:\
-next i
-
-for i=1 to 8:\
-  for j=1 to 6:\
-    print at message_row,0;paper j;blank_row$;:\
-    border j:\
-  next j:\
-next i:\
-print at message_row,0;paper 0;blank_row$;:\
-border border_color
+// XXX OLD
+// XXX TODO -- Write other effect?
+# for i=4 to 22 step 6:\
+#   beep .005,i+24:\
+# next i
+# for i=1 to 8:\
+#   for j=1 to 6:\
+#     print at message_row,0;paper j;blank_row$;:\
+#     border j:\
+#   next j:\
+# next i:\
+# print at message_row,0;paper 0;blank_row$;:\
+# border border_color
 
 // XXX TODO -- variable to flash the score
 let score=score+time_score+mines:\
