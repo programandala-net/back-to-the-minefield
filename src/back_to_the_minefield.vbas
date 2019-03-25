@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.83.2+201903251215":\
+let version$="0.83.3+201903251226":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -653,6 +653,7 @@ let time_score=time_score*(time_score>0)*level
 # restore @applause_sound:\
 # gosub @sound
 
+paper pa
 poke 23560,0:\
 for i=1 to 8:\
   print at row,col;protagonist$(1):\
@@ -669,7 +670,7 @@ next i
 # restore @no_sound:\
 # gosub @sound
 
-print at row,col;paper pa;" "
+print at row,col;" "
 
 gosub @replay
 

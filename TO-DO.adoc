@@ -17,4 +17,3 @@
   without reconfiguring the RAM disk, which fails because there's no
   way to check if a file exits, to erase a non-existing file or to
   overwrite an existing file...
-- Fix: color of the protagonist in the effect at `@level_passed`.
