@@ -18,6 +18,5 @@
   way to check if a file exits, to erase a non-existing file or to
   overwrite an existing file...
 - Make beep also after a valid key menu.
-- Optimize `gosub` + `return` to `goto`.
 - Use sand color for all fields. It's more realistic.
 - Do the saluting also at the end of the replay?
