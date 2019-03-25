@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.88.0+201903251430":\
+let version$="0.89.0+201903251448":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -920,7 +920,7 @@ save!"txtattr"code 22528,768
 
 @menu:
 
-border 1: paper 1: ink 7:\
+border 1: paper 1: ink 1:\
 cls
 
 print \
@@ -935,7 +935,7 @@ print \
 #   at 20,0;"________________________________";
 
 # <------------------------------>
-print #1;\
+print #1;ink 1;\
   at 0,9;"{(C)} Marcos Cruz";\
   at 1,1;"(programandala.net), 2016-2019"
 # <------------------------------>
@@ -950,13 +950,13 @@ gosub @select_udg_set
 
 print at 4,0'\
   inverse lang<>english;english;inverse 0;" ";\
-  bright lang=english;"English";bright 0''\
+  inverse lang=english;"English"''\
   inverse lang<>spanish;spanish;inverse 0;" ";\
-  bright lang=spanish;"Español";bright 0''\
+  inverse lang=spanish;"Español"''\
   inverse lang<>esperanto;esperanto;inverse 0;" ";\
-  bright lang=esperanto;"Esperanto";bright 0''\
+  inverse lang=esperanto;"Esperanto"''\
   inverse lang<>interlingue;interlingue;inverse 0;" ";\
-  bright lang=interlingue;"Interlingue";bright 0
+  inverse lang=interlingue;"Interlingue"
 
 @update_options:
 
@@ -973,6 +973,9 @@ at 17,19;inverse 1;text$(lang,start_txt,1);\
   inverse 0;text$(lang,start_txt,2 to 13);\
 at 19,19;inverse 1;text$(lang,credits_txt,1);\
   inverse 0;text$(lang,credits_txt,2 to 13)
+
+load!"txtattr"code:\
+ink 7
 
 @menu_key
 
@@ -1020,13 +1023,13 @@ gosub @select_udg_set:\
 
 print #1;at 0,0;\
   inverse lang<>english;english;inverse 0;" ";\
-  bright lang=english;"English";bright 0,\
+  inverse lang=english;"English";inverse 0,\
   inverse lang<>spanish;spanish;inverse 0;" ";\
-  bright lang=spanish;"Español";bright 0'\
+  inverse lang=spanish;"Español"'\
   inverse lang<>esperanto;esperanto;inverse 0;" ";\
-  bright lang=esperanto;"Esperanto";bright 0,\
+  inverse lang=esperanto;"Esperanto";inverse 0,\
   inverse lang<>interlingue;interlingue;inverse 0;" ";\
-  bright lang=interlingue;"Interlingue";bright 0:\
+  inverse lang=interlingue;"Interlingue":\
 
 // There's no need to restore the UDG set needed by the current
 // language, because the modules using this routine manage it.
