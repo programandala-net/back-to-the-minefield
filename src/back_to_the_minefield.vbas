@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.91.2+201903251626":\
+let version$="0.92.0+201903251634":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -653,10 +653,10 @@ let time_score=time_score*(time_score>0)*level
 paper pa
 poke 23560,0:\
 for i=1 to 8:\
-  print at row,col;protagonist$(1):\
+  print at row,col;"\i":\
   if peek 23560 then goto @level_replay
   beep .1,0:\
-  print at row,col;protagonist$(2):\
+  print at row,col;"\j":\
   beep .1,10:\
   if peek 23560 then goto @level_replay
 next i
@@ -805,7 +805,6 @@ let start_col=15
 
 let blank_row$="                                "
 
-dim protagonist$(2):\
 let protagonist$="\d\e":\
 let dead_protagonist_udg$="\l":\
 
