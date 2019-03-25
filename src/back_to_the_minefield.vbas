@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.89.0+201903251448":\
+let version$="0.89.1+201903251536":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -1030,11 +1030,8 @@ print #1;at 0,0;\
   inverse lang=esperanto;"Esperanto";inverse 0,\
   inverse lang<>interlingue;interlingue;inverse 0;" ";\
   inverse lang=interlingue;"Interlingue":\
-
-// There's no need to restore the UDG set needed by the current
-// language, because the modules using this routine manage it.
-
-return
+randomize udg_chars:\
+goto @select_udg_set // then return
 
 // ==============================================================
 // subroutine: credits {{{1
@@ -1465,7 +1462,10 @@ if lang_key then:\
     let new_lang=1:\
     let lang=val i$:\
     let udg_chars=udg3*(lang=esperanto)+\
-                  udg2*(lang<>esperanto)
+                  udg2*(lang<>esperanto):\
+    randomize udg_chars:\
+    goto @select_udg_set // then return
+
 
 return
 

@@ -19,3 +19,5 @@
   overwrite an existing file...
 - Make beep also after a valid key menu.
 - Optimize `gosub` + `return` to `goto`.
+- Make `randomize udg_chars` in `@icon` the entry point of of a
+  subroutine.
