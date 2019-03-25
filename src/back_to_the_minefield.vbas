@@ -18,7 +18,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.97.1+201903252254":\
+let version$="0.98.0+201903252334":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -77,7 +77,6 @@ let protagonist_frame=0:\
 let walking_mine_step=-1:\
 let walking_mine_row=row:\
 let walking_mine_col=col:\
-let pa=7
 
 let mines=32+level*4
 
@@ -135,20 +134,30 @@ endif
 if level=(last_level-1) then \
   gosub @close_the_door
 
-beep .0875,10
+beep .0875,10:\
 
-for n=1 to 20
-  beep .002,n+20
-next n
-# print at 21,4;"         ": beep .05,37
-goto @l535
+for n=1 to 20:\
+  beep .002,n+20:\
+next n:\
 
-@l500:
+goto @one_step
+
+// ==============================================================
+// Walking loop {{{1
+
+@walking_loop
 
 let old_row=row:\
 let old_col=col
 
 do
+
+  if not int(peek (23672)/16) then:\
+    print at row,col;\
+      paper path_color;\
+      protagonist$(protagonist_frame+1):\
+      let protagonist_frame=not protagonist_frame:\
+      beep .003,4-8*protagonist_frame
 
   let i=peek 23560:\
   poke 23560,0:\
@@ -164,18 +173,18 @@ do
 
 loop while old_row=row and old_col=col
 
-beep .003,-4
+beep .003,4-8*protagonist_frame
 
-@l535:
+@one_step
 
-print at old_row,old_col; paper pa;" "
+print at old_row,old_col; paper path_color;" "
 let trail$=trail$+chr$ row+chr$ col
 
 // XXX TODO -- move down to save the print
 if door_closed then \
     if row=key_row then \
       if col=key_col then \
-        print at row,col; paper pa;protagonist$(protagonist_frame+1):\
+        print at row,col; paper path_color;protagonist$(protagonist_frame+1):\
         let protagonist_frame=not protagonist_frame:\
         gosub @open_the_door:\
         goto @step_done
@@ -221,7 +230,11 @@ elseif found_char=bill_char then
   gosub @rescue
 endif
 
-print at row,col; paper pa;protagonist$(protagonist_frame+1):\
+
+
+print at row,col;\
+  paper path_color;\
+  protagonist$(protagonist_frame+1):\
 let protagonist_frame=not protagonist_frame
 
 @step_done:
@@ -237,7 +250,7 @@ beep .04*sgn surrounding_mines,surrounding_mines*10
 if row=top_fence_row then \
   goto @level_passed
 
-goto @l500
+goto @walking_loop
 
 // ==============================================================
 // subroutine: close the door {{{1
@@ -333,22 +346,22 @@ return
 
 // XXX TODO -- improve or remove
 
-@walking_mine:
+# @walking_mine:
 
-// XXX TODO -- try, after the latest changes (2016-06-12)
+# // XXX TODO -- try, after the latest changes (2016-06-12)
 
-print at walking_mine_row,walking_mine_col; paper pa;" "
+# print at walking_mine_row,walking_mine_col; paper path_color;" "
 
-let walking_mine_step=walking_mine_step+2:\
-beep .0018,60
-let walking_mine_row=code trail$(walking_mine_step):\
-let walking_mine_col=code trail$(walking_mine_step+1):\
-if screen$(walking_mine_row,walking_mine_col)<>" " then \
-  goto @explosion
+# let walking_mine_step=walking_mine_step+2:\
+# beep .0018,60
+# let walking_mine_row=code trail$(walking_mine_step):\
+# let walking_mine_col=code trail$(walking_mine_step+1):\
+# if screen$(walking_mine_row,walking_mine_col)<>" " then \
+#   goto @explosion
 
-// XXX TODO -- improve:
-print at walking_mine_row,walking_mine_col; paper pa;"\h":\
-return
+# // XXX TODO -- improve:
+# print at walking_mine_row,walking_mine_col; paper path_color;"\h":\
+# return
 
 // ==============================================================
 // explosion {{{1
@@ -632,7 +645,7 @@ let time_score=time_score*(time_score>0)*level
 # restore @applause_sound:\
 # gosub @sound
 
-paper pa
+paper path_color
 poke 23560,0:\
 for i=1 to 8:\
   print at row,col;"\i":\
@@ -1571,8 +1584,9 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 // Style colors
 #vim %substitute,\<border_color\>,0,gIe // black 
-#vim %substitute,\<ground_color\>,6,gIe // yeloww 
+#vim %substitute,\<ground_color\>,6,gIe // yelow
 #vim %substitute,\<flower_color\>,2,gIe // red
+#vim %substitute,\<path_color\>,7,gIe // white
 
 // Text identifiers
 #vim %substitute,\<press_key_text\>,1,gIe
