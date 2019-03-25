@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.87.0+201903251408":\
+let version$="0.88.0+201903251430":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -892,7 +892,7 @@ print at bottom_fence_row,0;fence$:\
 save!"fence.scr"code 16384,6144
 
 // .............................
-// Arena attributesa {{{3
+// Arena attributes {{{3
 
 // Save the attributes of the field background (rows from 1 to 21), in
 // all colors, into files.  The files are named with the digit of the
@@ -904,6 +904,16 @@ for n=7 to 0 step -1:\
   cls:\
   save!str$ n code 22560,672:\
 next n
+
+// .............................
+// Text attributes {{{3
+
+// Save the text attributes used in the menu, the credits and the
+// instructions.  They are used to reveal the texts instantaneously.
+
+paper 1:ink 7:border 1:\
+cls:\
+save!"txtattr"code 22528,768
 
 // ==============================================================
 // menu {{{1
@@ -999,6 +1009,9 @@ goto @menu_key
 
 @lang_footer_menu
 
+// Load the attributes to reveal the texts:
+load!"txtattr"code:\
+
 // Select the UDG set containing the Spanish chars,
 // no matter the current language, because only
 // that set is needed to print the list of languages:
@@ -1025,9 +1038,7 @@ return
 
 @credits:
 
-cls
-randomize udg_chars:\
-gosub @select_udg_set
+paper 1:ink 1:cls:\
 print text$(lang,title_txt)''
 
 if lang=spanish then
@@ -1139,7 +1150,7 @@ return
 @icon:
 randomize udg1:\
 gosub @select_udg_set:\
-print 'bright 1;i$;:\
+print 'i$;:\
 randomize udg_chars
 
 // Run into `@select_udg_set` and return:
@@ -1160,7 +1171,7 @@ return
 
 @instructions:
 
-cls:\
+paper 1:ink 1:cls:\
 print text$(lang,title_txt)
 
 if lang=spanish then
