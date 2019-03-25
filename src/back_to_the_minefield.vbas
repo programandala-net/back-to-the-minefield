@@ -18,7 +18,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.97.0+201903252250":\
+let version$="0.97.1+201903252254":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -860,6 +860,7 @@ save!"fence.scr"code 16384,6144
 
 paper ground_color:\
 ink black:\
+border ground_color:\
 cls:\
 save!"groundattr" code 22560,672
 
