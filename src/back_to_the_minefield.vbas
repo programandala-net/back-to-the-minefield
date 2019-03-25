@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.89.1+201903251536":\
+let version$="0.90.0+201903251544":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -278,8 +278,7 @@ return
 @new_status_bar:
 
 input ;:\
-randomize udg_chars:\
-gosub @select_udg_set:\
+gosub @select_udg_chars_set:\
 print #1;paper 0;ink 7;\
   at 0, 0;fn txt$(level_txt);inverse 1;\
   at 1, 0;"     ";inverse 0;\
@@ -386,8 +385,7 @@ goto @menu
 @message:
 
 gosub @no_message:\
-randomize udg_chars:\
-gosub @select_udg_set:\
+gosub @select_udg_chars_set:\
 print bright 1; ink 9; paper border_color;\
   at message_row,(32-len message$)/2;message$;:\
 randomize udg1:\
@@ -578,8 +576,7 @@ for i=1 to flowers:\
     flower_udg$:\
 next i
 
-randomize udg_chars:\
-gosub @select_udg_set
+gosub @select_udg_chars_set
 
 let paused_replay=0:\
 gosub @show_replay_bar
@@ -711,8 +708,7 @@ next n
 for n=1 to 50
   border 6: border 2: beep .002,40+(n/10): border 6
 next n
-randomize udg_chars:\
-gosub @select_udg_set
+gosub @select_udg_chars_set
 for m=1 to 4
   for n=7 to 0 step -1
     print at 10,7; ink n;fn txt$(new_record_txt)
@@ -960,9 +956,7 @@ print at 4,0'\
 
 @update_options:
 
-// Select the UDG set needed by the current language:
-randomize udg_chars:\
-gosub @select_udg_set
+gosub @select_udg_chars_set
 
 print at 0,0;text$(lang,title_txt)
 
@@ -1150,7 +1144,15 @@ return
 @icon:
 randomize udg1:\
 gosub @select_udg_set:\
-print 'i$;:\
+print 'i$;
+
+// Run into `@select_udg_chars_set` and return:
+
+// ==============================================================
+// subroutine: select current lang characters {{{1
+
+@select_udg_chars_set:
+
 randomize udg_chars
 
 // Run into `@select_udg_set` and return:
