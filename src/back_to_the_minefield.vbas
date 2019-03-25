@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.86.0+201903251401":\
+let version$="0.87.0+201903251408":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -1140,8 +1140,20 @@ return
 randomize udg1:\
 gosub @select_udg_set:\
 print 'bright 1;i$;:\
-randomize udg_chars:\
-goto @select_udg_set
+randomize udg_chars
+
+// Run into `@select_udg_set` and return:
+
+// ==============================================================
+// subroutine: select user defined characters {{{1
+
+// Input: UDG set address stored in OS variable 23670.
+
+@select_udg_set:
+
+poke 23675,peek 23670:poke 23676,peek 23671:\
+randomize:\
+return
 
 // ==============================================================
 // subroutine: instructions {{{1
@@ -1366,17 +1378,6 @@ data enter_initials_txt,"Tajpu viajn inicialojn"
 data press_key_text,"Premu klavon por iri al la menuo"
 data two_thousand_txt,"    Du mil kromaj poentoj!"
 data 0 // end of data
-
-// ==============================================================
-// subroutine: select user defined characters {{{1
-
-// Input: UDG set address stored in OS variable 23670.
-
-@select_udg_set:
-
-poke 23675,peek 23670:poke 23676,peek 23671:\
-randomize:\
-return
 
 // ==============================================================
 // subroutine: the_nest {{{1
