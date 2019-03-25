@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.94.0+201903251647":\
+let version$="0.95.0+201903251653":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -74,11 +74,10 @@ let walking_mine_row=row:\
 let walking_mine_col=col:\
 let pa=7
 
-let paper_color=7-level:\
 let mines=32+level*4
 
 border border_color:\
-paper paper_color:\
+paper ground_color:\
 ink ink_color:\
 cls:\
 gosub @no_message:\
@@ -94,7 +93,7 @@ print paper 8;bright 1;\
 for w=1 to mines:\
   print \
     at fn random_row(),fn random_col();\
-    ink paper_color;mine_udg$:\
+    ink ground_color;mine_udg$:\
   beep .0015,35:\
 next w
 
@@ -152,8 +151,8 @@ do
 
   // XXX OLD -- improve or remove
   # if level>=4 then \
-  #   if time>(260*paper_color+70) then \
-  #     if int(time/(3*paper_color+1))=(time/(3*paper_color+1)) then \
+  #   if time>(260*ground_color+70) then \
+  #     if int(time/(3*ground_color+1))=(time/(3*ground_color+1)) then \
   #       gosub @walking_mine
 
 loop while old_row=row and old_col=col
@@ -564,7 +563,7 @@ let quit_replay=0 // exit flag
 #       at row,col;" "
 
 // Make all mines visible and hide the path:
-load!str$ paper_color code
+load! "groundattr" code
 
 // Restore all the flowers:
 for i=1 to flowers:\
@@ -884,16 +883,13 @@ save!"fence.scr"code 16384,6144
 // .............................
 // Arena attributes {{{3
 
-// Save the attributes of the field background (rows from 1 to 21), in
-// all colors, into files.  The files are named with the digit of the
-// color. They are used to restore the field before the replay.
+// Save the attributes of the field ground (rows from 1 to 21) into a
+// file.  It will be used to restore the field before the replay.
 
+paper ground_color:\
 ink 0:\
-for n=7 to 0 step -1:\
-  paper n:\
-  cls:\
-  save!str$ n code 22560,672:\
-next n
+cls:\
+save!"groundattr" code 22560,672
 
 // .............................
 // Text attributes {{{3
@@ -1420,7 +1416,7 @@ print at top_fence_row,door_col;fence$(1 to 3)
 gosub @the_nest
 
 // XXX TODO --
-# print at 11,nest_col+5; ink paper_color; paper paper_color;mine_udg$
+# print at 11,nest_col+5; ink ground_color; paper ground_color;mine_udg$
 
 print \
   at nest_row+int(nest_width/2),nest_col+int(nest_width/2);\
@@ -1587,6 +1583,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 // Generic
 #vim %substitute,\<border_color\>,0,gIe
+#vim %substitute,\<ground_color\>,6,gIe
 
 // Text identifiers
 #vim %substitute,\<press_key_text\>,1,gIe
@@ -1647,7 +1644,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<next_text\>,nt,gIe
 #vim %substitute,\<old_col\>,ocol,gIe
 #vim %substitute,\<old_row\>,orow,gIe
-#vim %substitute,\<paper_color\>,pc,gIe
 #vim %substitute,\<protagonist_frame\>,pf,gIe
 #vim %substitute,\<paused_replay\>,pr,gIe
 #vim %substitute,\<quit_replay\>,qr,gIe
