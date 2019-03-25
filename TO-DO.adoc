@@ -19,3 +19,4 @@
   overwrite an existing file...
 - Make beep also after a valid key menu.
 - Optimize `gosub` + `return` to `goto`.
+- Use sand color for all fields. It's more realistic.

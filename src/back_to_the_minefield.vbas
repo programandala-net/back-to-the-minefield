@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.91.1+201903251625":\
+let version$="0.91.2+201903251626":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -1306,7 +1306,6 @@ data title_txt,"   REGRESO AL CAMPO DE MINAS"
 data instructions_txt,"Instrucciones"
 data start_txt,"Jugar"
 data credits_txt,"Créditos"
-data change_language_txt,"No en español"
 data level_txt,"Campo"
 data near_mines_txt,"Minas"
 data points_txt,"Puntos"
@@ -1329,7 +1328,6 @@ data title_txt,"      BACK TO THE MINEFIELD"
 data instructions_txt,"Instructions"
 data start_txt,"Play"
 data credits_txt,"Credits"
-data change_language_txt,"Not in English"
 data level_txt,"Field"
 data near_mines_txt,"Mines"
 data points_txt,"Score"
@@ -1352,7 +1350,6 @@ data title_txt,"   REVENIDA AL CAMP DE MINES"
 data instructions_txt,"Instructiones"
 data start_txt,"Luder"
 data credits_txt,"Credites"
-data change_language_txt,"Ne en Interlingue"
 data level_txt,"Camp"
 data near_mines_txt,"Mines"
 data points_txt,"Puntes"
@@ -1375,7 +1372,6 @@ data title_txt,"     REVENO AL LA MIN-KAMPO"
 data instructions_txt,"Instrukcioj"
 data start_txt,"Ludi"
 data credits_txt,"Kreditoj"
-data change_language_txt,"Ne en Esperanto"
 data level_txt,"Kampo"
 data near_mines_txt,"Minoj"
 data points_txt,"Poentoj"
@@ -1602,7 +1598,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 // Text identifiers
 #vim %substitute,\<press_key_text\>,1,gIe
-#vim %substitute,\<change_language_txt\>,2,gIe
 #vim %substitute,\<credits_txt\>,3,gIe
 #vim %substitute,\<enter_initials_txt\>,4,gIe
 #vim %substitute,\<instructions_txt\>,5,gIe
