@@ -19,3 +19,5 @@
   overwrite an existing file...
 - Make beep also after a valid key menu.
 - Do the saluting also at the end of the replay?
+- Make drawing faster by replacin UDG string variables with literal
+  strings.

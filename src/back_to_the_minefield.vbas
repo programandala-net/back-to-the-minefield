@@ -10,10 +10,15 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 // ==============================================================
 // Start {{{1
 
-border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
+border black:\
+paper black:\
+ink black:\
+flash 0:\
+inverse 0:\
+bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.96.0+201903251839":\
+let version$="0.97.0+201903252250":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -78,7 +83,7 @@ let mines=32+level*4
 
 border border_color:\
 paper ground_color:\
-ink ink_color:\
+ink black:\
 cls:\
 gosub @no_message:\
 load!"fence.scr"code
@@ -86,7 +91,7 @@ load!"fence.scr"code
 let message$=fn txt$(putting_mines_txt):\
 gosub @message
 
-print paper 8;bright 1;\
+print paper transparent;bright 1;\
   at top_fence_row+1,1;fn txt$(safe_zone_txt);\
   at bottom_fence_row-1,1;fn txt$(safe_zone_txt)
 
@@ -97,7 +102,7 @@ for w=1 to mines:\
   beep .0015,35:\
 next w
 
-print paper 8;\
+print paper transparent;\
   at top_fence_row+1,1;blank_field_row$;\
   at bottom_fence_row-1,1;blank_field_row$
 
@@ -115,12 +120,14 @@ else
   let flowers=int(rnd*(level+2))
   if flowers then
     dim flower_row(flowers):\
-    dim flower_col(flowers)
+    dim flower_col(flowers):\
+    ink flower_color:\
     for i=1 to flowers:\
       let flower_row(i)=fn random_row():\
       let flower_col(i)=fn random_col():\
       print at flower_row(i),flower_col(i);flower_udg$:\
-    next i
+    next i:\
+    ink contrast
   endif
 
 endif
@@ -276,7 +283,7 @@ goto @no_message // then return
 
 input ;:\
 gosub @select_udg_chars_set:\
-print #1;paper 0;ink 7;\
+print #1;paper black;ink white;\
   at 0, 0;fn txt$(level_txt);inverse 1;\
   at 1, 0;"     ";inverse 0;\
   at 0, 8;fn txt$(near_mines_txt);\
@@ -295,7 +302,7 @@ gosub @select_udg_set
 // In fact, using `str$` to calculate the column of the first
 // expression, makes this one be printed with default colors too.
 
-# print #1;paper 2;ink 0;\
+# print #1;paper red;ink black;\
 #   at 1,2;level;\
 #   at 1,22-len str$ score;score;\
 #   at 1,31-len str$ record;record
@@ -303,21 +310,21 @@ gosub @select_udg_set
 // XXX FIXME -- This alternative prints score and record with inverse
 // colors! `str$` is used in the function that calculates the string.
 
-print #1;paper 7;ink 0;\
+print #1;paper white; ink black;\
   at 1,2;level;\
   at 1,17;fn score$(score);\
   at 1,26;fn score$(record)
 
 # XXX FIXME -- This makes no difference:
 
-# print #1;paper 7;ink 0;\
+# print #1;paper white;ink black;\
 #   at 1,2;level;\
-#   at 1,17;paper 7;ink 0;fn score$(score);\
-#   at 1,26;paper 7;ink 0;fn score$(record)
+#   at 1,17;paper white;ink black;fn score$(score);\
+#   at 1,26;paper white;ink black;fn score$(record)
 
 @print_surrounding_mines:
 
-print #1; paper detector_color(surrounding_mines+1);ink 9;\
+print #1; paper detector_color(surrounding_mines+1);ink contrast;\
   at 1,8;"  ";surrounding_mines;"  ":\
 return
 
@@ -383,7 +390,7 @@ goto @menu
 
 gosub @no_message:\
 gosub @select_udg_chars_set:\
-print bright 1; ink 9; paper border_color;\
+print bright 1; ink contrast; paper border_color;\
   at message_row,(32-len message$)/2;message$;:\
 randomize udg1:\
 goto @select_udg_set // then return
@@ -402,19 +409,19 @@ return
 # gosub @the_nest
 # let dx=30
 # for u=.155 to .005 step -.01
-#   print at 0,dx; ink 0; paper 7;"\n "
+#   print at 0,dx; ink black; paper white;"\n "
 #   let dx=dx-1
 #   beep u,8: beep u,12: beep u,16
 #   border rnd*7
 # next u
 # for n=1 to 16
-#   print at 0,dx; ink 0; paper 7;"\n "
+#   print at 0,dx; ink black; paper white;"\n "
 #   let dx=dx-1+(dx=0)
 #   beep u+.005,8
 #   border rnd*7
 #   beep u+.005,12: beep u,16
 # next n
-# print at 0,0; paper 7;" "
+# print at 0,0; paper white;" "
 # for t=0 to 2
 #   for l=0 to 7 step 7
 #     ink l
@@ -433,35 +440,16 @@ return
 #     next n
 #   next l
 # next t
-# ink 0
+# ink black
 # gosub @the_nest
 
-print at 0,0; ink 7; paper 0;\
+print at 0,0; ink white; paper black;\
 text$(lang,two_thousand_txt);
 
 let score=score+2000:\
 gosub @update_status_bar
 
-# XXX OLD
-# for b=0 to 7
-#   paper b: ink 9
-#   print at row,col;protagonist$(protagonist_frame+1):\
-#   let protagonist_frame=not protagonist_frame
-#   for n=1 to 14
-#     beep .002,50-n+b
-#     border 1: border 2: border 3: border 4
-#     border 5: border 6: border 7: border b
-#   next n
-# next b
-
-border 0: paper 0: cls
-
-# XXX OLD
-# for n=0 to 30 step 6
-#   for m=1 to 10
-#     beep .008,n+m
-#   next m
-# next n
+border black: paper black: cls
 
 if lang=spanish then
 
@@ -568,7 +556,7 @@ load! "groundattr" code
 // Restore all the flowers:
 for i=1 to flowers:\
   print at flower_row(i),flower_col(i);\
-    paper 8;ink 8;\
+    paper transparent;ink flower_color;\
     flower_udg$:\
 next i
 
@@ -608,10 +596,10 @@ for t=1 to len trail$ step 2
     beep .1,10:\
     gosub @show_replay_bar
 
-  print at row,col; paper 7;" "
+  print at row,col; paper white;" "
   let row=code trail$(t):\
   let col=code trail$(t+1):\
-  print at row,col; paper 7;protagonist$(protagonist_frame+1):\
+  print at row,col; paper white;protagonist$(protagonist_frame+1):\
   let protagonist_frame=not protagonist_frame
   beep .005,5+(t*40/(len trail$))
 
@@ -665,20 +653,6 @@ print at row,col;" "
 
 gosub @replay
 
-// XXX OLD
-// XXX TODO -- Write other effect?
-# for i=4 to 22 step 6:\
-#   beep .005,i+24:\
-# next i
-# for i=1 to 8:\
-#   for j=1 to 6:\
-#     print at message_row,0;paper j;blank_row$;:\
-#     border j:\
-#   next j:\
-# next i:\
-# print at message_row,0;paper 0;blank_row$;:\
-# border border_color
-
 // XXX TODO -- variable to flash the score
 let score=score+time_score+mines:\
 gosub @update_status_bar
@@ -697,10 +671,10 @@ let record=score:return
 // XXX TODO -- rewrite:
 
 for n=1 to 50
-  border 1: border 2: border 3: border 4
+  border blue: border red: border magenta: border green
 next n
 for n=1 to 50
-  border 6: border 2: beep .002,40+(n/10): border 6
+  border yellow: border red: beep .002,40+(n/10): border yellow
 next n
 gosub @select_udg_chars_set
 for m=1 to 4
@@ -709,14 +683,14 @@ for m=1 to 4
     beep .004,50-n
   next n
 next m
-print at 10,7; ink 9;fn txt$(new_record_txt)
+print at 10,7; ink constrast;fn txt$(new_record_txt)
 randomize udg1:\
 gosub @select_udg_set
 
 // XXX TODO -- adapt
 
 print at 21,0;\
-  flash 1; paper 1; ink 7;\
+  flash 1; paper blue; ink white;\
   fn txt$(enter_initials_txt); flash 0;"         "
 
 let record_player$="   "
@@ -726,13 +700,13 @@ for n=1 to 3
   loop while record_player$(n)=" "
   if record_player$(n)>="a" and record_player$(n)<="z" then \
     let record_player$(n)=chr$((code record_player$(n))-32)
-  print at 21,24+n; ink 7; paper 1;record_player$(n)
+  print at 21,24+n; ink white; paper blue;record_player$(n)
   beep .12,(n*5)+20
   for m=1 to 4: next m
 next n
 let record=score
 for n=1 to 12
-  beep .0045,-10: border 1: border 2: border 6: border 4
+  beep .0045,-10: border blue: border red: border yellow: border green
 next n
 border border_color
 beep .1,8
@@ -818,8 +792,6 @@ let fence$="\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
 
 let blank_field_row$="                              "
 
-let ink_color=9
-
 dim detector_color(4):\
 let detector_color(1)=4:\
 let detector_color(2)=5:\
@@ -872,10 +844,10 @@ randomize udg1:\
 gosub @select_udg_set:\
 print at top_fence_row,0;fence$:\
 for n=top_safe_row to bottom_safe_row:\
-  border 7:\
+  border white:\
   print at n,0;\
     fence_udg$+"                              "+fence_udg$:\
-  border 0:\
+  border black:\
 next n:\
 print at bottom_fence_row,0;fence$:\
 save!"fence.scr"code 16384,6144
@@ -887,7 +859,7 @@ save!"fence.scr"code 16384,6144
 // file.  It will be used to restore the field before the replay.
 
 paper ground_color:\
-ink 0:\
+ink black:\
 cls:\
 save!"groundattr" code 22560,672
 
@@ -897,7 +869,7 @@ save!"groundattr" code 22560,672
 // Save the text attributes used in the menu, the credits and the
 // instructions.  They are used to reveal the texts instantaneously.
 
-paper 1:ink 7:border 1:\
+paper blue:ink white:border blue:\
 cls:\
 save!"txtattr"code 22528,768
 
@@ -906,7 +878,7 @@ save!"txtattr"code 22528,768
 
 @menu:
 
-border 1: paper 1: ink 1:\
+border blue: paper blue: ink blue:\
 cls
 
 print \
@@ -921,7 +893,7 @@ print \
 #   at 20,0;"________________________________";
 
 # <------------------------------>
-print #1;ink 1;\
+print #1;ink blue;\
   at 0,4;"{(C)} 2016-2019 Marcos Cruz";\
   at 1,6;"(programandala.net)"
 # <------------------------------>
@@ -959,7 +931,7 @@ at 19,19;inverse 1;text$(lang,credits_txt,1);\
   inverse 0;text$(lang,credits_txt,2 to 13)
 
 load!"txtattr"code:\
-ink 7
+ink white
 
 @menu_key
 
@@ -1022,7 +994,7 @@ goto @select_udg_set // then return
 
 @credits:
 
-paper 1:ink 1:cls:\
+paper blue:ink blue:cls:\
 print text$(lang,title_txt)''
 
 if lang=spanish then
@@ -1162,7 +1134,7 @@ return
 
 @instructions:
 
-paper 1:ink 1:cls:\
+paper blue:ink blue:cls:\
 print text$(lang,title_txt)
 
 if lang=spanish then
@@ -1274,13 +1246,13 @@ next i
 for i=1 to langs
   read lang
   do
-    border 0
+    border black
     read t
     if not t then exit do
     read t$:\
     let text$(lang,t)=t$:\
     let text_len(lang,t)=len(t$):\
-    border 7
+    border white
   loop
 next i
 
@@ -1479,8 +1451,8 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 // Debugging tests {{{1
 
 # rem --------------------------------
-# paper 2
-# ink 7
+# paper red
+# ink white
 # print at 15,15;mine_udg$;" (mine)=";
 # gosub @graphics_font
 # let tmp= code screen$(15,15)
@@ -1584,9 +1556,22 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 // ---------------------------------------------
 // Replace numeric constants {{{2
 
-// Generic
-#vim %substitute,\<border_color\>,0,gIe
-#vim %substitute,\<ground_color\>,6,gIe
+// Generic colors
+#vim %substitute,\<black\>,0,gIe
+#vim %substitute,\<blue\>,1,gIe
+#vim %substitute,\<red\>,2,gIe
+#vim %substitute,\<magenta\>,3,gIe
+#vim %substitute,\<green\>,4,gIe
+#vim %substitute,\<cyan\>,6,gIe
+#vim %substitute,\<yellow\>,6,gIe
+#vim %substitute,\<white\>,7,gIe
+#vim %substitute,\<transparent\>,8,gIe
+#vim %substitute,\<contrast\>,9,gIe
+
+// Style colors
+#vim %substitute,\<border_color\>,0,gIe // black 
+#vim %substitute,\<ground_color\>,6,gIe // yeloww 
+#vim %substitute,\<flower_color\>,2,gIe // red
 
 // Text identifiers
 #vim %substitute,\<press_key_text\>,1,gIe
@@ -1628,7 +1613,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<flowers\>,flo,gIe
 #vim %substitute,\<found_char\>,foc,gIe
 #vim %substitute,\<front_surrounding_mines\>,fsm,gIe
-#vim %substitute,\<ink_color\>,ic,gIe
 #vim %substitute,\<key_col\>,kc,gIe
 #vim %substitute,\<key_char\>,kch,gIe
 #vim %substitute,\<key_row\>,kr,gIe
