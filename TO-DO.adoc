@@ -19,5 +19,3 @@
   overwrite an existing file...
 - Make beep also after a valid key menu.
 - Optimize `gosub` + `return` to `goto`.
-- Compact the credits in all languages, to prevent them from reaching
-  the language footer menu.
