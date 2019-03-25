@@ -5,9 +5,6 @@
 - Reduce number of loop index variables.
 - Fix color of the status bar texts.
 - Reorganize the code for speed: move the main game loop to the top.
-- Fix: the color of the top left corner of the fence is wrong at the
-  start of the last level. The problem is attributes are saved from
-  address 22561, not not 22560.
 - Put two mines at two random entries of the nest. The original game
   put one at a fixed entry. Better yet, anywhere inside the nest.
 - Put Bill anywhere inside the nest, not always at the center.
@@ -20,3 +17,4 @@
   without reconfiguring the RAM disk, which fails because there's no
   way to check if a file exits, to erase a non-existing file or to
   overwrite an existing file...
+- Fix: color of the protagonist in the effect at `@level_passed`.

@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.83.1+201903250230":\
+let version$="0.83.2+201903251215":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -900,7 +900,7 @@ ink 0:\
 for n=7 to 0 step -1:\
   paper n:\
   cls:\
-  save!str$ n code 22561,672:\
+  save!str$ n code 22560,672:\
 next n
 
 // ==============================================================
