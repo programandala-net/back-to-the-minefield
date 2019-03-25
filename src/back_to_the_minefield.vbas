@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.95.0+201903251653":\
+let version$="0.96.0+201903251839":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -1174,7 +1174,7 @@ print "  viesa los campos de minas,"
 print "  usando el cursor."
 let i$=bill_udg$:gosub @icon
 #      <------------------------------>
-print  " Bill el gusano: Está en el úl-"
+print  " Bill el gusano: Está en el úl-";
 print "  timo campo. Rescátalo."
 let i$=mine_udg$:gosub @icon
 #      <------------------------------>
@@ -1182,7 +1182,8 @@ print  " Minas: En la parte inferior"
 print "  verás cuántas tienes cerca."
 let i$=fence_udg$:gosub @icon
 #      <------------------------------>
-print  " Verja electrificada."
+print  " Verja electrificada, para"
+print "  burros."
 
 elseif lang=english then
 
@@ -1202,7 +1203,7 @@ print "  will see how many of them are"
 print "  near you."
 let i$=fence_udg$:gosub @icon
 #      <------------------------------>
-print  " Electrified fence."
+print  " Electrified fence, for asses."
 
 elseif lang=interlingue then
 
@@ -1221,7 +1222,8 @@ print  " Mines: Sur li statu-barre tu"
 print "  va vider quantes es apu te."
 let i$=fence_udg$:gosub @icon
 #      <------------------------------>
-print  " Palissade electrificat."
+print  " Palissade electrificat, por"
+print "  ásines."
 
 else // Esperanto
 
@@ -1240,7 +1242,8 @@ print  " Minoj: Sube de la ekrano vi"
 print "  vidos kiomaj estas apud vi."
 let i$=fence_udg$:gosub @icon
 #      <------------------------------>
-print  " Elektrigita barilo."
+print "  Elektrigita barilo, por"
+print "  azenoj."
 
 endif
 
