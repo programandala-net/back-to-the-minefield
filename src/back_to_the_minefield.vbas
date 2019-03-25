@@ -13,7 +13,7 @@ rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 border 0: paper 0: ink 0: flash 0: inverse 0: bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.84.0+201903251256":\
+let version$="0.85.0+201903251355":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -995,6 +995,32 @@ beep .1 ,23:\
 goto @menu_key
 
 // ==============================================================
+// subroutine: language footer menu {{{1
+
+@lang_footer_menu
+
+// Select the UDG set containing the Spanish chars,
+// no matter the current language, because only
+// that set is needed to print the list of languages:
+randomize udg2:\
+gosub @select_udg_set:\
+
+print #1;at 0,0;\
+  inverse lang<>english;english;inverse 0;" ";\
+  bright lang=english;"English";bright 0,\
+  inverse lang<>spanish;spanish;inverse 0;" ";\
+  bright lang=spanish;"Español";bright 0'\
+  inverse lang<>esperanto;esperanto;inverse 0;" ";\
+  bright lang=esperanto;"Esperanto";bright 0,\
+  inverse lang<>interlingue;interlingue;inverse 0;" ";\
+  bright lang=interlingue;"Interlingue";bright 0:\
+
+// There's no need to restore the UDG set needed by the current
+// language, because the modules using this routine manage it.
+
+return
+
+// ==============================================================
 // subroutine: credits {{{1
 
 @credits:
@@ -1090,9 +1116,18 @@ print "Spectrum 128."
 
 endif
 
+gosub @lang_footer_menu
+
+do
+  pause 0:\
+  let i$=inkey$:\
+  gosub @check_new_lang:\
+  if new_lang then :\
+    goto @credits
+loop while lang_key
+
 randomize udg1:\
-gosub @select_udg_set
-pause 0
+gosub @select_udg_set:\
 return
 
 // ==============================================================
@@ -1195,7 +1230,16 @@ print  " Elektrigita barilo."
 
 endif
 
-pause 0
+gosub @lang_footer_menu
+
+do
+  pause 0:\
+  let i$=inkey$:\
+  gosub @check_new_lang:\
+  if new_lang then :\
+    goto @instructions
+loop while lang_key
+
 randomize udg1:\
 gosub @select_udg_set
 return
@@ -1391,26 +1435,22 @@ return
 // Input:
 //  i$ = key ("1"=en; "2"=es; "3"=eo; "4"=ie; other)
 // Output:
-//  new_lang = 0 (no change)
-//  new_lang = 1 (change)
+//  new_lang = 0 : no language change
+//  new_lang = 1 : language change
+//  lang_key = 0 : i$ is not a language key
+//  lang_key = 1 : i$ is a language key
 //  lang = current or new language
 
 @check_new_lang
 
-let new_lang=0
-
-// Language number?
-if i$>="1" and i$<=chr$(code "0"+langs) then
-  if lang=val i$ then \
-    return
-  let new_lang=1:\
-  let lang=val i$
-  if new_lang=esperanto then
-    let udg_chars=udg3
-  else
-    let udg_chars=udg2
-  endif
-endif
+let new_lang=0:\
+let lang_key=i$>="1" and i$<=max_lang_key$:\
+if lang_key then:\
+  if lang<>val i$ then:\
+    let new_lang=1:\
+    let lang=val i$:\
+    let udg_chars=udg3*(lang=esperanto)+\
+                  udg2*(lang<>esperanto)
 
 return
 
@@ -1588,6 +1628,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<key_col\>,kc,gIe
 #vim %substitute,\<key_char\>,kch,gIe
 #vim %substitute,\<key_row\>,kr,gIe
+#vim %substitute,\<lang_key\>,lk,gIe
 #vim %substitute,\<last_level\>,ll,gIe
 #vim %substitute,\<left_surrounding_mines\>,lsm,gIe
 #vim %substitute,\<mine_char\>,mc,gIe
