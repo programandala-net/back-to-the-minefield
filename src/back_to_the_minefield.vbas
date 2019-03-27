@@ -18,7 +18,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.98.0+201903252334":\
+let version$="0.98.1+201903271205":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -74,9 +74,9 @@ let enter_time=fn seconds()
 
 let protagonist_frame=0:\
 
-let walking_mine_step=-1:\
-let walking_mine_row=row:\
-let walking_mine_col=col:\
+# let walking_mine_step=-1:\
+# let walking_mine_row=row:\
+# let walking_mine_col=col:\
 
 let mines=32+level*4
 
@@ -1228,7 +1228,7 @@ print  " Minoj: Sube de la ekrano vi"
 print "  vidos kiomaj estas apud vi."
 let i$=fence_udg$:gosub @icon
 #      <------------------------------>
-print "  Elektrigita barilo, por"
+print  " Elektrigita barilo, por"
 print "  azenoj."
 
 endif
@@ -1666,9 +1666,9 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<udg1_font\>,uf,gIe
 #vim %substitute,\<udg1_font_high\>,uh,gIe
 #vim %substitute,\<udg1_font_low\>,ul,gIe
-#vim %substitute,\<walking_mine_col\>,wmc,gIe
-#vim %substitute,\<walking_mine_row\>,wmr,gIe
-#vim %substitute,\<walking_mine_step\>,wms,gIe
+# #vim %substitute,\<walking_mine_col\>,wmc,gIe
+# #vim %substitute,\<walking_mine_row\>,wmr,gIe
+# #vim %substitute,\<walking_mine_step\>,wms,gIe
 
 // ---------------------------------------------
 // Shorten function names {{{2
