@@ -1,5 +1,5 @@
 = TO-DO of _Back to the minefield_
-:revdate: 2019-03-26
+:revdate: 2019-03-28
 
 - Make the replay control keys configurable.
 - Reduce number of loop index variables.
@@ -19,6 +19,5 @@
   overwrite an existing file...
 - Make beep also after a valid key menu.
 - Do the saluting also at the end of the replay?
-- Make drawing faster by replacin UDG string variables with literal
+- Make drawing faster by replacing UDG string variables with literal
   strings.
-- Reorganize the languages of the footer menu in columns.

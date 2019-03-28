@@ -18,7 +18,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.98.1+201903271205":\
+let version$="0.99.0+201903271205":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -994,10 +994,10 @@ gosub @select_udg_set:\
 print #1;at 0,0;\
   inverse lang<>english;english;inverse 0;" ";\
   inverse lang=english;"English";inverse 0,\
-  inverse lang<>spanish;spanish;inverse 0;" ";\
-  inverse lang=spanish;"Español"'\
   inverse lang<>esperanto;esperanto;inverse 0;" ";\
-  inverse lang=esperanto;"Esperanto";inverse 0,\
+  inverse lang=esperanto;"Esperanto"'\
+  inverse lang<>spanish;spanish;inverse 0;" ";\
+  inverse lang=spanish;"Español";inverse 0,\
   inverse lang<>interlingue;interlingue;inverse 0;" ";\
   inverse lang=interlingue;"Interlingue":\
 randomize udg_chars:\
