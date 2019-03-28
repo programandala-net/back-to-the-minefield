@@ -18,7 +18,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.99.0+201903271205":\
+let version$="0.100.0+201903281008":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -1620,7 +1620,10 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<bottom_safe_row\>,bsr,gIe
 #vim %substitute,\<door_closed\>,dcl,gIe
 #vim %substitute,\<door_col\>,dco,gIe
+#vim %substitute,\<english\>,en,gIe
 #vim %substitute,\<enter_time\>,ent,gIe
+#vim %substitute,\<esperanto\>,eo,gIe
+#vim %substitute,\<spanish\>,es,gIe
 #vim %substitute,\<exit_time\>,ext,gIe
 #vim %substitute,\<fence_char\>,fec,gIe
 #vim %substitute,\<flower_char\>,fh,gIe
@@ -1628,6 +1631,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<flowers\>,flo,gIe
 #vim %substitute,\<found_char\>,foc,gIe
 #vim %substitute,\<front_surrounding_mines\>,fsm,gIe
+#vim %substitute,\<interlingue\>,ie,gIe
 #vim %substitute,\<key_col\>,kc,gIe
 #vim %substitute,\<key_char\>,kch,gIe
 #vim %substitute,\<key_row\>,kr,gIe
