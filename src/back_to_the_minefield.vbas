@@ -17,7 +17,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.101.0+201903281042":\
+let version$="0.102.0+201903281101":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -906,12 +906,12 @@ print \
 
 at 0,0;text$(lang,title_txt);\
 
-at 10,10;inverse 1;text$(lang,instructions_txt,1);\
+at 10,8;inverse 1;text$(lang,instructions_txt,1);\
   inverse 0;text$(lang,instructions_txt,2 to 13);\
-at 12,10;inverse 1;text$(lang,start_txt,1);\
-  inverse 0;text$(lang,start_txt,2 to 13);\
-at 14,10;inverse 1;text$(lang,credits_txt,1);\
-  inverse 0;text$(lang,credits_txt,2 to 13)
+at 12,8;inverse 1;text$(lang,start_txt,1);\
+  inverse 0;text$(lang,start_txt,2 to 5);\
+at 14,8;inverse 1;text$(lang,credits_txt,1);\
+  inverse 0;text$(lang,credits_txt,2 to 19)
 
 gosub @lang_footer_menu
 
@@ -1256,7 +1256,7 @@ data spanish
 data title_txt,"   REGRESO AL CAMPO DE MINAS"
 data instructions_txt,"Instrucciones"
 data start_txt,"Jugar"
-data credits_txt,"Créditos"
+data credits_txt,"Sobre este programa"
 data level_txt,"Campo"
 data near_mines_txt,"Minas"
 data points_txt,"Puntos"
@@ -1278,7 +1278,7 @@ data english
 data title_txt,"      BACK TO THE MINEFIELD"
 data instructions_txt,"Instructions"
 data start_txt,"Play"
-data credits_txt,"Credits"
+data credits_txt,"About this program"
 data level_txt,"Field"
 data near_mines_txt,"Mines"
 data points_txt,"Score"
@@ -1300,7 +1300,7 @@ data interlingue
 data title_txt,"   REVENIDA AL CAMP DE MINES"
 data instructions_txt,"Instructiones"
 data start_txt,"Luder"
-data credits_txt,"Credites"
+data credits_txt,"Pri ti programa"
 data level_txt,"Camp"
 data near_mines_txt,"Mines"
 data points_txt,"Puntes"
@@ -1322,7 +1322,7 @@ data esperanto
 data title_txt,"     REVENO AL LA MIN-KAMPO"
 data instructions_txt,"Instrukcioj"
 data start_txt,"Ludi"
-data credits_txt,"Kreditoj"
+data credits_txt,"Pri ĉi programo"
 data level_txt,"Kampo"
 data near_mines_txt,"Minoj"
 data points_txt,"Poentoj"
