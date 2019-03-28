@@ -1,11 +1,10 @@
 rem Back to the minefield
-//
+
 //  Written in Vimclair BASIC for ZX Spectrum 128.
-//
+
 rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
-//
-//  Based on "Campo de minas" (published by Indescomp), the Spanish
-//  version of "Minefield", written by Ian Andrew.
+
+rem A tribute to and a reinterpretation of Ian Andrew's Mined-Out (1983)
 
 // ==============================================================
 // Start {{{1
@@ -18,7 +17,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.100.0+201903281008":\
+let version$="0.101.0+201903281042":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -896,86 +895,61 @@ border blue: paper blue: ink blue:\
 cls
 
 print \
-  at 2,0;"_____________";\
-  at 12,0;"________________________________";\
-  at 20,19;"_____________"
-
-// Alternative with full width rulers:
-# print \
-#   at  2,0;"________________________________";\
-#   at 12,0;"________________________________";\
-#   at 20,0;"________________________________";
-
-# <------------------------------>
-print #1;ink blue;\
-  at 0,4;"{(C)} 2016-2019 Marcos Cruz";\
-  at 1,6;"(programandala.net)"
-# <------------------------------>
+  at 3,4;"{(C)} 2016-2019 Marcos Cruz";\
+  at 4,6;"(programandala.net)"
 
 @change_menu_language:
 
-// Select the UDG set containing the Spanish chars,
-// no matter the current language, because only
-// that set is needed to print the list of languages:
-randomize udg2:\
-gosub @select_udg_set
-
-print at 4,0'\
-  inverse lang<>english;english;inverse 0;" ";\
-  inverse lang=english;"English"''\
-  inverse lang<>spanish;spanish;inverse 0;" ";\
-  inverse lang=spanish;"Español"''\
-  inverse lang<>esperanto;esperanto;inverse 0;" ";\
-  inverse lang=esperanto;"Esperanto"''\
-  inverse lang<>interlingue;interlingue;inverse 0;" ";\
-  inverse lang=interlingue;"Interlingue"
-
-@update_options:
-
-gosub @select_udg_chars_set
-
-print at 0,0;text$(lang,title_txt)
+gosub @select_udg_chars_set:\
 
 print \
-at 15,19;inverse 1;text$(lang,instructions_txt,1);\
+
+at 0,0;text$(lang,title_txt);\
+
+at 10,10;inverse 1;text$(lang,instructions_txt,1);\
   inverse 0;text$(lang,instructions_txt,2 to 13);\
-at 17,19;inverse 1;text$(lang,start_txt,1);\
+at 12,10;inverse 1;text$(lang,start_txt,1);\
   inverse 0;text$(lang,start_txt,2 to 13);\
-at 19,19;inverse 1;text$(lang,credits_txt,1);\
+at 14,10;inverse 1;text$(lang,credits_txt,1);\
   inverse 0;text$(lang,credits_txt,2 to 13)
+
+gosub @lang_footer_menu
 
 load!"txtattr"code:\
 ink white
 
-@menu_key
+do
 
-// Wait for a key and convert it to uppercase
-// if needed:
-pause 0:let i$=inkey$:\
-if i$>"Z" then \
-  let i$=chr$(code(i$)-32)
+  // Wait for a key and convert it to uppercase
+  // if needed:
+  pause 0:\
+  let i$=inkey$:\
+  if i$>"Z" then \
+    let i$=chr$(code(i$)-32)
 
-// Instructions?
-if i$=text$(lang,instructions_txt,1) then \
-  gosub @instructions:\
-  goto @menu
+  // Instructions?
+  if i$=text$(lang,instructions_txt,1) then \
+    gosub @instructions:\
+    goto @menu
 
-// Play?
-if i$=text$(lang,start_txt,1) then \
-  goto @new_game
+  // Play?
+  if i$=text$(lang,start_txt,1) then \
+    goto @new_game
 
-// Credits?
-if i$=text$(lang,credits_txt,1) then \
-  gosub @credits:\
-  goto @menu
+  // Credits?
+  if i$=text$(lang,credits_txt,1) then \
+    gosub @credits:\
+    goto @menu
 
-gosub @check_new_lang:\
-if new_lang then \
-  goto @change_menu_language
+  // Change lang?
+  gosub @check_new_lang:\
+  if new_lang then \
+    goto @change_menu_language
 
-@invalid_key:
-beep .1 ,23:\
-goto @menu_key
+  // Invalid key
+  beep .1 ,23
+
+loop
 
 // ==============================================================
 // subroutine: language footer menu {{{1
@@ -1026,7 +1000,7 @@ print "  Irene Albert."
 print
 print "Un homenaje a y una reinterpre-"
 print "tación de:"'
-print "  Minefield (Ian Andrew, 198x)."
+print "  Mined-Out (Ian Andrew, 1983)."
 print
 print "Escrito en Vimclair BASIC para"
 print "ZX Spectrum 128."
@@ -1047,7 +1021,7 @@ print "  Irene Albert."
 print
 print "A tribute to and a reinterpre-"
 print "tation of:"'
-print "  Minefield (Ian Andrew, 198x)."
+print "  Mined-Out (Ian Andrew, 1983)."
 print
 print "Written in Vimclair BASIC for"
 print "ZX Spectrum 128."
@@ -1069,7 +1043,7 @@ print
 #      <------------------------------>
 print "Un tribute e un reinterpreta-"
 print "tion ye:"'
-print "  Minefield (Ian Andrew, 198x)."
+print "  Mined-Out (Ian Andrew, 1983)."
 print
 print "Scrit in Vimclair BASIC por ZX"
 print "Spectrum 128."
@@ -1089,7 +1063,7 @@ print "Provludanto:"'
 print "  Irene Albert."
 print
 print "Omaĝo kaj reinterpreto je:"'
-print "  Minefield (Ian Andrew, 198x)."
+print "  Mined-Out (Ian Andrew, 1983)."
 print
 print "Verkita en Vimclair BASIC por ZX"
 print "Spectrum 128."
