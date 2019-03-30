@@ -2,9 +2,13 @@ rem Back to the minefield
 
 //  Written in Vimclair BASIC for ZX Spectrum 128.
 
-rem By Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
+rem Author: Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
 
-rem A tribute to and a reinterpretation of Ian Andrew's Mined-Out (1983)
+rem Credit: A remake of Ian Andrew's Mined-Out (1983), partly based on his code and graphics.
+
+// You may do whatever you want with this work, so long as you
+// retain every copyright, credit and authorship notice, and this
+// license.  There is no warranty.
 
 // ==============================================================
 // Start {{{1
@@ -17,7 +21,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.102.0+201903281101":\
+let version$="0.102.0+201903301758":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
