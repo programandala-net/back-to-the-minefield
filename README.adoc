@@ -1,13 +1,14 @@
 = Back to the minefield
-:revdate: 2019-03-12
+:revdate: 2019-03-30
 :toc:
+:toc-title: Contents/Contenido/Enhavo/Contenete
 
 // English {{{1
 == English
 
-_Back to the minefield_ is a tribute to and remake of Ian Andrew's
-_Minefield_ game, which was written in Sinclair BASIC for ZX Spectrum
-in the 1980's.
+_Back to the minefield_ is a tribute to and a reinterpretation of Ian
+Andrew's _Mined-Out_ game (1983), which was written in Sinclair BASIC
+for ZX Spectrum.
 
 This new version is being written in
 http://programandala.net/en.program.vimclair_basic.html[Vimclair
@@ -20,8 +21,8 @@ Interlingue.
 == Español
 
 _Back to the minefield_ (Regreso al campo de minas) es un homenaje y
-una reinterpretación del juego _Minefield_ de Ian Andrew, que fue
-escrito en Sinclair BASIC para ZX Spectrum en los años 1980.
+una reinterpretación del juego _Mined-Out_ de Ian Andrew (1983), que
+fue escrito en Sinclair BASIC para ZX Spectrum.
 
 Esta nueva versión está siendo escrita en
 http://programandala.net/es.programa.vimclair_basic.html[Vimclair
@@ -34,8 +35,8 @@ interlingüe.
 == Esperanto
 
 _Back to the minefield_ (Reveno al la min-kampo) estas omaĝo kaj
-reinterpreto je la ludo _Minefield_ de Ian Andrew, kiu estis verkita
-en Sinclair BASIC por ZX Spectrum en la 1980-aj. 
+reinterpreto je la ludo _Mined-Out_ de Ian Andrew (1983), kiu estis
+verkita en Sinclair BASIC por ZX Spectrum. 
 
 Ĉi nova version estas programata en
 http://programandala.net/es.programa.vimclair_basic.html[Vimclair
@@ -47,9 +48,9 @@ Interlingveo.
 // Interlingue {{{1
 == Interlingue
 
-_Back to the minefield_ (Revenida al camp de mines) es un tribute a un
-reinterpretation del lude _Minefield_ de Ian Andrew, quel esset
-programat in Sinclair BASIC por ZX Spectrum in li annus 1980.
+_Back to the minefield_ (Revenida al camp de mines) es un tribute e un
+reinterpretation ye li lude _Mined-Out_ de Ian Andrew (1983), quel
+esset programat in Sinclair BASIC por ZX Spectrum.
 
 Ti nov version es programat in
 http://programandala.net/es.programa.vimclair_basic.html[Vimclair
