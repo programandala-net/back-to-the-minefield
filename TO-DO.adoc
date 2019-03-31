@@ -1,5 +1,5 @@
 = TO-DO of _Back to the minefield_
-:revdate: 2019-03-28
+:revdate: 2019-03-31
 
 - Make the replay control keys configurable.
 - Reduce number of loop index variables.
@@ -13,10 +13,6 @@
 - Let the language be changed on the instructions screen, on the
   credits screen, and also during the game, using the same keys of the
   main menu.
-- Reorganize the code so the program can be reentered with `run`
-  without reconfiguring the RAM disk, which fails because there's no
-  way to check if a file exits, to erase a non-existing file or to
-  overwrite an existing file...
 - Make beep also after a valid key menu.
 - Do the saluting also at the end of the replay?
 - Make drawing faster by replacing UDG string variables with literal

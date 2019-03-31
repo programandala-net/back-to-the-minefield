@@ -13,15 +13,9 @@ rem Credit: A remake of Ian Andrew's Mined-Out (1983), partly based on his code 
 // ==============================================================
 // Start {{{1
 
-border black:\
-paper black:\
-ink black:\
-flash 0:\
-inverse 0:\
-bright 0:\
-clear 65535-21*8*3-8:\
+clear 65535-21*8*3-8-1:\
 
-let version$="0.104.0+201904010115":\
+let version$="0.105.0+201904010151":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -743,6 +737,17 @@ return
 @init:
 
 // ---------------------------------------------
+// Screen {{{2
+
+border black:\
+paper black:\
+ink black:\
+flash 0:\
+inverse 0:\
+bright 0:\
+cls
+
+// ---------------------------------------------
 // OS variables {{{2
 
 // Set the REPDEL OS variable (at memory address 23561) to zero, for
@@ -762,11 +767,10 @@ poke 23561,0
 // udg2: the Spanish and Interlingue characters
 // udg3: the Esperanto characters
 
-let udg1=65535-21*8*3:\
+let udg1=65535-21*8*3-1:\
 let udg2=udg1+21*8:\
 let udg3=udg2+21*8:\
 let udg_chars=udg2:\
-load "UDG.BIN" code udg1-8
 let udg1_font=udg1-256-8:\
 let udg1_font_high=int(udg1_font/256):\
 let udg1_font_low=udg1_font-(udg1_font_high*256)
@@ -847,14 +851,21 @@ let lang=english
 // ---------------------------------------------
 // Files {{{2
 
-// Some files are created in the RAM disc in order to accelerate the
-// drawing at run-time.
+if not peek 65535 then // file operations not done yet?
+
+// .............................
+// UDG graphics {{{2
+
+// All UDG banks are loaded from one single tape file.
+
+load "UDG.BIN" code udg1-8:\
 
 // .............................
 // Fence {{{3
 
-// Draw the fence and save the display (without attributes) into a
-// file, which which will used to update the display instantaneously.
+// Draw the fence and save the display (without attributes) into a RAM
+// disk file, which which will used to update the display
+// instantaneously.
 
 randomize udg1:\
 gosub @select_udg_set:\
@@ -872,7 +883,8 @@ save!"fence.scr"code 16384,6144
 // Arena attributes {{{3
 
 // Save the attributes of the field ground (rows from 1 to 21) into a
-// file.  It will be used to restore the field before the replay.
+// RAM disk file, which will be used to restore the field before the
+// replay.
 
 paper ground_color:\
 ink black:\
@@ -889,6 +901,16 @@ save!"groundattr" code 22560,672
 paper blue:ink white:border blue:\
 cls:\
 save!"txtattr"code 22528,768
+
+// .............................
+
+// Set a marker to know the necessary files were already loaded from
+// tape and created into the RAM disk, in case the program is
+// reentered with `run`:
+
+poke 65535,1
+
+endif
 
 // ==============================================================
 // menu {{{1
