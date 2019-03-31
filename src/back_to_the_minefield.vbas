@@ -21,7 +21,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.102.0+201903301758":\
+let version$="0.103.0+201904010101":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -831,7 +831,7 @@ let esperanto=3:\   // Esperanto
 let interlingue=4:\ // Interlingue
 
 let langs=4:\
-let max_lang_key$=chr$(code "0"+langs)
+let max_lang_key=ASCII_0+langs
 
 // ---------------------------------------------
 // Multilingual texts {{{2
@@ -926,22 +926,22 @@ do
 
   // Wait for a key and convert it to uppercase
   // if needed:
+  poke 23560,0:\
   pause 0:\
-  let i$=inkey$:\
-  if i$>"Z" then \
-    let i$=chr$(code(i$)-32)
+  let i=peek 23560:\
+  let i=i-32*(i>90) // convert to uppercase
 
   // Instructions?
-  if i$=text$(lang,instructions_txt,1) then \
+  if i=code text$(lang,instructions_txt,1) then \
     gosub @instructions:\
     goto @menu
 
   // Play?
-  if i$=text$(lang,start_txt,1) then \
+  if i=code text$(lang,start_txt,1) then \
     goto @new_game
 
   // Credits?
-  if i$=text$(lang,credits_txt,1) then \
+  if i=code text$(lang,credits_txt,1) then \
     gosub @credits:\
     goto @menu
 
@@ -1078,8 +1078,9 @@ endif
 gosub @lang_footer_menu
 
 do
+  poke 23560,0:\
   pause 0:\
-  let i$=inkey$:\
+  let i=peek 23560:\
   gosub @check_new_lang:\
   if new_lang then :\
     goto @credits
@@ -1214,8 +1215,9 @@ endif
 gosub @lang_footer_menu
 
 do
+  poke 23560,0:\
   pause 0:\
-  let i$=inkey$:\
+  let i=peek 23560:\
   gosub @check_new_lang:\
   if new_lang then :\
     goto @instructions
@@ -1398,27 +1400,26 @@ return
 // change the corresponding variables.
 
 // Input:
-//  i$ = key ("1"=en; "2"=es; "3"=eo; "4"=ie; other)
+//  i = key ASCII code ("1"=en; "2"=es; "3"=eo; "4"=ie; other)
 // Output:
 //  new_lang = 0 : no language change
 //  new_lang = 1 : language change
-//  lang_key = 0 : i$ is not a language key
-//  lang_key = 1 : i$ is a language key
+//  lang_key = 0 : i is not a language key code
+//  lang_key = 1 : i is a language key code
 //  lang = current or new language
 
 @check_new_lang
 
 let new_lang=0:\
-let lang_key=i$>="1" and i$<=max_lang_key$:\
+let lang_key=i>ASCII_0 and i<=max_lang_key:\
 if lang_key then:\
-  if lang<>val i$ then:\
+  if lang<>i then:\
     let new_lang=1:\
-    let lang=val i$:\
+    let lang=i-ASCII_0:\
     let udg_chars=udg3*(lang=esperanto)+\
                   udg2*(lang<>esperanto):\
     randomize udg_chars:\
     goto @select_udg_set // then return
-
 
 return
 
@@ -1524,7 +1525,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<flower_udg\$,g$,gIe
 #vim %substitute,\<record_player\$,h$,gIe
 #vim %substitute,\<fence_udg\$,j$,gIe
-#vim %substitute,\<max_lang_key\$,k$,gIe
 #vim %substitute,\<text\$,l$,gIe
 #vim %substitute,\<replay_controls\$,m$,gIe
 #vim %substitute,\<no\$,n$,gIe
@@ -1589,6 +1589,9 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 // Number of texts
 #vim %substitute,\<texts\>,19,gIe
 
+// Other
+#vim %substitute,\<ASCII_0\>,48,gIe
+
 // ---------------------------------------------
 // Shorten numeric variable names {{{2
 
@@ -1617,6 +1620,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<last_level\>,ll,gIe
 #vim %substitute,\<left_surrounding_mines\>,lsm,gIe
 #vim %substitute,\<mine_char\>,mc,gIe
+#vim %substitute,\<max_lang_key\>,ml,gIe
 #vim %substitute,\<message_row\>,mr0,gIe
 #vim %substitute,\<mine_row\>,mr1,gIe
 #vim %substitute,\<mined_rows\>,mr2,gIe
