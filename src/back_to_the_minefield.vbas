@@ -21,7 +21,7 @@ inverse 0:\
 bright 0:\
 clear 65535-21*8*3-8:\
 
-let version$="0.103.0+201904010101":\
+let version$="0.104.0+201904010115":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -393,7 +393,7 @@ if score>record then \
   gosub @new_record
 gosub @update_status_bar
 
-let message$=fn txt$(press_key_text):\
+let message$=fn txt$(press_key_txt):\
 gosub @message:\
 
 pause 0:\
@@ -512,14 +512,14 @@ print at 3,6;\
   "Gratulationes!"
 #  <------------------------------>
 print '\
-  "Tu hat salvat Bill. Li munde"'\
-  "mersia te."
+  "Vu hat salvat Bill. Li munde"'\
+  "mersia Vos."
 #  <------------------------------>
 print '\
   "Pontes: ";score;"."
 #  <------------------------------>
 print '\
-  "Mey tu luder ancor e provar far"'\
+  "Mey Vu luder ancor e provar far"'\
   "it mem plu bon?"
 #  <------------------------------>
 
@@ -1174,7 +1174,7 @@ elseif lang=interlingue then
 
 let i$=protagonist$(1):gosub @icon
 #      <------------------------------>
-print  " Tu, li heroic senioretta."
+print  " Vu, li heroic senioretta."
 print "  Transea li campes de mines"
 print "  usante li fleche-claves."
 let i$=bill_udg$:gosub @icon
@@ -1183,8 +1183,8 @@ print  " Bill li verme: It es in li"
 print "  ultim camp. Salva it."
 let i$=mine_udg$:gosub @icon
 #      <------------------------------>
-print  " Mines: Sur li statu-barre tu"
-print "  va vider quantes es apu te."
+print  " Mines: Sur li statu-barre Vu"
+print "  va vider quantes es apu Vos."
 let i$=fence_udg$:gosub @icon
 #      <------------------------------>
 print  " Palissade electrificat, por"
@@ -1270,12 +1270,12 @@ data record_txt,"Récor"
 data safe_zone_txt,"<<<<<<<< ZONA SEGURA >>>>>>>>>"
 data putting_mines_txt,"Poniendo minas..."
 data replay_controls_1_txt,"REPETICIÓN: [P]ausa [F]in"
-data replay_controls_2_txt,"Una tecla para seguir"
+data replay_controls_2_txt,"Pulsa una tecla para seguir"
 data you_need_key_txt,"Necesitas la llave para salir"
 data open_door_txt,"Puerta abierta"
 data new_record_txt,"¡Un nuevo récord!"
 data enter_initials_txt,"Introduce tus iniciales"
-data press_key_text,"Pulsa una tecla para ir al menú"
+data press_key_txt,"Pulsa una tecla para ir al menú"
 data two_thousand_txt,"    ¡Dos mil puntos extra!"
 data 0 // end of data
 
@@ -1292,12 +1292,12 @@ data record_txt,"High"
 data safe_zone_txt,"<<<<<<<<< SAFE ZONE >>>>>>>>>>"
 data putting_mines_txt,"Putting mines..."
 data replay_controls_1_txt,"REPETITION: [P]ause [F]inish"
-data replay_controls_2_txt,"Any key to continue"
+data replay_controls_2_txt,"Press any key to continue"
 data you_need_key_txt,"Yo need the key to exit"
 data open_door_txt,"Open door"
 data new_record_txt,"A new record!"
 data enter_initials_txt,"Enter your initials"
-data press_key_text,"Press any key to go to the menu"
+data press_key_txt,"Press any key to go to the menu"
 data two_thousand_txt,"   Two thousand extra points!"
 data 0 // end of data
 
@@ -1314,12 +1314,12 @@ data record_txt,"Record"
 data safe_zone_txt,"<<<<<<<< ZONA SECUR >>>>>>>>>>"
 data putting_mines_txt,"Colocante mines..."
 data replay_controls_1_txt,"REPETITION: [P]ause [F]ine"
-data replay_controls_2_txt,"Clavea por continuar"
-data you_need_key_txt,"Tu besona li clave por exear"
+data replay_controls_2_txt,"Presse un clave por continuar"
+data you_need_key_txt,"Vu besona li clave por exear"
 data open_door_txt,"Porta apert"
 data new_record_txt,"Un nov record!"
 data enter_initials_txt,"Inscri vu initiales"
-data press_key_text,"Presse un clave por ear li menú"
+data press_key_txt,"Presse un clave por ear li menú"
 data two_thousand_txt,"     Du mil extra puntes!"
 data 0 // end of data
 
@@ -1341,7 +1341,7 @@ data you_need_key_txt,"Vi bezonas la ŝlosilon por eliri"
 data open_door_txt,"Pordo malfermita"
 data new_record_txt,"Nova rikordo!"
 data enter_initials_txt,"Tajpu viajn inicialojn"
-data press_key_text,"Premu klavon por iri al la menuo"
+data press_key_txt,"Premu klavon por iri al la menuo"
 data two_thousand_txt,"    Du mil kromaj poentoj!"
 data 0 // end of data
 
@@ -1567,7 +1567,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<path_color\>,7,gIe // white
 
 // Text identifiers
-#vim %substitute,\<press_key_text\>,1,gIe
+#vim %substitute,\<press_key_txt\>,1,gIe
 #vim %substitute,\<credits_txt\>,3,gIe
 #vim %substitute,\<enter_initials_txt\>,4,gIe
 #vim %substitute,\<instructions_txt\>,5,gIe
