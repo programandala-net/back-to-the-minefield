@@ -15,7 +15,7 @@ rem Credit: A remake of Ian Andrew's Mined-Out (1983), partly based on his code 
 
 clear 65535-21*8*3-8-1:\
 
-let version$="0.107.0+201904251738":\
+let version$="0.108.0+201904251800":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -105,23 +105,28 @@ print paper transparent;\
 gosub @no_message:\
 gosub @new_status_bar
 
-let flowers=0
-
 if level=last_level then
 
+  let things=0:\
   gosub @last_level
 
 else
 
-  let flowers=int(rnd*(level+2))
-  if flowers then
-    dim flower_row(flowers):\
-    dim flower_col(flowers):\
-    ink flower_color:\
-    for i=1 to flowers:\
-      let flower_row(i)=fn random_row():\
-      let flower_col(i)=fn random_col():\
-      print at flower_row(i),flower_col(i);flower_udg$:\
+  let things=int(rnd*(level+2))
+  if things then
+    dim thing_row(things):\
+    dim thing_col(things):\
+    dim thing_udg$(things):\
+    dim thing_ink(things):\
+    for i=1 to things:\
+      let thing_row(i)=fn random_row():\
+      let thing_col(i)=fn random_col():\
+      let thing_udg$(i)=flower_udg$:\
+      let thing_ink(i)=flower_color:\
+      print \
+        at thing_row(i),thing_col(i);\
+        paper transparent;ink thing_ink(i);\
+        thing_udg$(i):\
     next i:\
     ink contrast
   endif
@@ -564,11 +569,11 @@ let quit_replay=0 // exit flag
 // Make all mines visible and hide the path:
 load! "groundattr" code
 
-// Restore all the flowers:
-for i=1 to flowers:\
-  print at flower_row(i),flower_col(i);\
-    paper transparent;ink flower_color;\
-    flower_udg$:\
+// Restore all the things:
+for i=1 to things:\
+  print at thing_row(i),thing_col(i);\
+    paper transparent;ink thing_ink(i);\
+    thing_udg$(i):\
 next i
 
 gosub @select_udg_chars_set
@@ -1558,14 +1563,16 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<blank_field_row\$,u$,gIe
 #vim %substitute,\<version\$,v$,gIe
 #vim %substitute,\<message\$,w$,gIe
+#vim %substitute,\<thing_udg\$,x$,gIe
 #vim %substitute,\<yes\$,y$,gIe
 
 // ---------------------------------------------
 // Shorten numeric array names {{{2
 
+#vim %substitute,\<thing_col\>,c,gIe
 #vim %substitute,\<detector_color\>,d,gIe
-#vim %substitute,\<flower_col\>,c,gIe
-#vim %substitute,\<flower_row\>,r,gIe
+#vim %substitute,\<thing_ink\>,i,gIe
+#vim %substitute,\<thing_row\>,r,gIe
 #vim %substitute,\<text_len\>,l,gIe
 
 // ---------------------------------------------
@@ -1632,7 +1639,6 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<fence_char\>,fec,gIe
 #vim %substitute,\<flower_char\>,fh,gIe
 #vim %substitute,\<first_level\>,fl,gIe
-#vim %substitute,\<flowers\>,flo,gIe
 #vim %substitute,\<found_char\>,foc,gIe
 #vim %substitute,\<front_surrounding_mines\>,fsm,gIe
 #vim %substitute,\<interlingue\>,ie,gIe
@@ -1663,6 +1669,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<score\>,s,gIe
 #vim %substitute,\<start_col\>,sc,gIe
 #vim %substitute,\<surrounding_mines\>,sm,gIe
+#vim %substitute,\<things\>,th,gIe
 #vim %substitute,\<top_fence_row\>,tfr,gIe
 #vim %substitute,\<top_mined_row\>,tmr,gIe
 #vim %substitute,\<time_score\>,ts,gIe
