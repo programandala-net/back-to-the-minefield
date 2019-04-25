@@ -6,7 +6,7 @@
 ;
 ; User Defined Graphics
 
-; Last modified 201903251619
+; Last modified 201904251726
 ; See change log at the end of the file
 
 ; ==============================================================
@@ -117,15 +117,14 @@ defb 0,0,192,192,78,74,91,112
 defb 0,0,0,0,60,126,0,0
 
 ; P -- key:
-; XXX TODO -- improve
-defb %00111100
+defb %00111000
+defb %00011000
+defb %00111000
+defb %00001000
+defb %00001000
 defb %00011100
-defb %00111100
-defb %00001100
-defb %00001100
-defb %01111110
-defb %10000001
-defb %01111110
+defb %00100010
+defb %00011100
 
 ; Q -- flower:
 defb %00110110
@@ -136,6 +135,26 @@ defb %00101000
 defb %00001010
 defb %00001100
 defb %00001000
+
+; R -- can:
+defb %00111100
+defb %01100110
+defb %01011010
+defb %01000010
+defb %01000010
+defb %01000010
+defb %00111100
+defb %00000000
+
+; S -- bottle:
+defb %00011000
+defb %00011000
+defb %00111100
+defb %00111100
+defb %00111100
+defb %00111100
+defb %00111100
+defb %00111100
 
 ; ==============================================================
 ; UDG bank 2: Spanish letters and symbols
