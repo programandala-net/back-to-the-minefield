@@ -15,7 +15,7 @@ rem Credit: A remake of Ian Andrew's Mined-Out (1983), partly based on his code 
 
 clear 65535-21*8*3-8-1:\
 
-let version$="0.105.0+201904010151":\
+let version$="0.106.0+201904251730":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -149,7 +149,7 @@ let old_col=col
 
 do
 
-  if not int(peek (23672)/16) then:\
+  if int (rnd*(surrounding_mines+1.2)) then:\
     print at row,col;\
       paper path_color;\
       protagonist$(protagonist_frame+1):\
