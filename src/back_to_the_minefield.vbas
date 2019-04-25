@@ -15,7 +15,7 @@ rem Credit: A remake of Ian Andrew's Mined-Out (1983), partly based on his code 
 
 clear 65535-21*8*3-8-1:\
 
-let version$="0.106.0+201904251730":\
+let version$="0.107.0+201904251738":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -221,7 +221,8 @@ if found_char=fence_char then \
   goto @explosion
 
 if found_char=flower_char then
-  let score=score+10:\
+  let score=score-10:\
+  if score<0 then let score=0
   gosub @update_status_bar
 elseif found_char=bill_char then
   gosub @rescue
