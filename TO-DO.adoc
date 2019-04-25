@@ -1,5 +1,5 @@
 = TO-DO of _Back to the minefield_
-:revdate: 2019-03-31
+:revdate: 2019-04-25
 
 - Make the replay control keys configurable.
 - Reduce number of loop index variables.
@@ -10,10 +10,14 @@
 - Put Bill anywhere inside the nest, not always at the center.
 - Rewrite the rescue effect.
 - Don't delete the status bar when preparing the next level.
-- Let the language be changed on the instructions screen, on the
-  credits screen, and also during the game, using the same keys of the
-  main menu.
+- Let the language be changed on during the game.
 - Make beep also after a valid key menu.
 - Do the saluting also at the end of the replay?
 - Make drawing faster by replacing UDG string variables with literal
   strings.
+- Display the key in the replay of level 6.
+- Add "any other key to return" to instructions and credits.
+- Replace flowers with cans, bottles, etc. Increase the score when
+  they are collected.
+- Decrease score when the flowers are treaded.
+ 
