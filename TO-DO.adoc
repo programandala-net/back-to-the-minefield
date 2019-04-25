@@ -19,3 +19,4 @@
 - Add "any other key to return" to instructions and credits.
 - Replace flowers with cans, bottles, etc. Increase the score when
   they are collected.
+- Allow negative scores, but display zero as minimun.

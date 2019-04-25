@@ -15,7 +15,7 @@ rem Credit: A remake of Ian Andrew's Mined-Out (1983), partly based on his code 
 
 clear 65535-21*8*3-8-1:\
 
-let version$="0.108.0+201904251800":\
+let version$="0.109.0+201904252216":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -112,7 +112,7 @@ if level=last_level then
 
 else
 
-  let things=int(rnd*(level+2))
+  let things=int(rnd*(level+3)+level+1)
   if things then
     dim thing_row(things):\
     dim thing_col(things):\
@@ -120,9 +120,17 @@ else
     dim thing_ink(things):\
     for i=1 to things:\
       let thing_row(i)=fn random_row():\
-      let thing_col(i)=fn random_col():\
-      let thing_udg$(i)=flower_udg$:\
-      let thing_ink(i)=flower_color:\
+      let thing_col(i)=fn random_col()
+      if int(rnd*level+1) then
+        let thing_udg$(i)=can_udg$:\
+        let thing_ink(i)=can_color
+      elseif int(rnd*level+1) then
+        let thing_udg$(i)=bottle_udg$:\
+        let thing_ink(i)=bottle_color
+      elseif int(rnd*(last_level-level)+1) then
+        let thing_udg$(i)=flower_udg$:\
+        let thing_ink(i)=flower_color
+      endif
       print \
         at thing_row(i),thing_col(i);\
         paper transparent;ink thing_ink(i);\
@@ -229,11 +237,12 @@ if found_char=flower_char then
   let score=score-10:\
   if score<0 then let score=0
   gosub @update_status_bar
+elseif found_char=can_char or found_char=bottle_char then
+  let score=score+10:\
+  gosub @update_status_bar
 elseif found_char=bill_char then
   gosub @rescue
 endif
-
-
 
 print at row,col;\
   paper path_color;\
@@ -804,14 +813,18 @@ let dead_protagonist_udg$="\l":\
 
 let bill_char=46:\
 let bill_udg$="\n":\
+let bottle_char=51:\
+let bottle_udg$="\s":\
+let can_char=50:\
+let can_udg$="\r":\
 let fence_char=38:\
 let fence_udg$="\f":\
 let flower_char=49:\
 let flower_udg$="\q":\
 let key_char=48:\ // XXX TODO -- Not used.
 let key_udg$="\p":\
-let mine_char$="/":\
 let mine_char=47:\
+let mine_char$="/":\
 let mine_udg$="\o"
 
 let fence$="\f\f\f\f\f\f\f\f\f\f\f\f\f\f   \f\f\f\f\f\f\f\f\f\f\f\f\f\f\f"
@@ -1549,10 +1562,12 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<blank_row\$,b$,gIe
 #vim %substitute,\<bill_udg\$,c$,gIe
 #vim %substitute,\<mine_char\$,d$,gIe
+#vim %substitute,\<bottle_udg\$,e$,gIe
 #vim %substitute,\<fence\$,f$,gIe
 #vim %substitute,\<flower_udg\$,g$,gIe
 #vim %substitute,\<record_player\$,h$,gIe
 #vim %substitute,\<fence_udg\$,j$,gIe
+#vim %substitute,\<can_udg\$,k$,gIe
 #vim %substitute,\<text\$,l$,gIe
 #vim %substitute,\<replay_controls\$,m$,gIe
 #vim %substitute,\<no\$,n$,gIe
@@ -1592,6 +1607,8 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 
 // Style colors
 #vim %substitute,\<border_color\>,0,gIe // black 
+#vim %substitute,\<bottle_color\>,4,gIe // green
+#vim %substitute,\<can_color\>,0,gIe // black
 #vim %substitute,\<ground_color\>,6,gIe // yelow
 #vim %substitute,\<flower_color\>,2,gIe // red
 #vim %substitute,\<path_color\>,7,gIe // white
@@ -1626,9 +1643,11 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 // Shorten numeric variable names {{{2
 
 #vim %substitute,\<bottom_fence_row\>,bfr,gIe
-#vim %substitute,\<bill_char\>,bh,gIe
+#vim %substitute,\<bill_char\>,bic,gIe
+#vim %substitute,\<bottle_char\>,boc,gIe
 #vim %substitute,\<back_surrounding_mines\>,bsm,gIe
 #vim %substitute,\<bottom_safe_row\>,bsr,gIe
+#vim %substitute,\<can_char\>,cac,gIe
 #vim %substitute,\<door_closed\>,dcl,gIe
 #vim %substitute,\<door_col\>,dco,gIe
 #vim %substitute,\<english\>,en,gIe
@@ -1637,18 +1656,18 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<spanish\>,es,gIe
 #vim %substitute,\<exit_time\>,ext,gIe
 #vim %substitute,\<fence_char\>,fec,gIe
-#vim %substitute,\<flower_char\>,fh,gIe
 #vim %substitute,\<first_level\>,fl,gIe
+#vim %substitute,\<flower_char\>,flc,gIe
 #vim %substitute,\<found_char\>,foc,gIe
 #vim %substitute,\<front_surrounding_mines\>,fsm,gIe
 #vim %substitute,\<interlingue\>,ie,gIe
 #vim %substitute,\<key_col\>,kc,gIe
-#vim %substitute,\<key_char\>,kch,gIe
+#vim %substitute,\<key_char\>,kec,gIe
 #vim %substitute,\<key_row\>,kr,gIe
 #vim %substitute,\<lang_key\>,lk,gIe
 #vim %substitute,\<last_level\>,ll,gIe
 #vim %substitute,\<left_surrounding_mines\>,lsm,gIe
-#vim %substitute,\<mine_char\>,mc,gIe
+#vim %substitute,\<mine_char\>,mic,gIe
 #vim %substitute,\<max_lang_key\>,ml,gIe
 #vim %substitute,\<message_row\>,mr0,gIe
 #vim %substitute,\<mine_row\>,mr1,gIe
