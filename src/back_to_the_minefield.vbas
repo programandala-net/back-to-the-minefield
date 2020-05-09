@@ -2,7 +2,7 @@ rem Back to the minefield
 
 //  Written in Vimclair BASIC for ZX Spectrum 128.
 
-rem Author: Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019.
+rem Author: Marcos Cruz (programandala.net), 2016, 2017, 2018, 2019, 2020.
 
 rem Credit: A remake of Ian Andrew's Mined-Out (1983), partly based on his code and graphics.
 
@@ -15,7 +15,7 @@ rem Credit: A remake of Ian Andrew's Mined-Out (1983), partly based on his code 
 
 clear 65535-21*8*3-8-1:\
 
-let version$="0.109.0+201904252216":\
+let version$="0.109.1+202005100021":\
 // Note: version number after Semantic Versioning: http://semver.org
 
 goto @init
@@ -36,7 +36,8 @@ deffn txt$(n)=text$(lang,n,1 to text_len(lang,n))
 deffn seconds()=int((peek 23672+256*peek 23637+65536*peek 23674)/50)
 
 // Score in a 5-character string, with zeros at the left:
-deffn score$(n)="00000"(to 5-len str$ n)+str$ n
+# XXX OLD
+# deffn score$(n)="00000"(to 5-len str$ n)+str$ n
 
 // ==============================================================
 // Start a new game {{{1
@@ -321,11 +322,14 @@ gosub @select_udg_set
 
 @update_status_bar:
 
-// XXX FIXME -- A system or emulator bug?: only the first item is
-// affected by `paper` and `ink`, the rest is printed with the current
-// colors. The problem is solved by removing `str$` in the expression.
-// In fact, using `str$` to calculate the column of the first
-// expression, makes this one be printed with default colors too.
+// XXX FIXME -- A system bug?: only the first item is affected by
+// `paper` and `ink`, the rest is printed with the current colors. The
+// problem is solved by removing `str$` in the expression. In fact,
+// using `str$` to calculate the column of the first expression, makes
+// this one be printed with default colors too.
+//
+// This problem happens on the Fuse emulator and on the ZX Spectrum
+// Next.
 
 # print #1;paper red;ink black;\
 #   at 1,2;level;\
@@ -335,10 +339,10 @@ gosub @select_udg_set
 // XXX FIXME -- This alternative prints score and record with inverse
 // colors! `str$` is used in the function that calculates the string.
 
-print #1;paper white; ink black;\
-  at 1,2;level;\
-  at 1,17;fn score$(score);\
-  at 1,26;fn score$(record)
+# print #1;paper white; ink black;\
+#   at 1,2;level;\
+#   at 1,17;fn score$(score);\
+#   at 1,26;fn score$(record)
 
 # XXX FIXME -- This makes no difference:
 
@@ -346,6 +350,20 @@ print #1;paper white; ink black;\
 #   at 1,2;level;\
 #   at 1,17;paper white;ink black;fn score$(score);\
 #   at 1,26;paper white;ink black;fn score$(record)
+
+# XXX FIXME -- This makes no difference:
+
+# print #1;paper transparent; ink transparent;\
+#   at 1,2;level;\
+#   at 1,17;fn score$(score);\
+#   at 1,26;fn score$(record)
+
+# XXX REMARK -- This works fine:
+
+print #1;paper white; ink black;\
+  at 1,2;level;\
+  at 1,17+(score<10000)+(score<1000)+(score<100)+(score<10);score;\
+  at 1,26+(record<10000)+(record<1000)+(record<100)+(record<10);record
 
 @print_surrounding_mines:
 
@@ -940,7 +958,7 @@ border blue: paper blue: ink blue:\
 cls
 
 print \
-  at 3,4;"{(C)} 2016-2019 Marcos Cruz";\
+  at 3,4;"{(C)} 2016-2020 Marcos Cruz";\
   at 4,6;"(programandala.net)"
 
 @change_menu_language:
@@ -1360,7 +1378,7 @@ data you_need_key_txt,"Vu besona li clave por exear"
 data open_door_txt,"Porta apert"
 data new_record_txt,"Un nov record!"
 data enter_initials_txt,"Inscri vu initiales"
-data press_key_txt,"Presse un clave por ear li menú"
+data press_key_txt,"Presse un clave por ear al menú"
 data two_thousand_txt,"     Du mil extra puntes!"
 data 0 // end of data
 
@@ -1582,6 +1600,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<yes\$,y$,gIe
 
 // ---------------------------------------------
+//
 // Shorten numeric array names {{{2
 
 #vim %substitute,\<thing_col\>,c,gIe
@@ -1606,7 +1625,7 @@ data 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 #vim %substitute,\<contrast\>,9,gIe
 
 // Style colors
-#vim %substitute,\<border_color\>,0,gIe // black 
+#vim %substitute,\<border_color\>,0,gIe // black
 #vim %substitute,\<bottle_color\>,4,gIe // green
 #vim %substitute,\<can_color\>,0,gIe // black
 #vim %substitute,\<ground_color\>,6,gIe // yelow
