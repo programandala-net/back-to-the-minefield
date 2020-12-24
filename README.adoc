@@ -1,5 +1,5 @@
 = Back to the minefield
-:revdate: 2020-12-04
+:revdate: 2020-12-24
 :toc:
 :toc-title:
 
@@ -17,9 +17,11 @@ BASIC] for ZX Spectrum 128.
 The interface is multilingual: in English, Spanish, Esperanto and
 Interlingue.
 
-Note: On 2020-12-04 the Git repository was converted to
-http://fossil-scm.org[Fossil], and since then GitHub is used only as a
-copy.
+Note: On 2020-12-04 the Git repository was converted to a
+http://fossil.programandala.net/back_to_the_minefield[Fossil
+repository], keeping
+http://github/programandala-net/back-to-the-minefield[GitHub as a
+mirror].
 
 // Español {{{1
 == Español
@@ -35,9 +37,11 @@ BASIC] para ZX Spectrum 128.
 La interfaz es multilingüe: en inglés, español, esperanto e
 interlingüe.
 
-Nota: En 2020-12-04 el repositorio Git fue convertido a
-http://fossil-scm.org[Fossil], y desde entonces GitHub se usa solo
-como una copia.
+Nota: En 2020-12-04 el repositorio de Git fue convertido a un
+http://fossil.programandala.net/back_to_the_minefield[repositorio de
+Fossil], dejando
+http://github/programandala-net/back-to-the-minefield[GitHub como
+réplica].
 
 // Esperanto {{{1
 == Esperanto
@@ -54,8 +58,10 @@ La interfaco estas plurlingva: in angla, hispana, Esperanto kaj
 Interlingveo.
 
 Noto: Je 2020-12-04 la Git-deponejo estis konvertita al
-http://fossil-scm.org[Fossil], kaj de tiam 
-GitHub estas uzata nur kiel kopio.
+http://fossil.programandala.net/back_to_the_minefield[Fossil-deponejo],
+konservante
+http://github/programandala-net/back-to-the-minefield[GitHub kiel
+kopion].
 
 // Interlingue {{{1
 == Interlingue
@@ -71,6 +77,8 @@ BASIC] por ZX Spectrum 128.
 Li interfacie es plurilingual: in anglesi, hispan, Esperanto e
 Interlingue.
 
-Note: In 2020-12-04 li depositoria de Git esset convertet a
-http://fossil-scm.org[Fossil], e desde tande GitHub es usat solmen
-quam un copie.
+Note: In 2020-12-04 li depositoria de Git esset convertet a un
+http://fossil.programandala.net/back_to_the_minefield[repositoria de
+Fossil], conservante
+http://github/programandala-net/back-to-the-minefield[GitHub quam un
+copie].
