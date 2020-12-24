@@ -55,7 +55,7 @@ Interlingveo.
 
 Noto: Je 2020-12-04 la Git-deponejo estis konvertita al
 http://fossil-scm.org[Fossil], kaj de tiam 
-GitHub estas uzata nur kiel kopion.
+GitHub estas uzata nur kiel kopio.
 
 // Interlingue {{{1
 == Interlingue
@@ -72,5 +72,5 @@ Li interfacie es plurilingual: in anglesi, hispan, Esperanto e
 Interlingue.
 
 Note: In 2020-12-04 li depositoria de Git esset convertet a
-http://fossil-scm.org[Fossil], e desde tande GitHib es usat solmen
+http://fossil-scm.org[Fossil], e desde tande GitHub es usat solmen
 quam un copie.
