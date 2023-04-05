@@ -3,6 +3,8 @@
 :toc:
 :toc-title:
 
+// Last modified 20230405T1056+0200.
+
 // English {{{1
 == English
 
@@ -68,10 +70,10 @@ Interlingveo.
 === Historio de la deponejo
 
 - 2020-12-04: la Git-deponejo estis konvertita al
-  https://fossil-scm.org[Fossil], konservante konservante
+  https://fossil-scm.org[Fossil], konservante
   http://github/programandala-net/back-to-the-minefield[GitHub kiel
   kopion].
-- 2023-04-05: la deponejos estis konvertita al
+- 2023-04-05: la deponejo estis konvertita al
   https://mercurial-scm.org[Mercurial], ebligante pli bonan interagon
   kun GitHub.
 
@@ -91,7 +93,7 @@ Interlingue.
 
 === Historie del depositoria
 
-- 2020-12-04: li depositoria de Git esset convertet a un
+- 2020-12-04: li depositoria de Git esset convertet a
   https://fossil-scm.org[Fossil], conservante
   http://github/programandala-net/back-to-the-minefield[GitHub quam un
   copie].
