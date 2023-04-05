@@ -1,5 +1,5 @@
 = Back to the minefield
-:revdate: 2020-12-24
+:revdate: 2023-04-05
 :toc:
 :toc-title:
 
@@ -17,11 +17,15 @@ BASIC] for ZX Spectrum 128.
 The interface is multilingual: in English, Spanish, Esperanto and
 Interlingue.
 
-Note: On 2020-12-04 the Git repository was converted to a
-http://fossil.programandala.net/back_to_the_minefield[Fossil
-repository], keeping
-http://github/programandala-net/back-to-the-minefield[GitHub as a
-mirror].
+=== History of the repository
+
+- 2020-12-04: the Git repository was converted to
+  https://fossil-scm.org[Fossil], keeping
+  http://github/programandala-net/back-to-the-minefield[GitHub as a
+  mirror].
+- 2023-04-05: the repository was converted to
+  https://mercurial-scm.org[Mercurial], enabling a better interaction
+  with GitHub.
 
 // Español {{{1
 == Español
@@ -37,11 +41,15 @@ BASIC] para ZX Spectrum 128.
 La interfaz es multilingüe: en inglés, español, esperanto e
 interlingüe.
 
-Nota: En 2020-12-04 el repositorio de Git fue convertido a un
-http://fossil.programandala.net/back_to_the_minefield[repositorio de
-Fossil], dejando
-http://github/programandala-net/back-to-the-minefield[GitHub como
-réplica].
+=== Historia del repositorio
+
+- 2020-12-04: el repositorio de Git fue convertido a
+  https://fossil-scm.org[Fossil], dejando
+  http://github/programandala-net/back-to-the-minefield[GitHub como
+  réplica].
+- 2023-04-05: el repositorio fue convertido a
+  https://mercurial-scm.org[Mercurial], posibilitando una mejor
+  interacción con GitHub.
 
 // Esperanto {{{1
 == Esperanto
@@ -57,14 +65,18 @@ BASIC] por ZX Spectrum 128.
 La interfaco estas plurlingva: in angla, hispana, Esperanto kaj
 Interlingveo.
 
-Noto: Je 2020-12-04 la Git-deponejo estis konvertita al
-http://fossil.programandala.net/back_to_the_minefield[Fossil-deponejo],
-konservante
-http://github/programandala-net/back-to-the-minefield[GitHub kiel
-kopion].
+=== Historio de la deponejo
 
-// Interlingue {{{1
-== Interlingue
+- 2020-12-04: la Git-deponejo estis konvertita al
+  https://fossil-scm.org[Fossil], konservante konservante
+  http://github/programandala-net/back-to-the-minefield[GitHub kiel
+  kopion].
+- 2023-04-05: la deponejos estis konvertita al
+  https://mercurial-scm.org[Mercurial], ebligante pli bonan interagon
+  kun GitHub.
+
+// Interlingue/Occidental {{{1
+== Interlingue/Occidental
 
 _Back to the minefield_ (Revenida al camp de mines) es un tribute e un
 reinterpretation ye li lude _Mined-Out_ de Ian Andrew (1983), quel
@@ -77,8 +89,12 @@ BASIC] por ZX Spectrum 128.
 Li interfacie es plurilingual: in anglesi, hispan, Esperanto e
 Interlingue.
 
-Note: In 2020-12-04 li depositoria de Git esset convertet a un
-http://fossil.programandala.net/back_to_the_minefield[repositoria de
-Fossil], conservante
-http://github/programandala-net/back-to-the-minefield[GitHub quam un
-copie].
+=== Historie del depositoria
+
+- 2020-12-04: li depositoria de Git esset convertet a un
+  https://fossil-scm.org[Fossil], conservante
+  http://github/programandala-net/back-to-the-minefield[GitHub quam un
+  copie].
+- 2023-04-05: li depositoria esset convertet a
+  https://mercurial-scm.org[Mercurial], possibilisante un melior
+  interaction con GitHub.

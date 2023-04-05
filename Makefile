@@ -4,7 +4,7 @@
 # Back to the minefield
 # By Marcos Cruz (programandala.net)
 
-# Last modified 202012241631
+# Last modified 20230405T1037+0200
 # See change log at the end of the file
 
 # ==============================================================
@@ -25,7 +25,7 @@
 # Main {{{1
 
 .PHONY: all
-all: target/back_to_the_minefield.tap wwwdoc
+all: target/back_to_the_minefield.tap
 
 clean:
 	rm -f target/* tmp/*
@@ -43,33 +43,6 @@ tmp/main.tap: src/back_to_the_minefield.vbas
 
 target/back_to_the_minefield.tap: tmp/main.tap tmp/udg.tap
 	cat $^ > $@
-
-# ==============================================================
-# Online documentation {{{1
-
-# Online documentation displayed on the Fossil repository.
-
-.PHONY: wwwdoc
-wwwdoc: wwwreadme
-
-.PHONY: cleanwww
-cleanwww:
-	rm -f \
-		doc/www/* \
-		tmp/README.*
-
-.PHONY: wwwreadme
-wwwreadme: doc/www/README.html
-
-doc/www/README.html: tmp/README.html
-	echo "<div class='fossil-doc' data-title='README'>" > $@;\
-	cat $< >> $@;\
-	echo "</div>" >> $@
-
-tmp/README.html: README.adoc
-	asciidoctor \
-		--embedded \
-		--out-file=$@ $<
 
 # ==============================================================
 # Change log
@@ -94,3 +67,6 @@ tmp/README.html: README.adoc
 # 2019-03-12: Make the TAP in the target directory.
 #
 # 2020-12-24: Online documentation.
+#
+# 2023-04-05: Remove online documentation, after converting the repo from
+# Fossil to Mercurial.
